@@ -6,7 +6,7 @@
  * Author:      Myles McNamara
  * Author URI:  http://smyl.es
  * Version:     1.0.0
- * Text Domain: undefined
+ * Text Domain: wp_login_flow
  * Last Updated: @@timestamp
  */
 
@@ -26,16 +26,13 @@ Class WP_Login_Flow {
 
 	function __construct() {
 
-		if ( ! defined( 'WP_LOGIN_FLOW_VERSION' ) ) define( 'WP_LOGIN_FLOW', WP_WP_LOGIN_FLOW::VERSION );
+		if ( ! defined( 'WP_LOGIN_FLOW_VERSION' ) ) define( 'WP_LOGIN_FLOW', WP_Login_Flow::VERSION );
 		if ( ! defined( 'WP_LOGIN_FLOW_PLUGIN_DIR' ) ) define( 'WP_LOGIN_FLOW_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 		if ( ! defined( 'WP_LOGIN_FLOW_PLUGIN_URL' ) ) define( 'WP_LOGIN_FLOW_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
 
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+		add_action( 'init', array( $this, 'load_translations' ) );
 
-		if ( is_admin() ) {
-			$this->settings = new WP_Login_Flow_Settings();
-		}
-
+		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
 		$this->login  = new WP_Login_Flow_Login();
 		$this->mail  = new WP_Login_Flow_Mail();
 		$this->user  = new WP_Login_Flow_User();
@@ -88,19 +85,21 @@ Class WP_Login_Flow {
 		return self::$instance;
 	}
 
-	function autoload( $class ){
+	public static function autoload( $class ){
 
 		$class_file = str_replace( 'WP_Login_Flow_', '', $class );
 		$file_array = array_map( 'strtolower', explode( '_', $class_file ) );
 
 		$dirs = 0;
-		$file = WP_LOGIN_FLOW_PLUGIN_DIR . '/classes/';
+		$file = untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/classes/';
 
 		while ( $dirs ++ < count( $file_array ) ) {
 			$file .= '/' . $file_array[ $dirs - 1 ];
 		}
 
 		$file .= '.php';
+
+		if ( ! file_exists( $file ) || $class === 'WP_Login_Flow' ) return;
 
 		include $file;
 

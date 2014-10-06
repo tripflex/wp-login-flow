@@ -10,6 +10,7 @@ class WP_Login_Flow_Settings_Fields {
 		$checked = checked( $args[ 'value' ], 1, FALSE );
 
 		echo "<label><input id=\"{$o['name']}\" type=\"checkbox\" class=\"{$args['class']}\" name=\"{$o['name']}\" value=\"1\"  {$args['attributes']} {$checked} /> {$o['cb_label']} </label>";
+		$this->sub_fields( $o );
 		$this->description( $o );
 
 	}
@@ -78,6 +79,24 @@ class WP_Login_Flow_Settings_Fields {
 	function description( $o ) {
 
 		if ( ! empty( $o[ 'desc' ] ) ) echo "<p class=\"description\">{$o['desc']}</p>";
+
+	}
+
+	function sub_fields( $o ) {
+
+		if( ! isset( $o['fields'] ) || empty( $o[ 'fields' ] ) ) return;
+
+		foreach( $o['fields'] as $field ){
+
+			$type_func = $field[ 'type' ] . '_field';
+			if ( ! method_exists( $this, $type_func ) ) continue;
+
+			echo "<br />";
+			if( ! empty( $field['pre'] ) ) echo $field['pre'];
+			$this->$type_func( $this->build_args( $field ), false );
+			if( ! empty( $field['post'] ) ) echo $field['post'];
+
+		}
 
 	}
 
