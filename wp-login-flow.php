@@ -26,16 +26,17 @@ Class WP_Login_Flow {
 
 	function __construct() {
 
-		if ( ! defined( 'WP_LOGIN_FLOW_VERSION' ) ) define( 'WP_LOGIN_FLOW', WP_Login_Flow::VERSION );
+		if ( ! defined( 'WP_LOGIN_FLOW_VERSION' ) ) define( 'WP_LOGIN_FLOW_VERSION', WP_Login_Flow::VERSION );
 		if ( ! defined( 'WP_LOGIN_FLOW_PLUGIN_DIR' ) ) define( 'WP_LOGIN_FLOW_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 		if ( ! defined( 'WP_LOGIN_FLOW_PLUGIN_URL' ) ) define( 'WP_LOGIN_FLOW_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
 
 		add_action( 'init', array( $this, 'load_translations' ) );
 
-		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
+		$this->assets  = new WP_Login_Flow_Assets();
 		$this->login  = new WP_Login_Flow_Login();
 		$this->mail  = new WP_Login_Flow_Mail();
 		$this->user  = new WP_Login_Flow_User();
+		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
 	}
 
 	/**

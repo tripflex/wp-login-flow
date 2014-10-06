@@ -78,16 +78,6 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 			</form>
 		</div>
 
-		<script type="text/javascript">
-			jQuery( ".nav-tab-wrapper a" ).click( function () {
-				jQuery( '.settings_panel' ).hide();
-				jQuery( '.nav-tab-active' ).removeClass( 'nav-tab-active' );
-				jQuery( jQuery( this ).attr( 'href' ) ).show();
-				jQuery( this ).addClass( 'nav-tab-active' );
-				return false;
-			});
-			jQuery( '.nav-tab-wrapper a:first' ).click();
-		</script>
 	<?php
 		ob_end_flush();
 	}
@@ -190,22 +180,10 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 							'title' => __( 'Login Styles' ),
 							'fields' => array(
 								array(
-									'name'    => 'wplf_backup',
-									'caption' => __( 'Create Backup!' ),
-									'class'   => 'button-primary',
-									'action'  => 'create_backup',
-									'label'   => __( 'Generate Backup' ),
-									'desc'    => __( 'Generate and download a backup of all fields.' ),
-									'type'    => 'backup'
-								),
-								array(
-									'name'    => 'wplf_import',
-									'caption' => __( 'Import Backup!' ),
-									'class'   => 'button button-primary',
-									'href'    => get_admin_url() . 'import.php?import=wordpress',
-									'label'   => __( 'Import Backup' ),
-									'desc'    => __( 'Import a previously generated backup for custom fields.  This uses the default WordPress import feature, if you do not see a file upload after clicking this button, make sure to import using WordPress importer.' ),
-									'type'    => 'link'
+									'name'    => 'wplf_bg_color',
+									'label'   => __( 'Background Color' ),
+									'desc'    => __( 'Use a custom background for the default wp-login.php page.' ),
+									'type'    => 'colorpicker'
 								)
 							)
 						)

@@ -76,6 +76,15 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	function colorpicker_field( $args ){
+
+		wp_enqueue_style( 'wp-color-picker' );
+		$o = $args[ 'option' ];
+		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"wplf-color-picker {$args['class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />";
+		$this->description( $o );
+
+	}
+
 	function description( $o ) {
 
 		if ( ! empty( $o[ 'desc' ] ) ) echo "<p class=\"description\">{$o['desc']}</p>";
