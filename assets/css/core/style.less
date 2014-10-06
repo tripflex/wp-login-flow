@@ -1,0 +1,50 @@
+@head-color: #fff;
+@default-wp-bg: #222;
+@default-wp-color: #eee;
+
+#wplf-all-settings {
+
+    h2 {
+        font-size: 24px;
+        font-variant: small-caps;
+        padding: 10px;
+        text-align: center;
+        text-transform: full-width;
+        margin-top: 0;
+    }
+
+    .form-table {
+
+        margin-top: 0;
+        background: #fff;
+
+        th {
+            padding-left: 20px;
+        }
+    }
+
+    .settings_panel {
+//        border: 5px solid #222;
+        border-top: none;
+
+        #wplf-settings-inside {
+//            border: 5px solid @head-color;
+        }
+    }
+}
+
+#wplf-nav-tabs {
+    .nav-tab-active, .nav-tab-active:hover {
+        border-bottom: none;
+//        background: @default-wp-bg;
+//        color: @default-wp-color;
+    }
+
+    .nav-tab {
+
+        &:hover {
+            color: #222222;
+        }
+
+    }
+}

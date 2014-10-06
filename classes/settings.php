@@ -43,7 +43,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 		<div class="wrap">
 
 			<div id="icon-themes" class="icon32"></div>
-			<h2><?php _e( 'WP Login Flow' ); ?></h2>
+			<h1><?php _e( 'WP Login Flow' ); ?></h1>
 
 			<form method="post" action="options.php">
 
@@ -51,7 +51,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 				settings_errors();
 				settings_fields( $this->settings_group );
 		?>
-				<h2 class="nav-tab-wrapper">
+				<h2 id="wplf-nav-tabs" class="nav-tab-wrapper">
 		<?php
 					foreach ( $this->settings as $key => $tab ) {
 						$title = $tab["title"];
@@ -64,11 +64,14 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 						foreach ( $this->settings as $key => $tab ):
 		?>
 						<div id="settings-<?php echo $key ?>" class="settings_panel">
+							<div id="wplf-settings-inside">
 		<?php
-								foreach( $tab['sections'] as $skey => $section ) {
-									do_settings_sections( "wplf_{$key}_{$skey}_section" );
-								}
+							foreach( $tab['sections'] as $skey => $section ) {
+								echo "<h2 class=\"wp-ui-primary\">{$section['title']}</h2>";
+								do_settings_sections( "wplf_{$key}_{$skey}_section" );
+							}
 		?>
+							</div>
 						</div>
 		<?php
 						endforeach;
@@ -173,17 +176,30 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 						)
 					)
 				),
-				'styles' => array(
-					'title'  => __( 'Styles' ),
+				'custom_page' => array(
+					'title'  => __( 'Customize Page' ),
 					'sections' => array(
-						'login_styles' => array(
-							'title' => __( 'Login Styles' ),
+						'page' => array(
+							'title' => __( 'Page Customizations' ),
 							'fields' => array(
 								array(
-									'name'    => 'wplf_bg_color',
-									'label'   => __( 'Background Color' ),
-									'desc'    => __( 'Use a custom background for the default wp-login.php page.' ),
-									'type'    => 'colorpicker'
+									'name'  => 'wplf_bg_color',
+									'label' => __( 'Background Color' ),
+									'desc'  => __( 'Use a custom background for the default wp-login.php page.' ),
+									'type'  => 'colorpicker'
+								),
+							)
+						),
+						'login_styles' => array(
+							'title' => __( 'Logo Customizations' ),
+							'fields' => array(
+								array(
+									'name'    => 'wplf_logo',
+									'label'   => __( 'Custom Logo' ),
+									'modal_title'   => __( 'Custom Logo' ),
+									'modal_btn'   => __( 'Set Custom Logo' ),
+									'desc'    => __( 'Use a custom logo on the default wp-login.php page.' ),
+									'type'    => 'upload'
 								)
 							)
 						)
@@ -273,7 +289,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 				$section_header = "default_header";
 				if ( method_exists( $this, "{$key}_{$skey}_header" ) ) $section_header = "{$key}_{$skey}_header";
 
-				add_settings_section( "wplf_{$key}_{$skey}_section", $section[ 'title' ], array( $this, $section_header ), "wplf_{$key}_{$skey}_section" );
+				add_settings_section( "wplf_{$key}_{$skey}_section", '', array( $this, $section_header ), "wplf_{$key}_{$skey}_section" );
 
 				foreach ( $section[ 'fields' ] as $option ) {
 

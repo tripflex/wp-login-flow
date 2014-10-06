@@ -85,6 +85,34 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	function upload_field( $args ){
+
+		wp_enqueue_media();
+		$o = $args[ 'option' ];
+?>
+		<ul id="<?php echo $o[ 'name' ]; ?>-ul" class="attachments" style="<?php if ( empty( $args[ 'value' ] ) ) echo 'display:none;'; ?>">
+			<li class="attachment selected" style="position: relative; left: 0px; top: 0px;">
+				<div class="attachment-preview">
+					<div class="thumbnail">
+						<div class="centered">
+							<a href="#" data-name="<?php echo $o['name']; ?>" data-title="<?php echo $o['modal_title']; ?>" data-button="<?php echo $o['modal_btn']; ?>" class="wplf-upload-show">
+								<img id="<?php echo $o['name']; ?>-img" src="<?php if( isset( $args[ 'value' ] ) ) echo $args[ 'value' ]; ?>">
+							</a>
+						</div>
+					</div>
+					<a data-name="<?php echo $o[ 'name' ]; ?>" title="<?php _e('Remove'); ?>" href="#" class="wpjm-upload-remove check">
+						<div class="media-modal-icon"></div>
+					</a>
+				</div>
+			</li>
+		</ul>
+<?php
+		echo "<input id=\"{$o['name']}\" type=\"hidden\" class=\"wplf-upload {$args['class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" />";
+		echo "<a href=\"#\" data-name=\"{$o['name']}\" data-title=\"{$o['modal_title']}\" data-button=\"{$o['modal_btn']}\" class=\"wplf-upload-show button button-secondary\">" . __( 'Select Logo' ) . "</a>";
+		$this->description( $o );
+
+	}
+
 	function description( $o ) {
 
 		if ( ! empty( $o[ 'desc' ] ) ) echo "<p class=\"description\">{$o['desc']}</p>";
