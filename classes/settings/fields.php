@@ -76,11 +76,30 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	function spinner_field( $args ) {
+
+		$o = $args[ 'option' ];
+
+		echo "<input id=\"{$o['name']}\" type=\"number\" min=\"1\" max-length=\"3\" max=\"999\" step=\"1\" class=\"{$args['class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />px";
+		$this->description( $o );
+
+	}
+
 	function colorpicker_field( $args ){
 
 		wp_enqueue_style( 'wp-color-picker' );
 		$o = $args[ 'option' ];
 		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"wplf-color-picker {$args['class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />";
+		$this->description( $o );
+
+	}
+
+	function wpeditor_field( $args ){
+
+		$o = $args[ 'option' ];
+
+		$editor = apply_filters( 'login_flow_wp_editor_args', array() );
+		wp_editor( esc_textarea( $args[ 'value' ] ), $o[ 'name' ] ,$editor );
 		$this->description( $o );
 
 	}

@@ -38,19 +38,18 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 	function output() {
 
 		$this->init_settings();
-		ob_start();
+		settings_errors();
 		?>
 		<div class="wrap">
 
 			<div id="icon-themes" class="icon32"></div>
 			<h1><?php _e( 'WP Login Flow' ); ?></h1>
+			<h2></h2>
 
 			<form method="post" action="options.php">
 
-		<?php
-				settings_errors();
-				settings_fields( $this->settings_group );
-		?>
+				<?php settings_fields( $this->settings_group ); ?>
+
 				<h2 id="wplf-nav-tabs" class="nav-tab-wrapper">
 		<?php
 					foreach ( $this->settings as $key => $tab ) {
@@ -82,7 +81,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 		</div>
 
 	<?php
-		ob_end_flush();
+
 	}
 
 	function init_settings() {
@@ -194,12 +193,55 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 							'title' => __( 'Logo Customizations' ),
 							'fields' => array(
 								array(
+									'name'        => 'wplf_logo_url_title',
+									'label'       => __( 'Logo URL Title' ),
+									'placeholder' => __( 'My Website' ),
+									'desc'        => __( 'Title attribute for the logo url link' ),
+									'type'        => 'textbox'
+								),
+								array(
+									'name'  => 'wplf_logo_url',
+									'label' => __( 'Logo URL' ),
+									'placeholder' => 'http://mydomain.com',
+									'desc'  => __( 'Custom URL to use for the logo.' ),
+									'type'  => 'textbox'
+								),
+								array(
 									'name'    => 'wplf_logo',
 									'label'   => __( 'Custom Logo' ),
 									'modal_title'   => __( 'Custom Logo' ),
 									'modal_btn'   => __( 'Set Custom Logo' ),
 									'desc'    => __( 'Use a custom logo on the default wp-login.php page.' ),
 									'type'    => 'upload'
+								)
+							)
+						),
+						'login_box' => array(
+							'title' => __( 'Login Box' ),
+							'fields' => array(
+								array(
+									'name'        => 'wplf_login_box_responsive',
+									'label'       => __( 'Responsive Width' ),
+									'cb_label' => __( 'Enable' ),
+									'desc'        => __( 'Screen sizes above 1200px use default 50%, smaller screens use 90% width.' ),
+									'type'        => 'checkbox'
+								),
+								array(
+									'name'  => 'wplf_login_box_color',
+									'label' => __( 'Font Color' ),
+									'desc'  => __( 'Custom font color for Login Box' ),
+									'type'  => 'colorpicker'
+								),								array(
+									'name'  => 'wplf_login_box_bg_color',
+									'label' => __( 'Background Color' ),
+									'desc'  => __( 'Custom background color for Login Box' ),
+									'type'  => 'colorpicker'
+								),
+								array(
+									'name'    => 'wplf_login_box_border_radius',
+									'label'   => __( 'Border Radius' ),
+									'desc'    => __( 'Set a custom border radius on the login box, will only work with modern browsers that support CSS3.' ),
+									'type'    => 'spinner'
 								)
 							)
 						)
@@ -210,43 +252,80 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 					'title'  => __( 'Email' ),
 					'sections' => array(
 						'email_from' => array(
-							'title' => __( 'Email From' ),
+							'title' => __( 'Customize Email Options' ),
 							'fields' => array(
 								array(
-									'name'       => 'wplf_enable_bug_reporter',
+									'name'       => 'wplf_from_name_enable',
 									'std'        => '1',
-									'label'      => __( 'Enable Bug Reporter' ),
+									'label'      => __( 'From Name' ),
 									'cb_label'   => __( 'Enable' ),
-									'desc'       => __( 'Enable the bug report icon in the top right corner to submit bug reports' ),
+									'desc'       => __( 'Use a custom name on emails from WordPress.' ),
 									'type'       => 'checkbox',
-									'attributes' => array()
+									'attributes' => array(),
+									'desc'       => '',
+									'fields'     => array(
+										array(
+											'name'       => 'wplf_from_name',
+											'std'        => '',
+											'placeholder' => __( 'My Website' ),
+											'post'       => '',
+											'type'       => 'textbox',
+											'attributes' => array()
+										)
+									),
 								),
 								array(
-									'name'    => 'wplf_remove_all',
-									'caption' => __( 'I understand, remove all data!' ),
-									'class'   => 'button-primary',
-									'action'  => 'remove_all',
-									'label'   => __( 'Remove All' ),
-									'desc'    => __( 'This will remove all custom and customized field data!' ),
-									'type'    => 'button'
+									'name'       => 'wplf_from_email_enable',
+									'std'        => '1',
+									'label'      => __( 'From E-Mail' ),
+									'cb_label'   => __( 'Enable' ),
+									'desc'       => __( 'Use a custom e-mail on emails from WordPress.' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => '',
+									'fields'     => array(
+										array(
+											'name'       => 'wplf_from_email',
+											'std'        => '',
+											'placeholder' => __( 'support@mydomain.com' ),
+											'pre'        => '',
+											'post'       => '',
+											'type'       => 'textbox',
+											'attributes' => array()
+										)
+									),
 								),
-								array(
-									'name'    => 'wplf_purge_options',
-									'caption' => __( 'Purge Options!' ),
-									'class'   => 'button-primary',
-									'action'  => 'purge_options',
-									'label'   => __( 'Purge Options' ),
-									'desc'    => __( 'Older versions of this plugin saved option values for fields that do not require them. You can purge those values by clicking this button.' ),
-									'type'    => 'button'
-								),
-								array(
-									'name'  => 'wplf_field_dump',
-									'std'   => '0',
-									'label' => __( 'Field Data' ),
-									'type'  => 'debug_dump'
-								)
 							)
 						)
+					)
+				),
+				'templates' => array(
+					'title'  => __( 'Templates' ),
+					'sections' => array(
+						'activation' => array(
+							'title' => __( 'Activation Email Template' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_activation_email',
+									'label'      => __( 'Activation Email' ),
+									'desc'       => __( 'Use a custom name on emails from WordPress.' ),
+									'type'       => 'wpeditor',
+									'attributes' => array(),
+								),
+							)
+						),
+						'lost_pw' => array(
+							'title' => __( 'Lost Password Email Template' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_lost_pw_email',
+									'label'      => __( 'Lost Password' ),
+									'desc'       => __( 'Use a custom name on emails from WordPress.' ),
+									'type'       => 'wpeditor',
+									'attributes' => array(),
+								),
+							)
+						),
 					)
 				),
 			    'integrations' => array(
