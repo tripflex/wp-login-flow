@@ -99,7 +99,7 @@ class WP_Login_Flow_Settings_Fields {
 		$o = $args[ 'option' ];
 
 		$editor = apply_filters( 'login_flow_wp_editor_args', array() );
-		wp_editor( esc_textarea( $args[ 'value' ] ), $o[ 'name' ] ,$editor );
+		wp_editor( $args[ 'value' ], $o[ 'name' ] ,$editor );
 		$this->description( $o );
 
 	}
