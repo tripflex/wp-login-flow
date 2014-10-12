@@ -5,7 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 
 
-
 	function __construct() {
 
 	}

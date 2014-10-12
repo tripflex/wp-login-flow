@@ -187,6 +187,12 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'desc'  => __( 'Use a custom background for the default wp-login.php page.' ),
 									'type'  => 'colorpicker'
 								),
+								array(
+									'name'  => 'wplf_custom_css',
+									'label' => __( 'Custom CSS' ),
+									'desc'  => __( 'Add any custom CSS you want added to login page here.' ),
+									'type'  => 'textarea'
+								),
 							)
 						),
 						'login_styles' => array(
@@ -231,17 +237,27 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'label' => __( 'Font Color' ),
 									'desc'  => __( 'Custom font color for Login Box' ),
 									'type'  => 'colorpicker'
-								),								array(
+								),
+								array(
 									'name'  => 'wplf_login_box_bg_color',
 									'label' => __( 'Background Color' ),
 									'desc'  => __( 'Custom background color for Login Box' ),
 									'type'  => 'colorpicker'
 								),
 								array(
-									'name'    => 'wplf_login_box_border_radius',
-									'label'   => __( 'Border Radius' ),
-									'desc'    => __( 'Set a custom border radius on the login box, will only work with modern browsers that support CSS3.' ),
-									'type'    => 'spinner'
+									'name'       => 'wplf_login_box_border_radius_enable',
+									'std'        => '0',
+									'label'      => __( 'Border Radius' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc' => __( 'Set a custom border radius on the login box, will only work with modern browsers that support CSS3.' ),
+									'fields'     => array(
+										array(
+											'name'        => 'wplf_login_box_border_radius',
+											'type'  => 'spinner'
+										)
+									),
 								)
 							)
 						)
@@ -256,7 +272,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 							'fields' => array(
 								array(
 									'name'       => 'wplf_from_name_enable',
-									'std'        => '1',
+									'std'        => '0',
 									'label'      => __( 'From Name' ),
 									'cb_label'   => __( 'Enable' ),
 									'desc'       => __( 'Use a custom name on emails from WordPress.' ),
@@ -276,7 +292,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								),
 								array(
 									'name'       => 'wplf_from_email_enable',
-									'std'        => '1',
+									'std'        => '0',
 									'label'      => __( 'From E-Mail' ),
 									'cb_label'   => __( 'Enable' ),
 									'desc'       => __( 'Use a custom e-mail on emails from WordPress.' ),
@@ -321,6 +337,40 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'name'       => 'wplf_lost_pw_email',
 									'label'      => __( 'Lost Password' ),
 									'desc'       => __( 'Use a custom name on emails from WordPress.' ),
+									'type'       => 'wpeditor',
+									'attributes' => array(),
+								),
+							)
+						),
+					)
+				),
+				'notices' => array(
+					'title'  => __( 'Notices' ),
+					'sections' => array(
+						'activation' => array(
+							'title' => __( 'Activation Notices' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_notice_activation_required',
+									'label'      => __( 'Account Requires Activation Notice' ),
+									'std'        => 'Thank you for registering.  Please check your email for your activation link.<br><br>If you do not receive the email please request a <a href="{{wp_lost_pw_url}}">password reset</a> to have the email sent again.',
+									'desc'       => __( 'This notice will be shown to the user when they attempt to login but have not activated their account.  Use <code>{{wp_lost_pw_url}}</code> for the lost password URL.' ),
+									'type'       => 'wpeditor',
+									'attributes' => array(),
+								),
+								array(
+									'name'       => 'wplf_notice_activation_pending',
+									'label'      => __( 'Pending Activation Notice' ),
+									'std'        => '<strong>ERROR</strong>: Your account is still pending activation, please check your email, or you can request a <a href="{{wp_lost_pw_url}}">password reset</a> for a new activation code.',
+									'desc'       => __( 'This notice will be shown to the user when they attempt to login but have not activated their account.  Use <code>{{wp_lost_pw_url}}</code> for the lost password URL.' ),
+									'type'       => 'wpeditor',
+									'attributes' => array(),
+								),
+								array(
+									'name'       => 'wplf_notice_activation_thankyou',
+									'label'      => __( 'Successful Activation Notice' ),
+									'std'        => 'Your account has been successfully activated!',
+									'desc'       => __( 'This notice will be shown to the user once they activate and set the password for their account.' ),
 									'type'       => 'wpeditor',
 									'attributes' => array(),
 								),
@@ -407,7 +457,11 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 		$placeholder = ( ! empty( $option[ 'placeholder' ] ) ) ? 'placeholder="' . $option[ 'placeholder' ] . '"' : '';
 		$class       = ! empty( $option[ 'class' ] ) ? $option[ 'class' ] : '';
+
 		$value       = esc_attr( get_option( $option[ 'name' ] ) );
+		$non_escape_fields = array( 'wpeditor' );
+		if( in_array( $option['type'], $non_escape_fields ) ) $value = get_option( $option['name'] );
+
 		$attributes  = "";
 
 		if ( ! empty( $option[ 'attributes' ] ) && is_array( $option[ 'attributes' ] ) ) {

@@ -19,10 +19,12 @@ Class WP_Login_Flow {
 	const PROD_ID = 'WP Login Flow';
 	const VERSION = '1.0.0';
 	protected static $instance;
+	public           $wp_login = 'wp-login.php';
 	private          $plugin_slug;
 	protected        $settings;
 	protected        $assets;
 	protected        $mail;
+	protected        $auth;
 
 	function __construct() {
 
@@ -31,12 +33,38 @@ Class WP_Login_Flow {
 		if ( ! defined( 'WP_LOGIN_FLOW_PLUGIN_URL' ) ) define( 'WP_LOGIN_FLOW_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
 
 		add_action( 'init', array( $this, 'load_translations' ) );
+		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 4 );
 
 		$this->assets  = new WP_Login_Flow_Assets();
 		$this->login  = new WP_Login_Flow_Login();
 		$this->mail  = new WP_Login_Flow_Mail();
 		$this->user  = new WP_Login_Flow_User();
 		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
+	}
+
+	public static function admin_notices() {
+
+		// Check if first activation
+		if ( WP_LOGIN_FLOW_VERSION != get_option( 'WP_LOGIN_FLOW_VERSION' ) ) {
+			update_option( 'WP_LOGIN_FLOW_VERSION', WP_LOGIN_FLOW_VERSION );
+			$html = '<div class="updated"><p>';
+			$html .= __( 'You are now requiring users to activate their email when registering.' );
+			$html .= '</p></div>';
+
+			echo $html;
+		}
+
+		// Check if Multisite
+		if( is_multisite() && ! get_option( 'WP_LOGIN_MS_NOTICE' ) ){
+			$html = '<div class="error"><p>';
+			$html .= '<p style="float:right;"><a href="'. esc_url( add_query_arg( "dismiss-wplf-ms-notice", "1" ) ) . '">' . __( 'Hide notice' ) . '</a></p>';
+			$html .= __( 'This plugin is not recommended for multisite installations.  Some features may work but other may have issues.  You have been warned.' );
+			$html .= '</p></div>';
+
+			echo $html;
+		}
+
 	}
 
 	/**

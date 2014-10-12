@@ -7,12 +7,21 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 
 	function __construct() {
 
-		add_action( 'authenticate', array( $this, 'login_check_activation' ), 30, 3 );
 		add_action( 'set_auth_cookie', array( $this, 'set_auth_cookie' ), 20, 5 );
+		add_action( 'authenticate', array( $this, 'login_check_activation' ), 30, 3 );
 		add_filter( 'wp_login_errors', array( $this, 'wp_login_errors' ), 10, 2 );
 
-		$activation = new WP_Login_Flow_User_Activation();
+	}
 
+	public function wp_login_errors( $errors, $redirect_to ) {
+
+		if( isset( $_GET['registration'] ) && isset( $_GET['activation'] ) ){
+			if ( ( $_GET[ 'registration' ] == 'complete' ) && ( $_GET[ 'activation' ] == 'pending' ) ) {
+				$errors->add( 'registered_activate', get_option( 'wplf_notice_activation_thankyou' ), 'message' );
+			}
+		}
+
+		return $errors;
 	}
 
 	/**
@@ -24,9 +33,10 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 */
 	public function set_auth_cookie( $auth_cookie, $expire, $expiration, $user_id, $scheme ) {
 
+		$activation = new WP_Login_Flow_User_Activation();
 
 		// Exit function is user is already activated
-		if ( ! $this->auth->check( $user_id ) ) {
+		if ( ! $activation->check( $user_id ) ) {
 			wp_redirect( home_url( $this->wp_login . '?registration=complete&activation=pending' ) );
 			exit();
 		}
@@ -42,6 +52,9 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 */
 	public function login_check_activation( $user, $username, $password ) {
 
+		if( ! $user ) return $user;
+		if( is_wp_error( $user ) ) return $user;
+
 		if ( strpos( $username, '@' ) ) {
 			$user_data = get_user_by( 'email', trim( $username ) );
 		} else {
@@ -50,10 +63,11 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 		}
 
 		$user_id = $user_data->ID;
+		$activation = new WP_Login_Flow_User_Activation();
 
-		if ( ! WP_Login_Flow::is_activated( $user_id ) ) {
+		if ( ! $activation->check( $user_id ) ) {
 			$user = new WP_Error();
-			$user->add( 'pendingactivation', self::get_locale_pending_activation_notice() );
+			$user->add( 'pendingactivation', get_option( 'wplf_notice_activation_pending' ) );
 		}
 
 		return $user;
