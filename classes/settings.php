@@ -92,6 +92,20 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 				'rewrites' => array(
 					'title'  => __( 'Rewrites' ),
 					'sections' => array(
+						'require_activation' => array(
+							'title'  => __( 'Email Activation' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_require_activation',
+									'std'        => '1',
+									'label'      => __( 'Require Activation' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'This will require new accounts to be verified by email before they are able to login.' ),
+								)
+							)
+						),
 						'enable_rewrites' => array(
 							'title'  => __( 'Enable Rewrites' ),
 							'fields' => array(

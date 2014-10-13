@@ -47,7 +47,7 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 
 		<style type="text/css">
 
-			<?php if ( ! empty( $login_responsive ) ): ?>
+			<?php if ( ! empty( $login_box_responsive ) ): ?>
 			@media (max-width: 1200px) {
 				#login {
 					width: 90% !important;
