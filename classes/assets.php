@@ -76,6 +76,8 @@ class WP_Login_Flow_Assets {
 
 	function pointer() {
 
+		if( ! current_user_can( 'manage_options') ) return false;
+
 		$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', TRUE ) );
 		if( in_array( 'wplf_activate_pointer', $dismissed ) ) return;
 

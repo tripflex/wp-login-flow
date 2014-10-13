@@ -33,13 +33,14 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 		$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_login ) );
 
 		// Set option needs to be activated
-		WP_Login_Flow::set_activated( $user_id, FALSE );
+		$activation = new WP_Login_Flow_User_Activation();
+		$activation->set( $user_id, 1 );
 
 		$message = __( 'Thank you for registering your account:' ) . "\r\n\r\n";
 		$message .= network_home_url( '/' ) . "\r\n\r\n";
 		$message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
 		$message .= __( 'In order to set your password and access the site, please visit the following address:' ) . "\r\n\r\n";
-		$message .= '<' . network_site_url( WP_Login_Flow::get_wplogin() . "?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' ) . ">\r\n";
+		$message .= '<' . network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' ) . ">\r\n";
 
 		if ( is_multisite() ) {
 			$blogname = $GLOBALS[ 'current_site' ]->site_name;

@@ -15,10 +15,12 @@ if ( ! function_exists( 'wp_password_change_notification' ) ) :
 	 */
 	function wp_password_change_notification( &$user ) {
 
+		$activation = new WP_Login_Flow_User_Activation();
+
 		// Check is password reset was triggered by user activating account and setting password
-		if ( ! WP_Login_Flow::is_activated( $user->ID ) ) {
-			WP_Login_Flow::set_activated( $user->ID );
-			login_header( __( 'Password Saved' ), '<p class="message reset-pass">' . WP_Login_Flow::get_locale_password_set() . '<br>You can now <a href="' . esc_url( wp_login_url() ) . '">' . __( 'Log in' ) . '</a></p>' );
+		if ( ! $activation->check( $user->ID ) ) {
+			$activation->set( $user->ID );
+			login_header( __( 'Password Saved' ), '<p class="message reset-pass">' . get_option( 'wplf_notice_activation_thankyou' ) . '<br>You can now <a href="' . esc_url( wp_login_url() ) . '">' . __( 'Log in' ) . '</a></p>' );
 			login_footer();
 			exit;
 		}
