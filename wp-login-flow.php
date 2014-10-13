@@ -38,27 +38,31 @@ Class WP_Login_Flow {
 
 		register_activation_hook( __FILE__, array( $this, 'plugin_activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'plugin_deactivate' ) );
-		register_uninstall_hook( __FILE__, array( $this, 'plugin_uninstall' ) );
 
 		$this->assets  = new WP_Login_Flow_Assets();
 		$this->login  = new WP_Login_Flow_Login();
 		$this->mail  = new WP_Login_Flow_Mail();
 		$this->user  = new WP_Login_Flow_User();
+		$this->rewrite  = new WP_Login_Flow_Rewrite();
 		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
 	}
 
 	function plugin_activate() {
 
-	}
-
-	function plugin_deactivate(){
-
-		WP_Login_Flow_Rewrite::prevent_rewrite( TRUE );
+		$rewrite = new WP_Login_Flow_Rewrite();
+		$rewrite->set_rewrite_rules();
 		flush_rewrite_rules();
 
 	}
 
-	function plugin_uninstall(){
+	function plugin_deactivate(){
+
+		WP_Login_Flow_Rewrite::$prevent_rewrite = TRUE;
+		flush_rewrite_rules();
+
+	}
+
+	static function plugin_uninstall(){
 
 		delete_option( 'WP_LOGIN_FLOW_VERSION' );
 
@@ -160,5 +164,6 @@ Class WP_Login_Flow {
 }
 
 spl_autoload_register( array( 'WP_Login_Flow', 'autoload' ) );
+register_uninstall_hook( __FILE__, array( 'WP_Login_Flow', 'plugin_uninstall' ) );
 
 WP_Login_Flow::get_instance();

@@ -2,15 +2,26 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class WP_Login_Flow_Rewrite extends WP_Login_Flow {
+class WP_Login_Flow_Rewrite {
 
-	protected $status_option = 'wplf_activated';
 	public static $prevent_rewrite;
 
 	function __construct() {
 
-		add_action( 'update_option_wplf_options', array( $this, 'parse_options_updated' ), 30, 2 );
+		add_action( 'shutdown', array( $this, 'check_for_updates' ) );
 		add_action( 'admin_init', array( $this, 'preserve_rewrite_rules' ) );
+
+	}
+
+	function check_for_updates(){
+
+		$option_page = ( isset( $_POST[ 'option_page' ] ) ? $_POST[ 'option_page' ] : null );
+		$action = ( isset( $_POST[ 'action' ] ) ? $_POST[ 'action' ] : null );
+
+		if( $option_page === 'wp_login_flow' && $action === 'update' ){
+			$this->set_rewrite_rules();
+			flush_rewrite_rules();
+		}
 
 	}
 
@@ -20,27 +31,14 @@ class WP_Login_Flow_Rewrite extends WP_Login_Flow {
 
 	}
 
-	public function parse_options_updated( $old_value, $new_value ) {
-
-		$this->set_rewrite_rules( $new_value );
-		flush_rewrite_rules();
-
-	}
-
 	function preserve_rewrite_rules() {
 
-		global $pagenow;
 
-		do_action( 'wplf_pre_set_rewrite_rules' );
-
-		if ( ! ( $_GET[ 'page' ] == 'wp-login-flow' ) && ! ( $pagenow == 'options.php' ) && ! ( $pagenow == 'users.php' ) && ! ( self::$prevent_rewrite ) ) {
-			$this->set_rewrite_rules();
-		}
-
-		do_action( 'wplf_post_set_rewrite_rules' );
 	}
 
 	function set_rewrite_rules( $options = NULL ) {
+
+		if( self::$prevent_rewrite ) return false;
 
 		$enable_login = get_option( 'wplf_rewrite_login' );
 		$login_rewrite = get_option( 'wplf_rewrite_login_slug' );
