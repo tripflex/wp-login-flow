@@ -36,11 +36,17 @@ Class WP_Login_Flow {
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 4 );
 
+		register_activation_hook( __FILE__, array( $this, 'plugin_activated' ) );
+
 		$this->assets  = new WP_Login_Flow_Assets();
 		$this->login  = new WP_Login_Flow_Login();
 		$this->mail  = new WP_Login_Flow_Mail();
 		$this->user  = new WP_Login_Flow_User();
 		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
+	}
+
+	function plugin_activated() {
+
 	}
 
 	public static function admin_notices() {
@@ -55,11 +61,13 @@ Class WP_Login_Flow {
 			echo $html;
 		}
 
+		if( isset( $_GET[ 'dismiss-wplf-ms-notice' ] ) && ! empty( $_GET['dismiss-wplf-ms-notice'] ) ) update_option( 'WP_LOGIN_MS_NOTICE', 1 );
+
 		// Check if Multisite
 		if( is_multisite() && ! get_option( 'WP_LOGIN_MS_NOTICE' ) ){
-			$html = '<div class="error"><p>';
+			$html = '<div class="error">';
 			$html .= '<p style="float:right;"><a href="'. esc_url( add_query_arg( "dismiss-wplf-ms-notice", "1" ) ) . '">' . __( 'Hide notice' ) . '</a></p>';
-			$html .= __( 'This plugin is not recommended for multisite installations.  Some features may work but other may have issues.  You have been warned.' );
+			$html .= '<p>' . __( 'WP Login Flow is not recommended for multisite installations.  Some features may work but other may have issues.  <strong>You have been warned.</strong>' );
 			$html .= '</p></div>';
 
 			echo $html;
