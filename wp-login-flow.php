@@ -36,7 +36,9 @@ Class WP_Login_Flow {
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 4 );
 
-		register_activation_hook( __FILE__, array( $this, 'plugin_activated' ) );
+		register_activation_hook( __FILE__, array( $this, 'plugin_activate' ) );
+		register_deactivation_hook( __FILE__, array( $this, 'plugin_deactivate' ) );
+		register_uninstall_hook( __FILE__, array( $this, 'plugin_uninstall' ) );
 
 		$this->assets  = new WP_Login_Flow_Assets();
 		$this->login  = new WP_Login_Flow_Login();
@@ -45,7 +47,20 @@ Class WP_Login_Flow {
 		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
 	}
 
-	function plugin_activated() {
+	function plugin_activate() {
+
+	}
+
+	function plugin_deactivate(){
+
+		WP_Login_Flow_Rewrite::prevent_rewrite( TRUE );
+		flush_rewrite_rules();
+
+	}
+
+	function plugin_uninstall(){
+
+		delete_option( 'WP_LOGIN_FLOW_VERSION' );
 
 	}
 
