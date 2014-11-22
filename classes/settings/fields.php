@@ -8,8 +8,8 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o       = $args[ 'option' ];
 		$checked = checked( $args[ 'value' ], 1, FALSE );
-
-		echo "<label><input id=\"{$o['name']}\" type=\"checkbox\" class=\"{$args['class']}\" name=\"{$o['name']}\" value=\"1\"  {$args['attributes']} {$checked} /> {$o['cb_label']} </label>";
+		$disabled_field = ( isset( $o[ 'disabled' ] ) && $o[ 'disabled' ] ? "disabled=\"disabled\"" : "" );
+		echo "<label><input id=\"{$o['name']}\" type=\"checkbox\" class=\"{$args['class']}\" name=\"{$o['name']}\" value=\"1\" {$args['attributes']} {$checked} {$disabled_field}/> {$o['cb_label']} </label>";
 		$this->sub_fields( $o );
 		$this->description( $o );
 
@@ -61,7 +61,7 @@ class WP_Login_Flow_Settings_Fields {
 		$o = $args[ 'option' ];
 
 		echo "<textarea cols=\"50\" rows=\"3\" id=\"{$o['name']}\" class=\"{$args['class']}\" name=\"{$o['name']}\" {$args['attributes']}>";
-		echo esc_textarea( $o[ 'value' ] );
+		if( isset( $o['value'] ) ) echo esc_textarea( $o[ 'value' ] );
 		echo "</textarea>";
 		$this->description( $o );
 
@@ -70,8 +70,8 @@ class WP_Login_Flow_Settings_Fields {
 	function textbox_field( $args ) {
 
 		$o = $args[ 'option' ];
-
-		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"{$args['class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />";
+		$disabled_field = ( isset( $o[ 'disabled' ] ) && $o[ 'disabled' ] ? "disabled=\"disabled\"" : "");
+		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"{$args['class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} {$disabled_field}/>";
 		$this->description( $o );
 
 	}

@@ -60,4 +60,11 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
 	}
 
+	function permalinks_disabled(){
+		$permalink = get_option( 'permalink_structure' );
+		if( empty( $permalink ) ) return true;
+
+		return false;
+	}
+
 }

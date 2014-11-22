@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP Login Flow
  * Plugin URI:  http://plugins.smyl.es
- * Description:
+ * Description: Complete customization of WordPress core wp-login.php styles, structure, permalinks, including activation by email and more!
  * Author:      Myles McNamara
  * Author URI:  http://smyl.es
  * Version:     1.0.0

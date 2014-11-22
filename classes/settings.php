@@ -67,6 +67,9 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 		<?php
 							foreach( $tab['sections'] as $skey => $section ) {
 								echo "<h2 class=\"wp-ui-primary\">{$section['title']}</h2>";
+								if( $skey === 'enable_rewrites' && $this->permalinks_disabled() ){
+									echo "<h3 class=\"permalink-error\">" . sprintf( __( 'You <strong>must</strong> enable <a href="%1$s">permalinks</a> to use custom rewrites!' ), admin_url('options-permalink.php') ). "</h3>";
+								}
 								do_settings_sections( "wplf_{$key}_{$skey}_section" );
 							}
 		?>
@@ -97,7 +100,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 							'fields' => array(
 								array(
 									'name'       => 'wplf_require_activation',
-									'std'        => '1',
+									'std'        => '0',
 									'label'      => __( 'Require Activation' ),
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
@@ -111,12 +114,13 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 							'fields' => array(
 								array(
 									'name'       => 'wplf_rewrite_login',
-									'std'        => '1',
+									'std'        => '0',
 									'label'      => __( 'Login' ),
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
 									'desc'       => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php</code>',
+									'disabled' => $this->permalinks_disabled(),
 									'fields'     => array(
 									    array(
 											'name'       => 'wplf_rewrite_login_slug',
@@ -124,18 +128,20 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 											'pre'        => '<code>' . home_url() . '/</code>',
 											'post'       => '',
 											'type'       => 'textbox',
-											'attributes' => array()
+											'attributes' => array(),
+									        'disabled'   => $this->permalinks_disabled()
 									    )
 								    )
 								),
 								array(
 									'name'       => 'wplf_rewrite_lost_pw',
-									'std'        => '1',
+									'std'        => '0',
 									'label'      => __( 'Lost Password' ),
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
 									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=lostpassword</code>',
+									'disabled' => $this->permalinks_disabled(),
 									'fields' => array(
 										array(
 											'name'       => 'wplf_rewrite_lost_pw_slug',
@@ -143,18 +149,20 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 											'pre'        => '<code>' . home_url() . '/</code>',
 											'post'       => '',
 											'type'       => 'textbox',
-											'attributes' => array()
+											'attributes' => array(),
+											'disabled' => $this->permalinks_disabled()
 										)
 									)
 								),
 								array(
 									'name'       => 'wplf_rewrite_register',
-									'std'        => '1',
+									'std'        => '0',
 									'label'      => __( 'Register' ),
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
 									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php</code>',
+									'disabled' => $this->permalinks_disabled(),
 									'fields' => array(
 										array(
 											'name'       => 'wplf_rewrite_register_slug',
@@ -162,18 +170,20 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 											'pre'        => '<code>' . home_url() . '/</code>',
 											'post'       => '',
 											'type'       => 'textbox',
-											'attributes' => array()
+											'attributes' => array(),
+											'disabled' => $this->permalinks_disabled()
 										)
 									)
 								),
 								array(
 									'name'       => 'wplf_rewrite_activate',
-									'std'        => '1',
+									'std'        => '0',
 									'label'      => __( 'Activate' ),
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
 									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=rp&key=SAMPLEACTIVATIONCODE&login=users@email.com</code>',
+									'disabled' => $this->permalinks_disabled(),
 									'fields' => array(
 										array(
 											'name'       => 'wplf_rewrite_activate_slug',
@@ -181,7 +191,8 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 											'pre'        => '<code>' . home_url() . '/</code>',
 											'post'       => '<code>/users@email.com/SAMPLEACTIVATIONCODE</code>',
 											'type'       => 'textbox',
-											'attributes' => array()
+											'attributes' => array(),
+											'disabled' => $this->permalinks_disabled()
 										)
 									)
 								)
