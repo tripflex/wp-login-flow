@@ -358,7 +358,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								array(
 									'name'       => 'wplf_activation_email',
 									'label'      => __( 'Email Body' ),
-									'desc'       => __( 'This template will be used as the first email sent to the user to activate their account.  Use <code>{{wp_activate_url}}</code> for the activation URL.' ),
+									'desc'       => __( 'This template will be used as the first email sent to the user to activate their account. You can use <code>{{wp_activate_url}}</code> for the activation URL, and <code>{{wp_user_name}}</code> for username.' ),
 									'std'        => 'Thank you for registering your account:<br />' . network_home_url( '/' ) . '<br />Username: {{wp_user_name}}<br /><br />In order to activate your account and set your password, please visit the following address:<br /><a href="{{wp_activate_url}}">{{wp_activate_url}}</a>',
 									'type'       => 'wpeditor',
 									'attributes' => array(),
@@ -366,7 +366,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 							)
 						),
 						'lost_pw' => array(
-							'title' => __( 'Lost Password Email Template' ),
+							'title' => __( 'Lost Password Email Template ( Coming Soon )' ),
 							'fields' => array(
 								array(
 									'name'       => 'wplf_lost_pw_subject',
@@ -376,6 +376,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'class'      => 'widefat',
 									'type'       => 'textbox',
 									'attributes' => array(),
+								    'disabled'   => true
 								),
 								array(
 									'name'       => 'wplf_lost_pw_email',
@@ -384,6 +385,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'std'        => '',
 									'type'       => 'wpeditor',
 									'attributes' => array(),
+								    'disabled'   => true
 								),
 							)
 						),
