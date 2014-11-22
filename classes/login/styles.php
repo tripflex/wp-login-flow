@@ -46,31 +46,17 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 		?>
 
 		<style type="text/css">
-
 			<?php if ( ! empty( $login_box_responsive ) ): ?>
-			@media (max-width: 1200px) {
-				#login {
-					width: 90% !important;
-				}
-			}
-
-			@media (min-width: 1200px) {
-				#login {
-					width: 50% !important;
-				}
-			}
-
+			@media (max-width: 1200px) {#login {width: 90% !important;}}
+			@media (min-width: 1200px) {#login {width: 50% !important;}}
 			<?php endif; ?>
 
 			<?php if ( ! empty( $login_bg_color ) ): ?>
-			body {
-				background-color: <?php echo $login_bg_color; ?> !important;
-			}
-
+			body {background-color: <?php echo $login_bg_color; ?> !important;}
 			<?php endif; ?>
 
 			<?php
-				$login_form_css = '#login form {';
+				$login_form_css = '.login #login form, .login #login form label {';
 
 				// Login Box Background Color
 				if ( ! empty( $login_box_bg_color ) ){
@@ -100,7 +86,7 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 			?>
 			body.login div#login h1 a {
 				background-image: url('<?php echo $logo; ?>');
-				background-size: auto;
+				background-size: contain;
 			}
 
 			<?php endif; ?>
