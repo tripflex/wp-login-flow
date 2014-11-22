@@ -347,9 +347,19 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 							'title' => __( 'Activation Email Template' ),
 							'fields' => array(
 								array(
+									'name'       => 'wplf_activation_subject',
+									'label'      => __( 'Email Subject' ),
+									'desc'       => __( 'This will be used as the subject for the Activation email.' ),
+									'std'        => 'Account Activation Required',
+									'type'       => 'textbox',
+									'class'      => 'widefat',
+									'attributes' => array(),
+								),
+								array(
 									'name'       => 'wplf_activation_email',
-									'label'      => __( 'Activation Email' ),
-									'desc'       => __( 'Use a custom name on emails from WordPress.' ),
+									'label'      => __( 'Email Body' ),
+									'desc'       => __( 'This template will be used as the first email sent to the user to activate their account.  Use <code>{{wp_activate_url}}</code> for the activation URL.' ),
+									'std'        => 'Thank you for registering your account:<br />' . network_home_url( '/' ) . '<br />Username: {{wp_user_name}}<br /><br />In order to activate your account and set your password, please visit the following address:<br /><a href="{{wp_activate_url}}">{{wp_activate_url}}</a>',
 									'type'       => 'wpeditor',
 									'attributes' => array(),
 								),
@@ -359,9 +369,19 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 							'title' => __( 'Lost Password Email Template' ),
 							'fields' => array(
 								array(
+									'name'       => 'wplf_lost_pw_subject',
+									'label'      => __( 'Email Subject' ),
+									'desc'       => __( 'This will be used as the subject for the Lost Password email.' ),
+									'std'        => 'Lost Password Request',
+									'class'      => 'widefat',
+									'type'       => 'textbox',
+									'attributes' => array(),
+								),
+								array(
 									'name'       => 'wplf_lost_pw_email',
-									'label'      => __( 'Lost Password' ),
-									'desc'       => __( 'Use a custom name on emails from WordPress.' ),
+									'label'      => __( 'Email Body' ),
+									'desc'       => __( 'This is the template used when emailing the user to reset their password.  Use <code>{{wp_lost_pw_url}}</code> for the lost password URL.' ),
+									'std'        => '',
 									'type'       => 'wpeditor',
 									'attributes' => array(),
 								),
