@@ -43,10 +43,10 @@ Class WP_Login_Flow {
 
 		new WP_Login_Flow_Assets();
 		new WP_Login_Flow_Login();
-		new WP_Login_Flow_Login_Styles();
 		new WP_Login_Flow_Mail();
 		new WP_Login_Flow_User();
 		new WP_Login_Flow_Rewrite();
+
 		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
 
 		$this->check_pluggables();
