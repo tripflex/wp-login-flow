@@ -30,40 +30,24 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 		}
 
 		$hashed = $wp_hasher->HashPassword( $key );
-		$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_login ) );
+		$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'wp_user_name' => $user_login, 'wp_user_email' => $user_email, 'wp_activation_key' => $hashed ) );
 
 		// Set option needs to be activated
 		$activation = new WP_Login_Flow_User_Activation();
 		$activation->set( $user_id, 1 );
 
-		$message = __( 'Thank you for registering your account:' ) . "\r\n\r\n";
-		$message .= network_home_url( '/' ) . "\r\n\r\n";
-		$message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
-		$message .= __( 'In order to set your password and access the site, please visit the following address:' ) . "\r\n\r\n";
-		$message .= '<' . network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' ) . ">\r\n";
 
-		if ( is_multisite() ) {
-			$blogname = $GLOBALS[ 'current_site' ]->site_name;
-		} else
-			// The blogname option is escaped with esc_html on the way into the database in sanitize_option
-			// we want to reverse this for the plain text arena of emails.
-		{
-			$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-		}
+		$template = new WP_Login_Flow_Template();
+		$subject = get_option( 'wplf_activation_subject' );
+		$message = get_option( 'wplf_activation_message' );
+		$subject = $template->replace_tags( $subject, array( 'wp_user_name' => $user_login, 'wp_activate_url' => $activation->get_url( $hashed, $user_login ) ) );
+		$message = $template->replace_tags( $message, array( 'wp_user_name' => $user_login ) );
 
-		// New User Admin Notification
-		$admin_message = sprintf( __( 'New user registration on %s:' ), get_option( 'blogname' ) ) . "\r\n\r\n";
-		$admin_message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
-		$admin_message .= sprintf( __( 'E-mail: %s' ), $user_email ) . "\r\n";
+		// New User Activation Email
+		if ( ! wp_mail( $user_email, wp_specialchars_decode( $subject ), $message ) ) return FALSE;
 
-		@wp_mail( get_option( 'admin_email' ), sprintf( __( '[%s] New User Registration' ), get_option( 'blogname' ) ), $admin_message );
+		return TRUE;
 
-		$title = sprintf( __( '[%s] Account Activation' ), $blogname );
-		if ( ! wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
-			return FALSE;
-		} else {
-			return TRUE;
-		}
 	}
 
 endif;
