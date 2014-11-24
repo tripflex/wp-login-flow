@@ -30,18 +30,20 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 		}
 
 		$hashed = $wp_hasher->HashPassword( $key );
-		$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'wp_user_name' => $user_login, 'wp_user_email' => $user_email, 'wp_activation_key' => $hashed ) );
+		$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_login ) );
 
 		// Set option needs to be activated
 		$activation = new WP_Login_Flow_User_Activation();
 		$activation->set( $user_id, 1 );
 
+		$template_data = array( 'wp_user_name' => $user_login, 'wp_user_email' => $user_email, 'wp_activation_key' => $hashed,
+		                        'wp_activate_url' => $activation->get_url( $hashed, $user_login ) );
 
 		$template = new WP_Login_Flow_Template();
 		$subject = get_option( 'wplf_activation_subject' );
 		$message = get_option( 'wplf_activation_message' );
-		$subject = $template->replace_tags( $subject, array( 'wp_user_name' => $user_login, 'wp_activate_url' => $activation->get_url( $hashed, $user_login ) ) );
-		$message = $template->replace_tags( $message, array( 'wp_user_name' => $user_login ) );
+		$subject = $template->replace_tags( $subject, $template_data );
+		$message = $template->replace_tags( $message, $template_data );
 
 		// New User Activation Email
 		if ( ! wp_mail( $user_email, wp_specialchars_decode( $subject ), $message ) ) return FALSE;
