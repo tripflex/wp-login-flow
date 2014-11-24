@@ -4,9 +4,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class WP_Login_Flow_Login extends WP_Login_Flow {
 
+	protected $styles;
 
 	function __construct() {
 
+		$this->styles = new WP_Login_Flow_Login_Styles();
 		add_action( 'set_auth_cookie', array( $this, 'set_auth_cookie' ), 20, 5 );
 		add_action( 'authenticate', array( $this, 'login_check_activation' ), 30, 3 );
 		add_filter( 'wp_login_errors', array( $this, 'wp_login_errors' ), 10, 2 );
@@ -17,7 +19,10 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 
 		if( isset( $_GET['registration'] ) && isset( $_GET['activation'] ) ){
 			if ( ( $_GET[ 'registration' ] == 'complete' ) && ( $_GET[ 'activation' ] == 'pending' ) ) {
-				$errors->add( 'registered_activate', get_option( 'wplf_notice_activation_thankyou' ), 'message' );
+				$thankyou_notice = sprintf( __( 'Thank you for registering.  Please check your email for your activation link.<br><br>If you do not receive the email please request a <a href="%s">password reset</a> to have the email sent again.' ), wp_lostpassword_url() );
+				$template = new WP_Login_Flow_Template();
+				$notice = $template->generate( 'wplf_notice_activation_thankyou', $thankyou_notice );
+				$errors->add( 'registered_activate', $notice, 'message' );
 			}
 		}
 
