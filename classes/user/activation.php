@@ -30,13 +30,13 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 
 	public function get_url( $key, $user_login ){
 
-		if( get_option( 'wplf_rewrite_activate' ) ){
+		if( get_option( 'wplf_rewrite_activate' ) && get_option( 'wplf_rewrite_activate_slug' ) ){
 			$url = get_option( 'wplf_rewrite_activate_slug' ) . '/' . rawurlencode( $user_login ) . '/' . $key;
 		} else {
 			$url = "wp-login.php?action=rp&login=" . rawurlencode( $user_login ) . "&key=" . $key;
 		}
 
-		return network_site_url( $url );
+		return network_site_url( $url, 'login' );
 
 	}
 }
