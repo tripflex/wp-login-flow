@@ -13,6 +13,8 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+include_once( 'functions.php' );
+
 Class WP_Login_Flow {
 
 	const PLUGIN_SLUG = 'wp-login-flow';

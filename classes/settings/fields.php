@@ -28,6 +28,19 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	function backup_field( $args ) {
+
+		$o   = $args[ 'option' ];
+		$url = admin_url( 'admin-ajax.php' );
+
+		echo "<input type=\"hidden\" name=\"action\" value=\"wp_login_flow_dl_backup\" />";
+		echo "<input type=\"hidden\" name=\"download\" value=\"true\" />";
+		wp_nonce_field( 'wp_login_flow_dl_backup', 'wp_login_flow_dl_backup' );
+		echo "<button formmethod=\"GET\" formaction=\"{$url}\" id=\"{$o['name']}\" name=\"button_submit\" value=\"{$o['action']}\" type=\"submit\" class=\"button {$args['class']}\" {$args['attributes']}>{$o['caption']}</button>";
+		$this->description( $o );
+
+	}
+
 	function link_field( $args ) {
 
 		$o = $args[ 'option' ];

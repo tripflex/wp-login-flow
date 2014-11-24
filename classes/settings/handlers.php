@@ -12,25 +12,10 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
 		switch ( $action ) {
 
-			case 'remove_all':
+			case 'reset_default':
 
-				$this->fields()->remove_all_fields();
-				$this->add_updated_alert( __( 'All custom posts removed!' ) );
-				break;
-
-			case 'purge_options':
-
-				$purged = $this->fields()->cpt()->purge_options();
-
-				if ( ! is_array( $purged ) ) {
-					$this->add_error_alert( __( 'There are not any fields that need options purged.' ) );
-					break;
-				}
-
-				$count         = $purged[ 'count' ];
-				$purged_fields = $purged[ 'purged_fields' ];
-
-				$this->add_updated_alert( __( 'Options were purged from' ) . " {$count} " . __( 'fields:' ) . '<br/>' . implode( ', ', $purged_fields ) );
+				$this->remove_all();
+				$this->add_updated_alert( __( 'All field configurations removed!' ) );
 				break;
 
 		}
@@ -38,6 +23,48 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 		$this->process_count ++;
 
 		return FALSE;
+
+	}
+
+	public function download_backup(){
+
+		check_ajax_referer( "wp_login_flow_dl_backup", "wp_login_flow_dl_backup" );
+
+		if ( ! $this->settings ) $this->init_settings();
+		$option_keys = array_column_recursive( $this->settings, 'name' );
+		if ( ! is_array( $option_keys ) ) return FALSE;
+
+		$option_config = array();
+
+		foreach ( $option_keys as $option ) {
+			$option_config[ $option ] = get_option( $option );
+		}
+
+		$option_json = json_encode( $option_config );
+		ob_clean();
+		echo $option_json;
+		/**
+		 * Generate the JSON file and trigger download
+		 * Taken from wp-admin/includes/export.php
+		 */
+		$filename = 'wp-login-flow.' . date( 'Y-m-d' ) . '.json';
+		header( 'Content-Description: File Transfer' );
+		header( "Content-Disposition: attachment; filename=$filename" );
+		header( "Content-Type: text/json; charset=" . get_option( 'blog_charset' ), TRUE );
+		die();
+	}
+
+	public function remove_all() {
+
+		if ( ! $this->settings ) $this->init_settings();
+		$option_keys = array_column_recursive( $this->settings, 'name' );
+		if( ! is_array( $option_keys ) ) return false;
+
+		foreach( $option_keys as $option ){
+
+			delete_option( $option );
+
+		}
 
 	}
 
