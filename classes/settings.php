@@ -382,7 +382,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'name'       => 'wplf_admin_activation_message',
 									'label'      => __( 'Email Message' ),
 									'desc'       => __( 'This template will be used for the email sent to Admin when a user activates their account.<br /><strong>Template Tags:</strong> <code>%wp_user_name%</code> - Username, <code>%wp_user_email%</code> - User Email, <code>%wp_site_url%</code> - Site URL' ),
-									'std'        => 'Thank you for registering your account:<br />' . network_home_url( '/' ) . '<br />Username: {{wp_user_name}}<br /><br />In order to activate your account and set your password, please visit the following address:<br /><a href="%wp_activate_url%">%wp_activate_url%</a>',
+									'std'        => 'Thank you for registering your account:<br />' . network_home_url( '/' ) . '<br />Username: %wp_user_name%<br /><br />In order to activate your account and set your password, please visit the following address:<br /><a href="%wp_activate_url%">%wp_activate_url%</a>',
 									'type'       => 'wpeditor',
 									'attributes' => array(),
 								),
@@ -404,7 +404,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								array(
 									'name'       => 'wplf_lost_pw_message',
 									'label'      => __( 'Email Message' ),
-									'desc'       => __( 'This is the template used when emailing the user to reset their password.  Use <code>{{wp_lost_pw_url}}</code> for the lost password URL.' ),
+									'desc'       => __( 'This is the template used when emailing the user to reset their password.  Use <code>%wp_lost_pw_url%</code> for the lost password URL.' ),
 									'std'        => '',
 									'type'       => 'wpeditor',
 									'attributes' => array(),
@@ -423,16 +423,16 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								array(
 									'name'       => 'wplf_notice_activation_required',
 									'label'      => __( 'Account Requires Activation Notice' ),
-									'std'        => 'Thank you for registering.  Please check your email for your activation link.<br><br>If you do not receive the email please request a <a href="{{wp_lost_pw_url}}">password reset</a> to have the email sent again.',
-									'desc'       => __( 'This notice will be shown to the user when they attempt to login but have not activated their account.  Use <code>{{wp_lost_pw_url}}</code> for the lost password URL.' ),
+									'std'        => 'Thank you for registering.  Please check your email for your activation link.<br><br>If you do not receive the email please request a <a href="%wp_lost_pw_url%">password reset</a> to have the email sent again.',
+									'desc'       => __( 'This notice will be shown to the user when they attempt to login but have not activated their account.  Use <code>%wp_lost_pw_url%</code> for the lost password URL.' ),
 									'type'       => 'wpeditor',
 									'attributes' => array(),
 								),
 								array(
 									'name'       => 'wplf_notice_activation_pending',
 									'label'      => __( 'Pending Activation Notice' ),
-									'std'        => '<strong>ERROR</strong>: Your account is still pending activation, please check your email, or you can request a <a href="{{wp_lost_pw_url}}">password reset</a> for a new activation code.',
-									'desc'       => __( 'This notice will be shown to the user when they attempt to login but have not activated their account.  Use <code>{{wp_lost_pw_url}}</code> for the lost password URL.' ),
+									'std'        => '<strong>ERROR</strong>: Your account is still pending activation, please check your email, or you can request a <a href="%wp_lost_pw_url%">password reset</a> for a new activation code.',
+									'desc'       => __( 'This notice will be shown to the user when they attempt to login but have not activated their account.  Use <code>%wp_lost_pw_url%</code> for the lost password URL.' ),
 									'type'       => 'wpeditor',
 									'attributes' => array(),
 								),
@@ -493,31 +493,6 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'attributes' => array()
 								),
 
-							)
-						),
-                        'backuprestore' => array(
-							'title'  => __( 'Backup and Restore' ),
-							'fields' => array(
-								array(
-									'name'       => 'wplf_backup_options',
-									'class'      => 'button-primary',
-									'action'     => 'backup_options',
-									'label'      => __( 'Backup' ),
-									'caption'    => __( 'Download Backup' ),
-									'desc'       => __( 'This will generate a JSON backup file of all configuration values' ),
-									'type'       => 'backup',
-									'attributes' => array()
-								),
-								array(
-									'name'       => 'wplf_restore_options',
-									'class'      => 'button-primary',
-									'action'     => 'restore_options',
-									'label'      => __( 'Restore' ),
-									'caption'    => __( 'Restore Backup' ),
-									'desc'       => __( 'Currently non-functional, will be fixed on next release!' ),
-									'type'       => 'button',
-									'attributes' => array()
-								),
 							)
 						)
 					)
