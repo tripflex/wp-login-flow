@@ -19,6 +19,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_menu', array( $this, 'submenu' ) );
+		add_action( 'wp_ajax_wp_login_flow_dl_backup', array( $this, 'download_backup' ) );
 
 	}
 
@@ -344,22 +345,44 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 					'title'  => __( 'Templates' ),
 					'sections' => array(
 						'activation' => array(
-							'title' => __( 'Activation Email Template' ),
+							'title' => __( 'User Activation Email Template' ),
 							'fields' => array(
 								array(
 									'name'       => 'wplf_activation_subject',
 									'label'      => __( 'Email Subject' ),
-									'desc'       => __( 'This will be used as the subject for the Activation email.' ),
+									'desc'       => __( 'This will be used as the subject for the Activation email.  You can use any template tags available in message below.' ),
 									'std'        => 'Account Activation Required',
 									'type'       => 'textbox',
 									'class'      => 'widefat',
 									'attributes' => array(),
 								),
 								array(
-									'name'       => 'wplf_activation_email',
-									'label'      => __( 'Email Body' ),
-									'desc'       => __( 'This template will be used as the first email sent to the user to activate their account. You can use <code>{{wp_activate_url}}</code> for the activation URL, and <code>{{wp_user_name}}</code> for username.' ),
-									'std'        => 'Thank you for registering your account:<br />' . network_home_url( '/' ) . '<br />Username: {{wp_user_name}}<br /><br />In order to activate your account and set your password, please visit the following address:<br /><a href="{{wp_activate_url}}">{{wp_activate_url}}</a>',
+									'name'       => 'wplf_activation_message',
+									'label'      => __( 'Email Message' ),
+									'desc'       => __( 'This template will be used as the first email sent to the user to activate their account.<br /><strong>Template Tags:</strong> <code>%wp_activate_url%</code> - Activation URL, <code>%wp_activation_key%</code> - Activation Key, <code>%wp_user_name%</code> - Username, <code>%wp_user_email%</code> - User Email, <code>%wp_site_url%</code> - Site URL' ),
+									'std'        => 'Thank you for registering your account:<br />' . network_home_url( '/' ) . '<br />Username: %wp_user_name%<br /><br />In order to activate your account and set your password, please visit the following address:<br /><a href="%wp_activate_url%">%wp_activate_url%</a>',
+									'type'       => 'wpeditor',
+									'attributes' => array(),
+								),
+							)
+						),
+						'admin_activation' => array(
+							'title'  => __( 'Admin Activation Email Template' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_admin_activation_subject',
+									'label'      => __( 'Email Subject' ),
+									'desc'       => __( 'This will be used as the subject for the email sent to Admin when a user have activated their account.' ),
+									'std'        => 'User Account Activated',
+									'type'       => 'textbox',
+									'class'      => 'widefat',
+									'attributes' => array(),
+								),
+								array(
+									'name'       => 'wplf_admin_activation_message',
+									'label'      => __( 'Email Message' ),
+									'desc'       => __( 'This template will be used for the email sent to Admin when a user activates their account.<br /><strong>Template Tags:</strong> <code>%wp_user_name%</code> - Username, <code>%wp_user_email%</code> - User Email, <code>%wp_site_url%</code> - Site URL' ),
+									'std'        => 'Thank you for registering your account:<br />' . network_home_url( '/' ) . '<br />Username: {{wp_user_name}}<br /><br />In order to activate your account and set your password, please visit the following address:<br /><a href="%wp_activate_url%">%wp_activate_url%</a>',
 									'type'       => 'wpeditor',
 									'attributes' => array(),
 								),
@@ -379,8 +402,8 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								    'disabled'   => true
 								),
 								array(
-									'name'       => 'wplf_lost_pw_email',
-									'label'      => __( 'Email Body' ),
+									'name'       => 'wplf_lost_pw_message',
+									'label'      => __( 'Email Message' ),
 									'desc'       => __( 'This is the template used when emailing the user to reset their password.  Use <code>{{wp_lost_pw_url}}</code> for the lost password URL.' ),
 									'std'        => '',
 									'type'       => 'wpeditor',
@@ -443,6 +466,61 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 					        )
 					    )
 				    )
+				),
+				'settings' => array(
+					'title'    => __( 'Settings' ),
+					'sections' => array(
+						'config' => array(
+							'title'  => __( 'Configuration' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_uninstall_remove_options',
+									'std'        => '0',
+									'label'      => __( 'Remove on Uninstall' ),
+									'cb_label'   => __( 'Enable' ),
+									'desc'       => __( 'This will remove all configuration and options when you uninstall the plugin (disabled by default)' ),
+									'type'       => 'checkbox',
+									'attributes' => array()
+								),
+								array(
+									'name'       => 'wplf_reset_default',
+									'class'  => 'button-primary',
+									'action' => 'reset_default',
+									'label'      => __( 'Reset to Defaults' ),
+									'caption'   => __( 'Reset to Defaults' ),
+									'desc'       => __( '<strong>CAUTION!</strong> This will remove ALL configuration values, and reset everything to default!' ),
+									'type'       => 'button',
+									'attributes' => array()
+								),
+
+							)
+						),
+                        'backuprestore' => array(
+							'title'  => __( 'Backup and Restore' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_backup_options',
+									'class'      => 'button-primary',
+									'action'     => 'backup_options',
+									'label'      => __( 'Backup' ),
+									'caption'    => __( 'Download Backup' ),
+									'desc'       => __( 'This will generate a JSON backup file of all configuration values' ),
+									'type'       => 'backup',
+									'attributes' => array()
+								),
+								array(
+									'name'       => 'wplf_restore_options',
+									'class'      => 'button-primary',
+									'action'     => 'restore_options',
+									'label'      => __( 'Restore' ),
+									'caption'    => __( 'Restore Backup' ),
+									'desc'       => __( 'Currently non-functional, will be fixed on next release!' ),
+									'type'       => 'button',
+									'attributes' => array()
+								),
+							)
+						)
+					)
 				)
 			)
 		);
