@@ -6,7 +6,17 @@ class WP_Login_Flow_Template extends WP_Login_Flow {
 
 	function __construct() {
 
+	}
 
+	function generate( $option = NULL, $fallback = NULL, $values = array() ){
+
+		if ( ! $option || ! $fallback ) return false;
+
+		$option_value = get_option( $option );
+		if ( ! $option_value ) $option_value = $fallback;
+		$template = $this->replace_tags( $option_value, $values );
+
+		return $template;
 
 	}
 
