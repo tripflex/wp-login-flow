@@ -41,25 +41,22 @@ Class WP_Login_Flow {
 		register_activation_hook( __FILE__, array( $this, 'plugin_activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'plugin_deactivate' ) );
 
-		new WP_Login_Flow_Assets();
-		new WP_Login_Flow_Login();
-		new WP_Login_Flow_Mail();
-		new WP_Login_Flow_User();
-		new WP_Login_Flow_Rewrite();
+		new WP_Login_Flow_Core();
 
-		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
-
-		$this->check_pluggables();
-	}
-
-	function check_pluggables(){
-
-		$enable = get_option( 'wplf_require_activation' );
-		if( ! empty( $enable ) ){
+		if ( $this->activation_enabled() ) {
+			new WP_Login_Flow_Login();
+			new WP_Login_Flow_User();
 			include( 'pluggables/wp-new-user-notification.php' );
 			include( 'pluggables/wp-password-change-notification.php' );
 		}
 
+		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
+
+	}
+
+	function activation_enabled(){
+		if( get_option( 'wplf_require_activation' ) ) return true;
+		return false;
 	}
 
 	function plugin_activate() {

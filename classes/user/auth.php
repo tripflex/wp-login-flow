@@ -8,6 +8,25 @@ class WP_Login_Flow_User_Auth extends WP_Login_Flow_User {
 	function __construct() {
 
 		add_action( 'authenticate', array( $this, 'check' ), 30, 3 );
+		add_action( 'set_auth_cookie', array( $this, 'attempt_login' ), 20, 5 );
+	}
+
+	/**
+	 * @param $auth_cookie
+	 * @param $expire
+	 * @param $expiration
+	 * @param $user_id
+	 * @param $scheme
+	 */
+	public function attempt_login( $auth_cookie, $expire, $expiration, $user_id, $scheme ) {
+
+		$activation = new WP_Login_Flow_User_Activation();
+
+		// Exit function is user is already activated
+		if ( ! $activation->check( $user_id ) ) {
+			wp_redirect( wp_login_url() . '?registration=complete&activation=pending' );
+			exit();
+		}
 
 	}
 
@@ -26,6 +45,9 @@ class WP_Login_Flow_User_Auth extends WP_Login_Flow_User {
 			$login     = trim( $username );
 			$user_data = get_user_by( 'login', $login );
 		}
+
+		if( ! $user_data ) return $user;
+
 		$user_id = $user_data->ID;
 		if ( ! $this->activation()->check( $user_id ) ) {
 			$user           = new WP_Error();
