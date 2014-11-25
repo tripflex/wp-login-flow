@@ -7,7 +7,7 @@ require_once( WP_LOGIN_FLOW_PLUGIN_DIR . '/classes/settings/handlers.php' );
 
 class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
-	protected $settings;
+	protected static $settings;
 	protected $settings_group;
 	protected $process_count;
 	protected $field_data;
@@ -27,8 +27,8 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 		add_submenu_page(
 			'users.php',
-			__( 'WP Login Flow' ),
-			__( 'WP Login Flow' ),
+			__( 'Login Flow' ),
+			__( 'Login Flow' ),
 			'manage_options',
 			'wp-login-flow',
 			array( $this, 'output' )
@@ -53,7 +53,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 				<h2 id="wplf-nav-tabs" class="nav-tab-wrapper">
 		<?php
-					foreach ( $this->settings as $key => $tab ) {
+					foreach ( self::$settings as $key => $tab ) {
 						$title = $tab["title"];
 						echo "<a href=\"#settings-{$key}\" class=\"nav-tab\">{$title}</a>";
 					}
@@ -61,14 +61,14 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 				</h2>
 				<div id="wplf-all-settings">
 		<?php
-						foreach ( $this->settings as $key => $tab ):
+						foreach ( self::$settings as $key => $tab ):
 		?>
 						<div id="settings-<?php echo $key ?>" class="settings_panel">
 							<div id="wplf-settings-inside">
 		<?php
 							foreach( $tab['sections'] as $skey => $section ) {
 								echo "<h2 class=\"wp-ui-primary\">{$section['title']}</h2>";
-								if( $skey === 'enable_rewrites' && $this->permalinks_disabled() ){
+								if( $skey === 'enable_rewrites' && parent::permalinks_disabled() ){
 									echo "<h3 class=\"permalink-error\">" . sprintf( __( 'You <strong>must</strong> enable <a href="%1$s">permalinks</a> to use custom rewrites!' ), admin_url('options-permalink.php') ). "</h3>";
 								}
 								do_settings_sections( "wplf_{$key}_{$skey}_section" );
@@ -88,9 +88,9 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 	}
 
-	function init_settings() {
+	public function init_settings() {
 
-		$this->settings = apply_filters(
+		self::$settings = apply_filters(
 			'wp_login_flow_settings',
 			array(
 				'rewrites' => array(
@@ -121,7 +121,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'type'       => 'checkbox',
 									'attributes' => array(),
 									'desc'       => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php</code>',
-									'disabled' => $this->permalinks_disabled(),
+									'disabled' => parent::permalinks_disabled(),
 									'fields'     => array(
 									    array(
 											'name'       => 'wplf_rewrite_login_slug',
@@ -130,7 +130,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 											'post'       => '',
 											'type'       => 'textbox',
 											'attributes' => array(),
-									        'disabled'   => $this->permalinks_disabled()
+									        'disabled'   => parent::permalinks_disabled()
 									    )
 								    )
 								),
@@ -142,7 +142,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'type'       => 'checkbox',
 									'attributes' => array(),
 									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=lostpassword</code>',
-									'disabled' => $this->permalinks_disabled(),
+									'disabled' => parent::permalinks_disabled(),
 									'fields' => array(
 										array(
 											'name'       => 'wplf_rewrite_lost_pw_slug',
@@ -151,7 +151,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 											'post'       => '',
 											'type'       => 'textbox',
 											'attributes' => array(),
-											'disabled' => $this->permalinks_disabled()
+											'disabled' => parent::permalinks_disabled()
 										)
 									)
 								),
@@ -163,7 +163,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'type'       => 'checkbox',
 									'attributes' => array(),
 									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php</code>',
-									'disabled' => $this->permalinks_disabled(),
+									'disabled' => parent::permalinks_disabled(),
 									'fields' => array(
 										array(
 											'name'       => 'wplf_rewrite_register_slug',
@@ -172,7 +172,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 											'post'       => '',
 											'type'       => 'textbox',
 											'attributes' => array(),
-											'disabled' => $this->permalinks_disabled()
+											'disabled' => parent::permalinks_disabled()
 										)
 									)
 								),
@@ -184,7 +184,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'type'       => 'checkbox',
 									'attributes' => array(),
 									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=rp&key=SAMPLEACTIVATIONCODE&login=users@email.com</code>',
-									'disabled' => $this->permalinks_disabled(),
+									'disabled' => parent::permalinks_disabled(),
 									'fields' => array(
 										array(
 											'name'       => 'wplf_rewrite_activate_slug',
@@ -193,7 +193,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 											'post'       => '<code>/users@email.com/SAMPLEACTIVATIONCODE</code>',
 											'type'       => 'textbox',
 											'attributes' => array(),
-											'disabled' => $this->permalinks_disabled()
+											'disabled' => parent::permalinks_disabled()
 										)
 									)
 								)
@@ -499,6 +499,15 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 				)
 			)
 		);
+
+	}
+
+	public static function get_gettings(){
+
+		if( ! self::$settings ) self::init_settings();
+
+		return self::$settings;
+
 	}
 
 	/**
@@ -511,7 +520,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 		$this->init_settings();
 
-		foreach ( $this->settings as $key => $tab ) {
+		foreach ( self::$settings as $key => $tab ) {
 
 			foreach( $tab['sections'] as $skey => $section ) {
 
