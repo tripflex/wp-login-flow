@@ -18,7 +18,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 		$code = $errors->get_error_code();
 		if ( $code === 'registered' ) {
 			// $errors->remove( 'registered' ); // WordPress >=4.1 required
-			unset( $errors->errors['registered'] ); unset( $errors->error_data['registered'] );
+			$errors = $this->unset_wperror( $errors, 'registered' );
 
 			$thankyou_notice = sprintf( __( 'Thank you for registering.  Please check your email for your activation link.<br><br>If you do not receive the email please request a <a href="%s">password reset</a> to have the email sent again.' ), wp_lostpassword_url() );
 			$template        = new WP_Login_Flow_Template();
@@ -52,6 +52,25 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 
 		<?php
 
+	}
+
+	function unset_wperror( $errors, $unset ){
+
+		if( ! is_wp_error( $errors ) ) return false;
+
+		$newError = new WP_Error();
+
+		foreach( $errors->errors as $name => $values ){
+
+			if( $name === $unset ) continue;
+			$type = $errors->error_data[$name];
+			$message = $values[0];
+
+			$newError->add( $name, $message, $type );
+
+		}
+
+		return $newError;
 	}
 
 }
