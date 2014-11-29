@@ -162,7 +162,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php</code>',
+									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=register</code>',
 									'disabled' => parent::permalinks_disabled(),
 									'fields' => array(
 										array(
@@ -196,7 +196,28 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 											'disabled' => parent::permalinks_disabled()
 										)
 									)
-								)
+								),
+								array(
+									'name'       => 'wplf_rewrite_loggedout',
+									'std'        => '0',
+									'label'      => __( 'Logged Out' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?loggedout=true</code>',
+									'disabled'   => parent::permalinks_disabled(),
+									'fields'     => array(
+										array(
+											'name'       => 'wplf_rewrite_loggedout_slug',
+											'std'        => 'logout/complete',
+											'pre'        => '<code>' . home_url() . '/</code>',
+											'post'       => '',
+											'type'       => 'textbox',
+											'attributes' => array(),
+											'disabled'   => parent::permalinks_disabled()
+										)
+									)
+								),
 							)
 						)
 					)
