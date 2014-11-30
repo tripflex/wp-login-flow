@@ -25,6 +25,30 @@ class WP_Login_Flow_Rewrite {
 		return $location;
 	}
 
+	function check_for_cookie( $url, $path ){
+
+		$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
+		if ( $path && isset( $_COOKIE[ $rp_cookie ] ) && 0 < strpos( $_COOKIE[ $rp_cookie ], ':' ) ) {
+
+			$activation_slug = get_option( 'wplf_rewrite_activate_slug' );
+			if ( strpos( $path, "/" . $activation_slug . "/" ) !== FALSE ) {
+
+				$path_data = untrailingslashit( str_replace( "/" . $activation_slug . "/", "", $path ) );
+				list( $rp_login, $rp_key ) = explode( ':', wp_unslash( $_COOKIE[ $rp_cookie ] ), 2 );
+				list( $username, $activation_code ) = explode( '/', $path_data, 2 );
+
+				if( $rp_login === $username && $rp_key === $activation_code ){
+					return site_url( 'wp-login.php?action=rp' );
+				}
+
+			}
+
+		}
+
+		return $url;
+
+	}
+
 	/**
 	 * Filter the site URL.
 	 *
@@ -39,6 +63,7 @@ class WP_Login_Flow_Rewrite {
 	 * @return string
 	 */
 	function site_url( $url, $path, $scheme, $blog_id ){
+
 		// Lost Password
 		if( $path === "wp-login.php?action=lostpassword" ) return $this->get_url( 'lost_pw', $url );
 		if( $path === "wp-login.php?action=rp" ) return $this->get_url( 'lost_pw', $url, 'rp' );
@@ -54,6 +79,10 @@ class WP_Login_Flow_Rewrite {
 		if( $path === "wp-login.php" ) return $this->get_url( 'login', $url );
 		// Logout
 		if ( $path === "wp-login.php?loggedout=true" ) return $this->get_url( 'loggedout', $url );
+		// Activate
+		//if ( $path === "wp-login.php?action=rp&activatecookie=set" ) return $this->get_url( 'activate', $url, 'set-password' );
+
+		$url = $this->check_for_cookie( $url, $path );
 
 		return $url;
 
@@ -159,6 +188,7 @@ class WP_Login_Flow_Rewrite {
 
 		/** @var self $activate */
 		if ( $activate ) {
+			// add_rewrite_rule( $activate . '/set-password/?', 'wp-login.php?action=rp', 'top' );
 			add_rewrite_rule( $activate . '/([^/]*)/([^/]*)/', 'wp-login.php?action=rp&key=$2&login=$1', 'top' );
 		}
 
