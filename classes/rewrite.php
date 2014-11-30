@@ -9,12 +9,20 @@ class WP_Login_Flow_Rewrite {
 	function __construct() {
 
 		add_action( 'shutdown', array( $this, 'check_for_updates' ) );
-		add_action( 'admin_init', array( $this, 'preserve_rewrite_rules' ) );
 		add_filter( 'lostpassword_url', array( $this, 'lostpassword_url' ), 9999, 2 );
 		add_filter( 'login_url', array( $this, 'login_url' ), 9999, 2 );
 		add_filter( 'register_url', array( $this, 'register_url' ), 9999, 1 );
 		add_filter( 'site_url', array( $this, 'site_url' ), 9999, 4 );
+		add_filter( 'wp_redirect', array( $this, 'site_url_redirect' ), 9999, 2 );
+	}
 
+	function site_url_redirect( $location, $status ){
+
+		$site_url = get_site_url();
+		$path = str_replace( $site_url, '', $location );
+		$location = $this->site_url( $location, $path, null, null );
+
+		return $location;
 	}
 
 	/**
@@ -31,24 +39,21 @@ class WP_Login_Flow_Rewrite {
 	 * @return string
 	 */
 	function site_url( $url, $path, $scheme, $blog_id ){
-// wp-login.php?action=rp - reset-password
-// wp-login.php?action=resetpass - reset-password after setting password with prompt to login
-// wp-login.php?loggedout=true
-// wp-login.php?checkemail=confirm
-// wp-login.php?action=lostpassword&error=expiredkey
-// wp-login.php?action=lostpassword&error=invalidkey
-// wp-login.php?action=resetpass
-// wp-login.php?registration=disabled
-// wp-login.php?checkemail=registered - Registration Complete page
-
-		if( $path === "wp-login.php?action=lostpassword" && $this->get_url( 'lost_pw' ) )
-			$url = $this->get_url( 'lost_pw' );
-
-		if( $path === "wp-login.php?action=register" && $this->get_url( 'register' ) )
-			$url = $this->get_url( 'register' );
-
-		if( $path === "wp-login.php" && $this->get_url( 'login' ) )
-			$url = $this->get_url( 'login' );
+		// Lost Password
+		if( $path === "wp-login.php?action=lostpassword" ) return $this->get_url( 'lost_pw', $url );
+		if( $path === "wp-login.php?action=rp" ) return $this->get_url( 'lost_pw', $url, 'rp' );
+		if( $path === "wp-login.php?action=resetpass" ) return $this->get_url( 'lost_pw', $url, 'resetpass' );
+		if( $path === "wp-login.php?action=lostpassword&error=expiredkey" ) return $this->get_url( 'lost_pw', $url, 'expired' );
+		if( $path === "wp-login.php?action=lostpassword&error=invalidkey" ) return $this->get_url( 'lost_pw', $url, 'invalid' );
+		// Register
+		if( $path === "wp-login.php?action=register" ) return $this->get_url( 'register', $url );
+		if( $path === "wp-login.php?checkemail=confirm" ) return $this->get_url( 'register', $url, 'confirm' );
+		if( $path === "wp-login.php?checkemail=registered" ) return $this->get_url( 'register', $url, 'registered' );
+		if( $path === "wp-login.php?registration=disabled" ) return $this->get_url( 'register', $url, 'disabled' );
+		// Login
+		if( $path === "wp-login.php" ) return $this->get_url( 'login', $url );
+		// Logout
+		if ( $path === "wp-login.php?loggedout=true" ) return $this->get_url( 'loggedout', $url );
 
 		return $url;
 
@@ -71,14 +76,18 @@ class WP_Login_Flow_Rewrite {
 		return $this->get_url( 'register' );
 	}
 
-	function get_url( $name ){
+	function get_url( $name, $original_url = null, $extra_rewrite = null ){
 
 		$enabled = get_option( "wplf_rewrite_{$name}" );
 		$slug = get_option( "wplf_rewrite_{$name}_slug" );
 
-		if( ! $enabled || ! $slug ) return false;
+		if( ! $original_url ){ $url_response = false; } else { $url_response = $original_url; };
+		if( ! $enabled || ! $slug ) return $url_response;
 
-		return home_url() . "/{$slug}";
+		$build_url = home_url() . "/{$slug}";
+		if( $extra_rewrite ) $build_url .= "/{$extra_rewrite}";
+
+		return $build_url;
 	}
 
 	function check_for_updates(){
@@ -99,9 +108,11 @@ class WP_Login_Flow_Rewrite {
 
 	}
 
-	function preserve_rewrite_rules() {
-
-
+	function filter_rewrite_options( $option ){
+		$rewrite = strpos( $option, 'wplf_rewrite' ) !== FALSE;
+		$slug = strpos( $option, '_slug' ) !== FALSE;
+		if( $rewrite && $slug ) $rewrite = FALSE;
+		return $rewrite;
 	}
 
 	/**
@@ -118,12 +129,18 @@ class WP_Login_Flow_Rewrite {
 
 		if( self::$prevent_rewrite ) return false;
 
+		// Set known variable variables to false to prevent PHP notices
+		$login = $lost_pw = $activate = $register = $loggedout = FALSE;
+		// Get all options and filter out only the rewrite ones
 		$settings = WP_Login_Flow_Settings::get_settings( 'rewrites' );
 		$options = array_column_recursive( $settings, 'name' );
+		$options = array_filter( $options, array( $this, 'filter_rewrite_options' ) );
 
 		foreach ( $options as $option ){
-			if( (strlen( $option, '_slug' ) !== false)  || ! get_option( $option ) ) continue; // Skip _slug or disabled
-			${$option} = get_option( "${$option}_slug" ); // wplf_rewrite_lost_pw is @var $lost_pw
+			$enabled = get_option( $option );
+			$value = get_option( $option . '_slug' );
+			$variable = str_replace( 'wplf_rewrite_', '', $option );
+			if( $enabled ) ${$variable} = $value; // wplf_rewrite_lost_pw is @var $lost_pw
 		}
 
 		/** @var self $login */
@@ -134,6 +151,10 @@ class WP_Login_Flow_Rewrite {
 		/** @var self $lost_pw */
 		if ( $lost_pw ) {
 			add_rewrite_rule( $lost_pw . '/?', 'wp-login.php?action=lostpassword', 'top' );
+			add_rewrite_rule( $lost_pw . '/rp/?', 'wp-login.php?action=rp', 'top' );
+			add_rewrite_rule( $lost_pw . '/resetpass/?', 'wp-login.php?action=resetpass', 'top' );
+			add_rewrite_rule( $lost_pw . '/expired/?', 'wp-login.php?action=lostpassword&error=expiredkey', 'top' );
+			add_rewrite_rule( $lost_pw . '/invalid/?', 'wp-login.php?action=lostpassword&error=invalidkey', 'top' );
 		}
 
 		/** @var self $activate */
@@ -144,6 +165,16 @@ class WP_Login_Flow_Rewrite {
 		/** @var self $register */
 		if ( $register ) {
 			add_rewrite_rule( $register . '/?', 'wp-login.php?action=register', 'top' );
+			add_rewrite_rule( $register . '/registered/?', 'wp-login.php?checkemail=registered', 'top' );
+			add_rewrite_rule( $register . '/confirm/?', 'wp-login.php?checkemail=confirm', 'top' );
+			add_rewrite_rule( $register . '/disabled/?', 'wp-login.php?registration=disabled', 'top' );
+		}
+
+		/** @var self $loggedout */
+		if( $loggedout ){
+
+			add_rewrite_rule( $loggedout . '/?', 'wp-login.php?loggedout=true', 'top' );
+
 		}
 	}
 }
