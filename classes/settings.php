@@ -386,53 +386,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'attributes' => array(),
 								),
 							)
-						),
-						'admin_activation' => array(
-							'title'  => __( 'Admin Activation Email Template' ),
-							'fields' => array(
-								array(
-									'name'       => 'wplf_admin_activation_subject',
-									'label'      => __( 'Email Subject' ),
-									'desc'       => __( 'This will be used as the subject for the email sent to Admin when a user have activated their account.' ),
-									'std'        => 'User Account Activated',
-									'type'       => 'textbox',
-									'class'      => 'widefat',
-									'attributes' => array(),
-								),
-								array(
-									'name'       => 'wplf_admin_activation_message',
-									'label'      => __( 'Email Message' ),
-									'desc'       => __( 'This template will be used for the email sent to Admin when a user activates their account.<br /><strong>Template Tags:</strong> <code>%wp_user_name%</code> - Username, <code>%wp_user_email%</code> - User Email, <code>%wp_site_url%</code> - Site URL' ),
-									'std'        => 'Thank you for registering your account:<br />' . network_home_url( '/' ) . '<br />Username: %wp_user_name%<br /><br />In order to activate your account and set your password, please visit the following address:<br /><a href="%wp_activate_url%">%wp_activate_url%</a>',
-									'type'       => 'wpeditor',
-									'attributes' => array(),
-								),
-							)
-						),
-						'lost_pw' => array(
-							'title' => __( 'Lost Password Email Template ( Coming Soon )' ),
-							'fields' => array(
-								array(
-									'name'       => 'wplf_lost_pw_subject',
-									'label'      => __( 'Email Subject' ),
-									'desc'       => __( 'This will be used as the subject for the Lost Password email.' ),
-									'std'        => 'Lost Password Request',
-									'class'      => 'widefat',
-									'type'       => 'textbox',
-									'attributes' => array(),
-								    'disabled'   => true
-								),
-								array(
-									'name'       => 'wplf_lost_pw_message',
-									'label'      => __( 'Email Message' ),
-									'desc'       => __( 'This is the template used when emailing the user to reset their password.  Use <code>%wp_lost_pw_url%</code> for the lost password URL.' ),
-									'std'        => '',
-									'type'       => 'wpeditor',
-									'attributes' => array(),
-								    'disabled'   => true
-								),
-							)
-						),
+						)
 					)
 				),
 				'notices' => array(
