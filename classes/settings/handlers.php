@@ -30,8 +30,7 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
 		check_ajax_referer( "wp_login_flow_dl_backup", "wp_login_flow_dl_backup" );
 
-		if ( ! $this->settings ) $this->init_settings();
-		$option_keys = array_column_recursive( $this->settings, 'name' );
+		$option_keys = array_column_recursive( WP_Login_Flow_Settings::get_settings(), 'name' );
 		if ( ! is_array( $option_keys ) ) return FALSE;
 
 		$option_config = array();
@@ -56,8 +55,7 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
 	public function remove_all() {
 
-		if ( ! $this->settings ) $this->init_settings();
-		$option_keys = array_column_recursive( $this->settings, 'name' );
+		$option_keys = array_column_recursive( WP_Login_Flow_Settings::get_settings(), 'name' );
 		if( ! is_array( $option_keys ) ) return false;
 
 		foreach( $option_keys as $option ){

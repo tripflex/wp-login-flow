@@ -38,7 +38,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 	function output() {
 
-		$this->init_settings();
+		self::init_settings();
 		settings_errors();
 		?>
 		<div class="wrap">
@@ -88,7 +88,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 	}
 
-	public function init_settings() {
+	public static function init_settings() {
 
 		self::$settings = apply_filters(
 			'wp_login_flow_settings',
@@ -523,7 +523,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 	}
 
-	public static function get_gettings(){
+	public static function get_settings(){
 
 		if( ! self::$settings ) self::init_settings();
 
@@ -539,7 +539,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 	 */
 	public function register_settings() {
 
-		$this->init_settings();
+		self::init_settings();
 
 		foreach ( self::$settings as $key => $tab ) {
 
