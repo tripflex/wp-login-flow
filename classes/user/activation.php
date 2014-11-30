@@ -11,11 +11,11 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 
 	function check( $user_id ) {
 
-		$status = get_user_option( 'activation_status', $user_id );
+		$status = get_user_meta( $user_id, 'activation_status', true );
 
-		if ( ! empty( $status ) ) return false;
+		if ( ! empty( $status ) ) return true;
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -24,7 +24,7 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 	 */
 	public static function set( $user_id, $activated = 1 ) {
 
-		update_user_option( $user_id, 'activation_status', $activated, TRUE );
+		update_user_meta( $user_id, 'activation_status', $activated );
 
 	}
 
@@ -37,6 +37,20 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 		}
 
 		return network_site_url( $url, 'login' );
+
+	}
+
+	function send_admin_email( $user ){
+
+		// The blogname option is escaped with esc_html on the way into the database in sanitize_option
+		// we want to reverse this for the plain text arena of emails.
+		$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+
+		$message = sprintf( __( 'New user activation on your site %s:' ), $blogname ) . "\r\n\r\n";
+		$message .= sprintf( __( 'Username: %s' ), $user->user_login ) . "\r\n\r\n";
+		$message .= sprintf( __( 'E-mail: %s' ), $user->user_email ) . "\r\n";
+
+		@wp_mail( get_option( 'admin_email' ), sprintf( __( '[%s] New User Activation' ), $blogname ), $message );
 
 	}
 }

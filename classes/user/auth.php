@@ -20,10 +20,8 @@ class WP_Login_Flow_User_Auth extends WP_Login_Flow_User {
 	 */
 	public function attempt_login( $auth_cookie, $expire, $expiration, $user_id, $scheme ) {
 
-		$activation = new WP_Login_Flow_User_Activation();
-
 		// Exit function is user is already activated
-		if ( ! $activation->check( $user_id ) ) {
+		if ( ! $this->activation()->check( $user_id ) ) {
 			wp_redirect( wp_login_url() . '?registration=complete&activation=pending' );
 			exit();
 		}

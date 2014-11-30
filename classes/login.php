@@ -9,24 +9,37 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 		add_filter( 'wp_login_errors', array( $this, 'wp_login_errors' ), 10, 2 );
 		add_filter( 'register_form', array( $this, 'after_email_field' ), 0 );
 		add_filter( 'login_enqueue_scripts', array( $this, 'login_script' ), 0 );
+		add_filter( 'registration_redirect', array( $this, 'register_redirect' ), 9999, 1 );
+//		Action right before output of password being reset ( wp-login.php:603 )
+//		add_filter( 'validate_password_reset', array( $this, 'activation_password_set' ), 9999, 1 );
 
 	}
 
-	public function wp_login_errors( $errors, $redirect_to ) {
+	function register_redirect( $url ){
 
-		// Replace core WordPress thank you with our own custom onePl
-		$code = $errors->get_error_code();
-		if ( $code === 'registered' ) {
-			// $errors->remove( 'registered' ); // WordPress >=4.1 required
-			$errors = $this->unset_wperror( $errors, 'registered', __( 'Registration complete. Please check your e-mail.' ) );
+		return site_url( 'wp-login.php?action=activation&step=pending' );
 
-			$thankyou_notice = sprintf( __( 'Thank you for registering.  Please check your email for your activation link.<br><br>If you do not receive the email please request a <a href="%s">password reset</a> to have the email sent again.' ), wp_lostpassword_url() );
-			$template        = new WP_Login_Flow_Template();
-			$notice          = $template->generate( 'wplf_notice_activation_required', $thankyou_notice );
-			$errors->add( 'registered', $notice, 'message' );
-		}
+	}
+
+	function wp_login_errors( $errors, $redirect_to ) {
+
+		$step   = ( isset( $_GET[ 'step' ] ) && ! empty( $_GET[ 'step' ] ) ? sanitize_text_field( $_GET[ 'step' ] ) : FALSE );
+		$action = ( isset( $_GET[ 'action' ] ) && ! empty( $_GET[ 'action' ] ) ? sanitize_text_field( $_GET[ 'action' ] ) : FALSE );
+		$method = "{$action}_{$step}_page";
+		if ( method_exists( $this, $method ) ) call_user_func( array( $this, $method ) );
 
 		return $errors;
+	}
+
+	function activation_pending_page(){
+
+		$thankyou_notice = sprintf( __( 'Thank you for registering.  Please check your email for your activation link.<br><br>If you do not receive the email please request a <a href="%s">password reset</a> to have the email sent again.' ), wp_lostpassword_url() );
+		$template        = new WP_Login_Flow_Template();
+		$notice          = $template->generate( 'wplf_notice_activation_required', $thankyou_notice );
+		login_header( __( 'Pending Activation' ), '<p class="message reset-pass">' . $thankyou_notice . '</p>' );
+		login_footer();
+		exit;
+
 	}
 
 	function after_email_field(){

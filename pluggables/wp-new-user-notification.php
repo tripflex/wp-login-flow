@@ -54,9 +54,9 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 		 *
 		 */
 
-		// Set option needs to be activated
+		// Set meta to not activated
 		$activation = new WP_Login_Flow_User_Activation();
-		$activation->set( $user_id, 1 );
+		$activation->set( $user_id, 0 );
 
 		// Values passed to activation email template
 		$template_data = array( 'wp_user_name' => $user_login, 'wp_user_email' => $user_email, 'wp_activation_key' => $key,
