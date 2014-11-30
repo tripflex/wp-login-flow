@@ -15,7 +15,7 @@ class WP_Login_Flow_Assets {
 	/**
 	 * Register Vendor/Core CSS and Scripts
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 */
 	function register_assets() {
@@ -47,17 +47,20 @@ class WP_Login_Flow_Assets {
 
 	function enqueue_assets() {
 
-		wp_enqueue_style( 'wplf-styles' );
-		wp_enqueue_style( 'wplf-vendor-styles' );
-		wp_enqueue_script( 'wplf-vendor-scripts' );
-		wp_enqueue_script( 'wplf-scripts' );
+		global $pagenow;
+		if ( $pagenow == 'users.php' && $_GET[ 'page' ] == 'wp-login-flow' ){
+			wp_enqueue_style( 'wplf-styles' );
+			wp_enqueue_style( 'wplf-vendor-styles' );
+			wp_enqueue_script( 'wplf-vendor-scripts' );
+			wp_enqueue_script( 'wplf-scripts' );
+		}
 
 	}
 
 	/**
 	 * Deregister WP Heartbeat Script
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 */
 	function death_to_heartbeat() {
