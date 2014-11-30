@@ -14,8 +14,8 @@ class WP_Login_Flow_Rewrite {
 		add_filter( 'register_url', array( $this, 'register_url' ), 9999, 1 );
 		add_filter( 'site_url', array( $this, 'site_url' ), 9999, 4 );
 		add_filter( 'wp_redirect', array( $this, 'site_url_redirect' ), 9999, 2 );
-		add_action( 'login_form_resetpass', array( $this, 'handle_activate_rewrite' ), 9999 );
-		add_action( 'login_form_rp', array( $this, 'handle_activate_setpw' ), 9999 );
+		add_action( 'login_form_resetpass', array( $this, 'activate_rewrite' ), 9999 );
+		add_action( 'login_form_rp', array( $this, 'activate_password' ), 9999 );
 
 	}
 
@@ -43,20 +43,23 @@ class WP_Login_Flow_Rewrite {
 	}
 
 	/**
+	 * Handle activation redirect to set password
 	 *
+	 * wp-login.php by default sets a cookie, removes the query args, and then redirects
+	 * to wp-login.php?action=rp.  We have to check if cookie is set, and if the request_uri
+	 * matches that, and then we can set the same cookie under our new path, and redirect to
+	 * our activate password URL.
 	 *
 	 *
 	 * @since @@version
 	 *
 	 */
-	function handle_activate_setpw(){
+	function activate_password(){
 
 		$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
 		// Check for activation/lost password cookie and non-permalink URL
 		if ( $_SERVER[ 'REQUEST_URI' ] === '/wp-login.php?action=rp' && isset( $_COOKIE[ $rp_cookie ] ) && 0 < strpos( $_COOKIE[ $rp_cookie ], ':' ) ) {
-			// Exit if activate rewrite is disabled
-			if( ! get_option( 'wplf_rewrite_activate' ) ) return;
-			$rp_path = 'wp-login.php?action=rp&step=password';
+			$rp_path = 'wp-login.php?action=rp&step=activate';
 			$redirect = $this->get_url( 'activate', site_url( $rp_path ), 'password' );
 			$value = wp_unslash( $_COOKIE[ $rp_cookie ] );
 			// Set new cookie under our new path, this is required
@@ -69,13 +72,13 @@ class WP_Login_Flow_Rewrite {
 
 
 	/**
-	 *
+	 * Redirect to standard wp-login.php with reset pass details
 	 *
 	 *
 	 * @since @@version
 	 *
 	 */
-	function handle_activate_rewrite(){
+	function activate_rewrite(){
 
 		$activation_key = filter_input( INPUT_GET, 'key', FILTER_SANITIZE_STRING );
 		$activation_user = filter_input( INPUT_GET, 'login', FILTER_SANITIZE_EMAIL );
@@ -87,6 +90,10 @@ class WP_Login_Flow_Rewrite {
 			exit;
 		}
 
+	}
+
+	function activate_cookie(){
+		return false;
 	}
 
 	/**
@@ -104,16 +111,33 @@ class WP_Login_Flow_Rewrite {
 	 */
 	function site_url( $url, $path, $scheme, $blog_id ){
 
+		// No need to process if path is not wp-login.php
+		if( strpos( $url, 'wp-login.php' ) === FALSE ) return $url;
+
+		$step = ( isset( $_GET[ 'step' ] ) && ! empty( $_GET[ 'step' ] ) ? sanitize_text_field( $_GET[ 'step' ] ) : FALSE );
+
+		if ( $path === "wp-login.php?action=resetpass" ) {
+			if ( $step === 'activate' ) return $this->get_url( 'activate', $url, 'password' );
+			return $this->get_url( 'lost_pw', $url, 'resetpass' );
+		}
+
+		if ( $path === "wp-login.php?action=lostpassword&error=expiredkey" ) {
+			if( $step === 'activate' ) return $this->get_url( 'activate', $url, 'expired' );
+			return $this->get_url( 'lost_pw', $url, 'expired' );
+		}
+
+		if ( $path === "wp-login.php?action=lostpassword&error=invalidkey" ) {
+			if ( $step === 'activate' ) return $this->get_url( 'activate', $url, 'invalid' );
+			return $this->get_url( 'lost_pw', $url, 'invalid' );
+		}
+
 		// Lost Password
 		if( $path === "wp-login.php?action=lostpassword" ) return $this->get_url( 'lost_pw', $url );
 		if( $path === "wp-login.php?action=rp" ) return $this->get_url( 'lost_pw', $url, 'rp' );
-		if( $path === "wp-login.php?action=resetpass" ) return $this->get_url( 'lost_pw', $url, 'resetpass' );
-		if( $path === "wp-login.php?action=lostpassword&error=expiredkey" ) return $this->get_url( 'lost_pw', $url, 'expired' );
-		if( $path === "wp-login.php?action=lostpassword&error=invalidkey" ) return $this->get_url( 'lost_pw', $url, 'invalid' );
 		// Register
 		if( $path === "wp-login.php?action=register" ) return $this->get_url( 'register', $url );
-		if( $path === "wp-login.php?checkemail=confirm" ) return $this->get_url( 'register', $url, 'confirm' );
-		if( $path === "wp-login.php?checkemail=registered" ) return $this->get_url( 'register', $url, 'registered' );
+		if( $path === "wp-login.php?checkemail=confirm" ) return $this->get_url( 'lost_pw', $url, 'confirm' );
+		if( $path === "wp-login.php?action=activation&step=pending" ) return $this->get_url( 'activate', $url, 'pending' );
 		if( $path === "wp-login.php?registration=disabled" ) return $this->get_url( 'register', $url, 'disabled' );
 		// Login
 		if( $path === "wp-login.php" ) return $this->get_url( 'login', $url );
@@ -121,8 +145,6 @@ class WP_Login_Flow_Rewrite {
 		if ( $path === "wp-login.php?loggedout=true" ) return $this->get_url( 'loggedout', $url );
 		// Activate
 		//if ( $path === "wp-login.php?action=rp&activatecookie=set" ) return $this->get_url( 'activate', $url, 'setpw' );
-
-		#$url = $this->check_for_cookie( $url, $path );
 
 		return $url;
 
@@ -288,25 +310,27 @@ class WP_Login_Flow_Rewrite {
 
 		/** @var self $lost_pw */
 		if ( $lost_pw ) {
-			add_rewrite_rule( $lost_pw . '/?', 'wp-login.php?action=lostpassword', 'top' );
 			add_rewrite_rule( $lost_pw . '/rp/?', 'wp-login.php?action=rp', 'top' );
 			add_rewrite_rule( $lost_pw . '/resetpass/?', 'wp-login.php?action=resetpass', 'top' );
+			add_rewrite_rule( $lost_pw . '/confirm/?', 'wp-login.php?checkemail=confirm', 'top' );
 			add_rewrite_rule( $lost_pw . '/expired/?', 'wp-login.php?action=lostpassword&error=expiredkey', 'top' );
 			add_rewrite_rule( $lost_pw . '/invalid/?', 'wp-login.php?action=lostpassword&error=invalidkey', 'top' );
+			add_rewrite_rule( $lost_pw . '/?', 'wp-login.php?action=lostpassword', 'top' );
 		}
 
 		/** @var self $activate */
 		if ( $activate ) {
-			add_rewrite_rule( $activate . '/password/?', 'wp-login.php?action=rp&step=password', 'top' );
+			add_rewrite_rule( $activate . '/pending/?', 'wp-login.php?action=activation&step=pending', 'top' );
+			add_rewrite_rule( $activate . '/password/?', 'wp-login.php?action=rp&step=activate', 'top' );
+			add_rewrite_rule( $activate . '/invalid/?', 'wp-login.php?action=lostpassword&error=invalidkey', 'top' );
+			add_rewrite_rule( $activate . '/expired/?', 'wp-login.php?action=lostpassword&error=expiredkey', 'top' );
 			add_rewrite_rule( $activate . '/([^/]*)/([^/]*)/', 'wp-login.php?action=rp&key=$2&login=$1', 'top' );
 		}
 
 		/** @var self $register */
 		if ( $register ) {
-			add_rewrite_rule( $register . '/?', 'wp-login.php?action=register', 'top' );
-			add_rewrite_rule( $register . '/registered/?', 'wp-login.php?checkemail=registered', 'top' );
-			add_rewrite_rule( $register . '/confirm/?', 'wp-login.php?checkemail=confirm', 'top' );
 			add_rewrite_rule( $register . '/disabled/?', 'wp-login.php?registration=disabled', 'top' );
+			add_rewrite_rule( $register . '/?', 'wp-login.php?action=register', 'top' );
 		}
 
 		/** @var self $loggedout */
