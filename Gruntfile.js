@@ -326,7 +326,6 @@ module.exports = function ( grunt ) {
 			'cssmin',
 			'uglify',
 			'clean:deploy',
-			'exec:txpull',
 			'copy:deploy',
 			'replace:deploy',
 			'addtextdomain',
@@ -334,8 +333,7 @@ module.exports = function ( grunt ) {
 			'makepot',
 			'copy:pot',
 			'po2mo',
-			'compress',
-			'exec:txpush'
+			'compress'
 		]
 	);
 

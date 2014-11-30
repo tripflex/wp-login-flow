@@ -72,7 +72,7 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 		$message = $template->generate( 'wplf_activation_message', $default_message, $template_data );
 
 		// New User Activation Email
-		if ( ! wp_mail( $user_email, wp_specialchars_decode( $subject ), $message ) ) return FALSE;
+		if ( ! wp_mail( $user_email, wp_specialchars_decode( $subject ), $message , 'Content-type: text/html') ) return FALSE;
 
 		return TRUE;
 
