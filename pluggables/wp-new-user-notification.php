@@ -32,7 +32,7 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 		/**
 		 * Fires when a activation key is generated.
 		 *
-		 * @since @@version
+		 * @since 1.0.0
 		 *
 		 * @param string $user_login The username for the user.
 		 * @param string $key        The generated password reset key.

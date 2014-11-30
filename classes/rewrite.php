@@ -26,7 +26,7 @@ class WP_Login_Flow_Rewrite {
 	 * hard-coded wp-login.php urls.  We use a filter on wp_redirect to redirect
 	 * to a rewrite/permalink if enabled.
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 * @param $location
 	 * @param $status
@@ -51,7 +51,7 @@ class WP_Login_Flow_Rewrite {
 	 * our activate password URL.
 	 *
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 */
 	function activate_password(){
@@ -75,7 +75,7 @@ class WP_Login_Flow_Rewrite {
 	 * Redirect to standard wp-login.php with reset pass details
 	 *
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 */
 	function activate_rewrite(){
@@ -99,7 +99,7 @@ class WP_Login_Flow_Rewrite {
 	/**
 	 * Filter the site URL.
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 * @param string      $url     The complete site URL including scheme and path.
 	 * @param string      $path    Path relative to the site URL. Blank string if no path is specified.
@@ -154,7 +154,7 @@ class WP_Login_Flow_Rewrite {
 	 *
 	 *
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 * @param $url
 	 * @param $redirect
@@ -171,7 +171,7 @@ class WP_Login_Flow_Rewrite {
 	 *
 	 *
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 * @param $url
 	 * @param $redirect
@@ -188,7 +188,7 @@ class WP_Login_Flow_Rewrite {
 	 *
 	 *
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 * @param $url
 	 *
@@ -203,7 +203,7 @@ class WP_Login_Flow_Rewrite {
 	 *
 	 *
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 * @param      $name
 	 * @param null $original_url
@@ -229,7 +229,7 @@ class WP_Login_Flow_Rewrite {
 	 *
 	 *
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 */
 	function check_for_updates(){
@@ -248,7 +248,7 @@ class WP_Login_Flow_Rewrite {
 	 *
 	 *
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 * @param $prevent
 	 */
@@ -262,7 +262,7 @@ class WP_Login_Flow_Rewrite {
 	 *
 	 *
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 * @param $option
 	 *
@@ -279,7 +279,7 @@ class WP_Login_Flow_Rewrite {
 	 *
 	 *
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 * @param null $options
 	 *

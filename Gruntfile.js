@@ -105,23 +105,17 @@ module.exports = function ( grunt ) {
 							}
 						}
 					},
-					files: {
-						'<%= min.js %>/vendor.min.js': [ '<%= concat.vendorjs.dest %>' ]
-					}
-				},
-				core: {
-					options: {
-						preserveComments: 'none',
-						compress: {
-							drop_console: true,
-							global_defs: {
-								"DEBUG": false
-							}
+					files: [
+						{
+							expand: true,
+							flatten: true,
+							cwd: '<%= build.js %>',
+							src: '**/*.js',
+							dest: '<%= min.js %>',
+							ext: '.min.js',
+							extDot: 'first'
 						}
-					},
-					files: {
-						'<%= min.js %>/<%= pkg.acronym %>.min.js': [ '<%= concat.corejs.dest %>' ]
-					}
+					]
 				}
 			},
 
@@ -233,6 +227,9 @@ module.exports = function ( grunt ) {
 			clean: {
 				deploy: {
 					src: [ '<%= build.dir %>/' ]
+				},
+				dist: {
+					src: [ 'dist/*' ]
 				}
 			},
 
@@ -283,7 +280,14 @@ module.exports = function ( grunt ) {
 						{
 							expand: true,
 							flatten: false,
-							src: [ '*.php', '**/*.php', '!node_modules/**/*.php', '!dist/**/*.php' ]
+							src: [
+								'!node_modules/**/*.php',
+								'!dist/**/*.php',
+								'!.git/**/*.php',
+								'!.tx/**/*.php',
+								'*.php',
+								'**/*.php'
+							]
 						}
 					]
 				}
@@ -317,15 +321,16 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'css', [ 'less:core', 'concat:corecss', 'autoprefixer', 'cssmin:core', 'concat:vendorcss', 'cssmin:vendor' ] );
 	grunt.registerTask( 'vendor', [ 'concat:vendorcss', 'concat:vendorjs', 'autoprefixer', 'cssmin:vendor', 'uglify:vendor' ] );
 	grunt.registerTask( 'core', [ 'less:core', 'concat:corecss', 'autoprefixer', 'concat:corejs', 'cssmin:core', 'uglify:core' ] );
+	grunt.registerTask( 'since', [ 'replace:since' ] );
 
 	grunt.registerTask(
 		'deploy', [
+			'clean:dist',
 			'less',
 			'concat',
 			'autoprefixer',
 			'cssmin',
 			'uglify',
-			'clean:deploy',
 			'copy:deploy',
 			'replace:deploy',
 			'addtextdomain',

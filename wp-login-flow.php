@@ -86,7 +86,7 @@ Class WP_Login_Flow {
 		if ( WP_LOGIN_FLOW_VERSION != get_option( 'WP_LOGIN_FLOW_VERSION' ) ) {
 			update_option( 'WP_LOGIN_FLOW_VERSION', WP_LOGIN_FLOW_VERSION );
 			$html = '<div class="updated"><p>';
-			$html .= __( 'You are now requiring users to activate their email when registering.' );
+			$html .= __( 'WP Login Flow is now activated, you can find <strong>Login Flow</strong> under the <strong>Users</strong> menu.<br />Dont forget to check/enable <strong>Anyone can register</strong> under <strong>Settings > General</strong>' );
 			$html .= '</p></div>';
 
 			echo $html;
@@ -109,7 +109,7 @@ Class WP_Login_Flow {
 	/**
 	 * Load Plugin Translations from Languages Directory
 	 *
-	 * @since @@version
+	 * @since 1.0.0
 	 *
 	 */
 	function load_translations() {
