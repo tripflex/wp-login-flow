@@ -1,14 +1,17 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class WP_Login_Flow_Assets {
 
 	function __construct() {
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ), 10 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ), 20 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'death_to_heartbeat' ), 1 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'pointer' ), 1000 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'pointer' ), 50 );
 
 	}
 
@@ -42,18 +45,19 @@ class WP_Login_Flow_Assets {
 		wp_register_script( 'wplf-scripts', WP_LOGIN_FLOW_PLUGIN_URL . $scripts, array( 'jquery', 'wp-color-picker' ), $scripts_version, TRUE );
 		wp_register_script( 'wplf-pointer', WP_LOGIN_FLOW_PLUGIN_URL . $pointer, array( 'jquery' ), $scripts_version, TRUE );
 
-		$this->enqueue_assets();
+//		$this->enqueue_assets();
 	}
 
-	function enqueue_assets() {
+	function enqueue_assets( $hook ) {
 
-		global $pagenow;
-		if ( $pagenow == 'users.php' && $_GET[ 'page' ] == 'wp-login-flow' ){
-			wp_enqueue_style( 'wplf-styles' );
-			wp_enqueue_style( 'wplf-vendor-styles' );
-			wp_enqueue_script( 'wplf-vendor-scripts' );
-			wp_enqueue_script( 'wplf-scripts' );
+		if ( empty( $hook ) || ! empty( $hook ) && ! in_array( $hook, array( 'users_page_wp-login-flow' ) ) ) {
+			return;
 		}
+
+		wp_enqueue_style( 'wplf-styles' );
+		wp_enqueue_style( 'wplf-vendor-styles' );
+		wp_enqueue_script( 'wplf-vendor-scripts' );
+		wp_enqueue_script( 'wplf-scripts' );
 
 	}
 
@@ -62,31 +66,32 @@ class WP_Login_Flow_Assets {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param $hook
 	 */
-	function death_to_heartbeat() {
+	function death_to_heartbeat( $hook ) {
 
-		global $pagenow;
-		$current_page = ( isset( $_GET[ 'page' ] ) ? $_GET[ 'page' ] : '' );
-
-		$plugin_pages = array(
-			'wp_login_flow'
-		);
-
-		if ( $pagenow == 'users.php' && in_array( $current_page, $plugin_pages ) ) {
-			wp_deregister_script( 'heartbeat' );
+		if ( empty( $hook ) || ! empty( $hook ) && ! in_array( $hook, array( 'users_page_wp-login-flow' ) ) ) {
+			return;
 		}
+
+		wp_deregister_script( 'heartbeat' );
+
 	}
 
 	function pointer() {
 
-		if( ! current_user_can( 'manage_options') ) return false;
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return FALSE;
+		}
 
 		$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', TRUE ) );
-		if( in_array( 'wplf_activate_pointer', $dismissed ) ) return;
+		if ( in_array( 'wplf_activate_pointer', $dismissed ) ) {
+			return;
+		}
 
 		wp_localize_script( 'wplf-pointer', 'wplf_pointer', array(
-			'h3' => __( 'WP Login Flow Settings' ),
-			'p'  => __( 'The settings for WP Login Flow can be found under the <strong>User</strong> menu' )
+			'h3' => __( 'WP Login Flow Settings', 'wp-login-flow' ),
+			'p'  => __( 'The settings for WP Login Flow can be found under the <strong>User</strong> menu', 'wp-login-flow' )
 		) );
 
 		wp_enqueue_style( 'wp-pointer' );
