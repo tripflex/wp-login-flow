@@ -1,26 +1,25 @@
 === WP Login Flow ===
 Contributors: tripflex
 Donate link: https://www.gittip.com/tripflex
-Tags: wp-login, wp-login.php, activation, activate, email, background, responsive, color, login, customize
+Tags: wp-login, wp-login.php, activation, activate, email, background, responsive, color, login, customize, permalink, rewrite, url, register, lost, forgot, password
 Requires at least: 3.8
-Tested up to: 3.9.1
+Tested up to: 4.1.0
 Stable tag: 1.0.0
 License: GPLv3
 
-Activate, Register, Lost Password, and Login custom permalinks instead of wp-login.php, email account activation, complete wp-login.php customization (colors, images, etc).
+Completely customize the flow (and look) of the core WordPress wp-login.php, including background, logo, custom permalinks (instead of wp-login.php), activate new accounts by email,  default email from details, custom email templates, customize/responsify login/register/lost-password box, and more!
 
 == Description ==
 
-We all know it's insecure to email passwords, so why do so many people still do it?  Make sure you're not one of those by using WP Login Flow.
+Looking to customize the core WordPress wp-login.php pages?  Maybe you want to use my `example.com/register` instead of `example.com/wp-login.php?action=register`?  What about emailing users an activation link when they register which lets them set their password? You can do all of this and more, with WP Login Flow.
 
-This plugin will allow you to send users an activation link instead of a password, the users then go to that link and set their password using the core WordPress Password Reset form ( with customization ).
+We all know email is insecure, so why would you want to email your users their password in plain text?  This is what WordPress does by default. 
 
-You can also completely customize the core wp-login.php page, including colors, background, images, etc.
+WP Login Flow uses the core WordPress wp-login.php forgot password methods to send users a link to activate their account, and then set their password.  You can completely customize the activation email, as well as completely rewrite *every* wp-login.php url (register, lost password, login, etc) using your own custom permalinks/rewrites.
 
-Customize your email templates for new registrations, activation, and reset password.
+You can also completely customize the default WordPress wp-login.php page, including background, logo, url, links, colors, border radius, and more!
 
-Set default WordPress outgoing email From Name and From Email ( instead of wordpress@yoursite.com, etc )
-
+WP Login Flow was intended to be completely bloat free, and integrate with the core of WordPress as much as possible.
 
 = Features =
 
