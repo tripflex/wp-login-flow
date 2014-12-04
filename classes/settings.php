@@ -107,6 +107,15 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'type'       => 'checkbox',
 									'attributes' => array(),
 									'desc'       => __( 'This will require new accounts to be verified by email before they are able to login.' ),
+								),
+								array(
+									'name'       => 'wplf_require_existing_activation',
+									'std'        => '0',
+									'label'      => __( 'Existing Users' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Should existing users be required to confirm their emails?  This will prevent them from logging in on next attempt until they change their password through the core WordPress Lost Password form.' ),
 								)
 							)
 						),

@@ -11,10 +11,17 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 
 	function check( $user_id ) {
 
-		$status = get_user_meta( $user_id, 'activation_status', true );
+		$status = get_user_meta( $user_id, 'activation_status', false );
+		// Meta key does not exist, probably existing user
+		if ( is_array($status) && empty( $status ) ) {
+			if( get_option( 'wplf_require_existing_activation' ) ) return false;
+			return true;
+		}
 
-		if ( ! empty( $status ) ) return true;
+		// User has activated, activation_status = 1
+		if( is_array( $status ) && $status[0] ) return true;
 
+		// User has not activated, activation_status = 0
 		return false;
 	}
 
@@ -23,6 +30,11 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 	 * @param int  $activated
 	 */
 	public static function set( $user_id, $activated = 1 ) {
+		if( $activated ) {
+			update_user_meta( $user_id, 'activation_date', time() );
+		} else {
+			update_user_meta( $user_id, 'activation_signup', time() );
+		}
 
 		update_user_meta( $user_id, 'activation_status', $activated );
 
