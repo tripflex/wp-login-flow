@@ -144,6 +144,27 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								    )
 								),
 								array(
+									'name'       => 'wplf_rewrite_register',
+									'std'        => '0',
+									'label'      => __( 'Register' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=register</code>',
+									'disabled'   => parent::permalinks_disabled(),
+									'fields'     => array(
+										array(
+											'name'       => 'wplf_rewrite_register_slug',
+											'std'        => 'register',
+											'pre'        => '<code>' . home_url() . '/</code>',
+											'post'       => '',
+											'type'       => 'textbox',
+											'attributes' => array(),
+											'disabled'   => parent::permalinks_disabled()
+										)
+									)
+								),
+								array(
 									'name'       => 'wplf_rewrite_lost_pw',
 									'std'        => '0',
 									'label'      => __( 'Lost Password' ),
@@ -156,27 +177,6 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 										array(
 											'name'       => 'wplf_rewrite_lost_pw_slug',
 											'std'        => 'lost-password',
-											'pre'        => '<code>' . home_url() . '/</code>',
-											'post'       => '',
-											'type'       => 'textbox',
-											'attributes' => array(),
-											'disabled' => parent::permalinks_disabled()
-										)
-									)
-								),
-								array(
-									'name'       => 'wplf_rewrite_register',
-									'std'        => '0',
-									'label'      => __( 'Register' ),
-									'cb_label'   => __( 'Enable' ),
-									'type'       => 'checkbox',
-									'attributes' => array(),
-									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=register</code>',
-									'disabled' => parent::permalinks_disabled(),
-									'fields' => array(
-										array(
-											'name'       => 'wplf_rewrite_register_slug',
-											'std'        => 'register',
 											'pre'        => '<code>' . home_url() . '/</code>',
 											'post'       => '',
 											'type'       => 'textbox',
