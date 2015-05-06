@@ -35,7 +35,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 
 		$thankyou_notice = sprintf( __( 'Thank you for registering.  Please check your email for your activation link.<br><br>If you do not receive the email please request a <a href="%s">password reset</a> to have the email sent again.' ), wp_lostpassword_url() );
 		$template        = new WP_Login_Flow_Template();
-		$notice          = $template->generate( 'wplf_notice_activation_required', $thankyou_notice );
+		$thankyou_notice          = $template->generate( 'wplf_notice_activation_required', $thankyou_notice );
 		login_header( __( 'Pending Activation' ), '<p class="message reset-pass">' . $thankyou_notice . '</p>' );
 		login_footer();
 		exit;
