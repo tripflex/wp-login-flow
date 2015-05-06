@@ -12,6 +12,32 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 		add_filter( 'registration_redirect', array( $this, 'register_redirect' ), 9999, 1 );
 //		Action right before output of password being reset ( wp-login.php:603 )
 //		add_filter( 'validate_password_reset', array( $this, 'activation_password_set' ), 9999, 1 );
+		add_filter( 'gettext', array( $this, 'change_reset_button' ) );
+
+	}
+
+	/**
+	 * Change Reset Password to Set Password through translation
+	 *
+	 * Since we are using the core lost password to handle activation we need to
+	 * change the button that says Reset Password to Set Password.  This is currently
+	 * handled through core WordPress translation.
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $text
+	 *
+	 * @return string|void
+	 */
+	function change_reset_button( $text ){
+
+		if( $text === 'Reset Password' && isset( $_GET['step'] )){
+			$current_step = filter_input( INPUT_GET, 'step', FILTER_SANITIZE_URL );
+			if( $current_step === 'activate' ) return __( 'Set Password' );
+		}
+
+		return $text;
 
 	}
 
