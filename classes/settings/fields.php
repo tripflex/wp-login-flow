@@ -9,7 +9,7 @@ class WP_Login_Flow_Settings_Fields {
 		$o       = $args[ 'option' ];
 		$checked = checked( $args[ 'value' ], 1, FALSE );
 		$disabled_field = ( isset( $o[ 'disabled' ] ) && $o[ 'disabled' ] ? "disabled=\"disabled\"" : "" );
-		echo "<label><input id=\"{$o['name']}\" type=\"checkbox\" class=\"{$args['class']}\" name=\"{$o['name']}\" value=\"1\" {$args['attributes']} {$checked} {$disabled_field}/> {$o['cb_label']} </label>";
+		echo "<label><input id=\"{$o['name']}\" type=\"checkbox\" class=\"{$args['field_class']}\" name=\"{$o['name']}\" value=\"1\" {$args['attributes']} {$checked} {$disabled_field}/> {$o['cb_label']} </label>";
 		$this->sub_fields( $o );
 		$this->description( $o );
 
@@ -23,7 +23,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 
-		echo "<button id=\"{$o['name']}\" name=\"button_submit\" value=\"{$o['action']}\" type=\"submit\" class=\"button {$args['class']}\" {$args['attributes']}>{$o['caption']}</button>";
+		echo "<button id=\"{$o['name']}\" name=\"button_submit\" value=\"{$o['action']}\" type=\"submit\" class=\"button {$args['field_class']}\" {$args['attributes']}>{$o['caption']}</button>";
 		$this->description( $o );
 
 	}
@@ -35,7 +35,7 @@ class WP_Login_Flow_Settings_Fields {
 		echo "<form method=\"POST\" action=\"{$url}\">";
 		echo "<input type=\"hidden\" name=\"action\" value=\"wp_login_flow_dl_backup\" />";
 		wp_nonce_field( 'wp_login_flow_dl_backup', 'wp_login_flow_dl_backup' );
-		echo "<button id=\"{$o['name']}\" name=\"wp_login_flow_dl_backup\" value=\"{$o['action']}\" type=\"submit\" class=\"button {$args['class']}\" {$args['attributes']}>{$o['caption']}</button>";
+		echo "<button id=\"{$o['name']}\" name=\"wp_login_flow_dl_backup\" value=\"{$o['action']}\" type=\"submit\" class=\"button {$args['field_class']}\" {$args['attributes']}>{$o['caption']}</button>";
 		echo "</form>";
 		$this->description( $o );
 
@@ -45,7 +45,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 
-		echo "<a id=\"{$o['name']}\" href=\"{$o['href']}\" class=\"{$args['class']}\" {$args['attributes']}>{$o['caption']}</a>";
+		echo "<a id=\"{$o['name']}\" href=\"{$o['href']}\" class=\"{$args['field_class']}\" {$args['attributes']}>{$o['caption']}</a>";
 		$this->description( $o );
 
 	}
@@ -54,7 +54,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 
-		echo "<select id=\"{$o['name']}\" class=\"{$args['class']}\" name=\"{$o['name']}\" {$args['attributes']}>";
+		echo "<select id=\"{$o['name']}\" class=\"{$args['field_class']}\" name=\"{$o['name']}\" {$args['attributes']}>";
 
 		foreach ( $o[ 'options' ] as $key => $name ) {
 			$value    = esc_attr( $key );
@@ -73,7 +73,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 
-		echo "<textarea cols=\"50\" rows=\"3\" id=\"{$o['name']}\" class=\"{$args['class']}\" name=\"{$o['name']}\" {$args['attributes']}>";
+		echo "<textarea cols=\"50\" rows=\"3\" id=\"{$o['name']}\" class=\"{$args['field_class']}\" name=\"{$o['name']}\" {$args['attributes']}>";
 		if( isset( $o['value'] ) ) echo esc_textarea( $o[ 'value' ] );
 		echo "</textarea>";
 		$this->description( $o );
@@ -84,7 +84,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 		$disabled_field = ( isset( $o[ 'disabled' ] ) && $o[ 'disabled' ] ? "disabled=\"disabled\"" : "");
-		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"{$args['class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} {$disabled_field}/>";
+		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"{$args['field_class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} {$disabled_field}/>";
 		$this->description( $o );
 
 	}
@@ -93,7 +93,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 
-		echo "<input id=\"{$o['name']}\" type=\"number\" min=\"1\" max-length=\"3\" max=\"999\" step=\"1\" class=\"{$args['class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />px";
+		echo "<input id=\"{$o['name']}\" type=\"number\" min=\"1\" max-length=\"3\" max=\"999\" step=\"1\" class=\"{$args['field_class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />px";
 		$this->description( $o );
 
 	}
@@ -102,7 +102,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		wp_enqueue_style( 'wp-color-picker' );
 		$o = $args[ 'option' ];
-		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"wplf-color-picker {$args['class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />";
+		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"wplf-color-picker {$args['field_class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />";
 		$this->description( $o );
 
 	}
@@ -139,7 +139,7 @@ class WP_Login_Flow_Settings_Fields {
 			</li>
 		</ul>
 <?php
-		echo "<input id=\"{$o['name']}\" type=\"hidden\" class=\"wplf-upload {$args['class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" />";
+		echo "<input id=\"{$o['name']}\" type=\"hidden\" class=\"wplf-upload {$args['field_class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" />";
 		echo "<a href=\"#\" data-name=\"{$o['name']}\" data-title=\"{$o['modal_title']}\" data-button=\"{$o['modal_btn']}\" class=\"wplf-upload-show button button-secondary\">" . __( 'Select Logo' ) . "</a>";
 		$this->description( $o );
 

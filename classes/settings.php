@@ -468,7 +468,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								),
 								array(
 									'name'       => 'wplf_reset_default',
-									'class'  => 'button-primary',
+									'field_class'  => 'button-primary',
 									'action' => 'reset_default',
 									'label'      => __( 'Reset to Defaults' ),
 									'caption'   => __( 'Reset to Defaults' ),
@@ -550,6 +550,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 		$placeholder = ( ! empty( $option[ 'placeholder' ] ) ) ? 'placeholder="' . $option[ 'placeholder' ] . '"' : '';
 		$class       = ! empty( $option[ 'class' ] ) ? $option[ 'class' ] : '';
+		$field_class = ! empty( $option[ 'field_class' ] ) ? $option[ 'field_class' ] : '';
 
 		$value       = esc_attr( get_option( $option[ 'name' ] ) );
 		$non_escape_fields = array( 'wpeditor' );
@@ -572,7 +573,8 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 			'placeholder' => $placeholder,
 			'value'       => $value,
 			'attributes'  => $attributes,
-			'class'       => $class
+			'class'       => $class,
+		    'field_class' => $field_class
 		);
 
 		return $field_args;
