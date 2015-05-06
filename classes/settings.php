@@ -383,7 +383,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'desc'       => __( 'This will be used as the subject for the Activation email.  You can use any template tags available in message below.' ),
 									'std'        => 'Account Activation Required',
 									'type'       => 'textbox',
-									'class'      => 'widefat',
+									'field_class'      => 'widefat',
 									'attributes' => array(),
 								),
 								array(
