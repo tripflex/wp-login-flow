@@ -4,6 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class WP_Login_Flow_Rewrite {
 
+	private $step;
 	public static $prevent_rewrite;
 
 	function __construct() {
@@ -14,8 +15,6 @@ class WP_Login_Flow_Rewrite {
 		add_filter( 'register_url', array( $this, 'register_url' ), 9999, 1 );
 		add_filter( 'site_url', array( $this, 'site_url' ), 9999, 4 );
 		add_filter( 'wp_redirect', array( $this, 'site_url_redirect' ), 9999, 2 );
-		add_action( 'login_form_resetpass', array( $this, 'activate_rewrite' ), 9999 );
-		add_action( 'login_form_rp', array( $this, 'activate_password' ), 9999 );
 
 	}
 
@@ -43,60 +42,6 @@ class WP_Login_Flow_Rewrite {
 	}
 
 	/**
-	 * Handle activation redirect to set password
-	 *
-	 * wp-login.php by default sets a cookie, removes the query args, and then redirects
-	 * to wp-login.php?action=rp.  We have to check if cookie is set, and if the request_uri
-	 * matches that, and then we can set the same cookie under our new path, and redirect to
-	 * our activate password URL.
-	 *
-	 *
-	 * @since 1.0.0
-	 *
-	 */
-	function activate_password(){
-
-		$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
-		// Check for activation/lost password cookie and non-permalink URL
-		if ( $_SERVER[ 'REQUEST_URI' ] === '/wp-login.php?action=rp' && isset( $_COOKIE[ $rp_cookie ] ) && 0 < strpos( $_COOKIE[ $rp_cookie ], ':' ) ) {
-			$rp_path = 'wp-login.php?action=rp&step=activate';
-			$redirect = $this->get_url( 'activate', site_url( $rp_path ), 'password' );
-			$value = wp_unslash( $_COOKIE[ $rp_cookie ] );
-			// Set new cookie under our new path, this is required
-			setcookie( $rp_cookie, $value, 0, $rp_path, COOKIE_DOMAIN, is_ssl(), TRUE );
-			wp_redirect( $redirect );
-			exit();
-		}
-
-	}
-
-
-	/**
-	 * Redirect to standard wp-login.php with reset pass details
-	 *
-	 *
-	 * @since 1.0.0
-	 *
-	 */
-	function activate_rewrite(){
-
-		$activation_key = filter_input( INPUT_GET, 'key', FILTER_SANITIZE_STRING );
-		$activation_user = filter_input( INPUT_GET, 'login', FILTER_SANITIZE_EMAIL );
-		list( $rp_path ) = explode( '?', wp_unslash( $_SERVER[ 'REQUEST_URI' ] ) );
-
-		if ( $activation_key && $activation_user && $rp_path != '/wp-login.php' ) {
-			$redirect = site_url( 'wp-login.php?action=rp&key=' . $activation_key . '&login=' . $activation_user );
-			wp_redirect( $redirect );
-			exit;
-		}
-
-	}
-
-	function activate_cookie(){
-		return false;
-	}
-
-	/**
 	 * Filter the site URL.
 	 *
 	 * @since 1.0.0
@@ -115,6 +60,8 @@ class WP_Login_Flow_Rewrite {
 		if( strpos( $url, 'wp-login.php' ) === FALSE ) return $url;
 
 		$step = ( isset( $_GET[ 'step' ] ) && ! empty( $_GET[ 'step' ] ) ? sanitize_text_field( $_GET[ 'step' ] ) : FALSE );
+
+		$this->step = $step;
 
 		if ( $path === "wp-login.php?action=resetpass" ) {
 			if ( $step === 'activate' ) return $this->get_url( 'activate', $url, 'password' );
@@ -145,6 +92,8 @@ class WP_Login_Flow_Rewrite {
 		if ( $path === "wp-login.php?loggedout=true" ) return $this->get_url( 'loggedout', $url );
 		// Activate
 		//if ( $path === "wp-login.php?action=rp&activatecookie=set" ) return $this->get_url( 'activate', $url, 'setpw' );
+
+		$url = stripslashes( $url );
 
 		return $url;
 
@@ -324,7 +273,7 @@ class WP_Login_Flow_Rewrite {
 			add_rewrite_rule( $activate . '/password/?', 'wp-login.php?action=rp&step=activate', 'top' );
 			add_rewrite_rule( $activate . '/invalid/?', 'wp-login.php?action=lostpassword&error=invalidkey', 'top' );
 			add_rewrite_rule( $activate . '/expired/?', 'wp-login.php?action=lostpassword&error=expiredkey', 'top' );
-			add_rewrite_rule( $activate . '/([^/]*)/([^/]*)/', 'wp-login.php?action=rp&key=$2&login=$1', 'top' );
+			add_rewrite_rule( $activate . '/([^/]*)/([^/]*)/', 'wp-login.php?action=rp&key=$2&login=$1&step=activate', 'top' );
 		}
 
 		/** @var self $register */
