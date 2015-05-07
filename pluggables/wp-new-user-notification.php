@@ -54,8 +54,16 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 		 *
 		 */
 
-		// Set meta to not activated
 		$activation = new WP_Login_Flow_User_Activation();
+
+		// Should only be empty if new user created in admin backend and require activation is unchecked
+		if ( empty( $plaintext_pass ) ){
+			// Set account to activated and exit to prevent activation email from being sent
+			$activation->set( $user_id, 1 );
+			return;
+		}
+
+		// Set meta to not activated
 		$activation->set( $user_id, 0 );
 
 		// Values passed to activation email template

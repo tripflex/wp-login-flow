@@ -11,6 +11,27 @@ class WP_Login_Flow_User extends WP_Login_Flow {
 
 		$this->activation = new WP_Login_Flow_User_Activation();
 		$this->auth = new WP_Login_Flow_User_Auth();
+		add_filter( 'gettext', array($this, 'change_user_strings'), 1 );
+	}
+
+	/**
+	 * Change any required strings related to users
+	 *
+	 * Use WordPress built in translation to handle changing wording of any required
+	 * user strings.
+	 *
+	 * @since @@version
+	 *
+	 * @param $text
+	 *
+	 * @return string|void
+	 */
+	function change_user_strings( $text ) {
+
+		if ( $text === 'Send Password?' ) return __( 'Require Activation?' );
+		if ( $text === 'Send this password to the new user by email.' ) return __( 'Send an email to new user with link to activate and set password.' );
+
+		return $text;
 
 	}
 
