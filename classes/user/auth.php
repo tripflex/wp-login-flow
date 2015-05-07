@@ -12,6 +12,12 @@ class WP_Login_Flow_User_Auth extends WP_Login_Flow_User {
 	}
 
 	/**
+	 * Redirect to pending activation
+	 *
+	 * If the user's account is still pending activation, this method
+	 * will redirect to the pending activation page when core WordPress
+	 * attempts to set the authorization cookie (if supplied password is correct).
+	 *
 	 * @param $auth_cookie
 	 * @param $expire
 	 * @param $expiration
@@ -29,6 +35,9 @@ class WP_Login_Flow_User_Auth extends WP_Login_Flow_User {
 	}
 
 	/**
+	 * Check if user is pending activation on login attempt
+	 *
+	 *
 	 * @param $user
 	 * @param $username
 	 * @param $password

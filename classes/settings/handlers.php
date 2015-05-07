@@ -4,6 +4,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
+	/**
+	 * Handle Button Field Type
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $input
+	 *
+	 * @return bool
+	 */
 	public function button_handler( $input ) {
 
 		if ( empty( $_POST[ 'button_submit' ] ) || ( $this->process_count > 0 ) ) return $input;
@@ -26,6 +36,14 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 * Generate backup download
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @return bool
+	 */
 	public function download_backup(){
 
 		check_ajax_referer( "wp_login_flow_dl_backup", "wp_login_flow_dl_backup" );
@@ -53,6 +71,14 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 		die();
 	}
 
+	/**
+	 * Remove all settings options
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @return bool
+	 */
 	public function remove_all() {
 
 		$option_keys = array_column_recursive( WP_Login_Flow_Settings::get_settings(), 'name' );
@@ -66,18 +92,44 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 * Add updated alert
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $message
+	 */
 	function add_updated_alert( $message ) {
 
 		add_settings_error( $this->settings_group, esc_attr( 'settings_updated' ), $message, 'updated' );
 
 	}
 
+	/**
+	 * Add error alert
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $message
+	 */
 	function add_error_alert( $message ) {
 
 		add_settings_error( $this->settings_group, esc_attr( 'settings_error' ), $message, 'error' );
 
 	}
 
+	/**
+	 * Handle submit button
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $input
+	 *
+	 * @return bool
+	 */
 	public function submit_handler( $input ) {
 
 		if ( empty( $input ) || ! empty( $_POST[ 'button_submit' ] ) ) return FALSE;
@@ -85,6 +137,14 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 * Handle permalinks being disabled or enabled
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @return bool
+	 */
 	static function permalinks_disabled(){
 		$permalink = get_option( 'permalink_structure' );
 		if( empty( $permalink ) ) return true;

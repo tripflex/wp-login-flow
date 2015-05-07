@@ -13,6 +13,16 @@ class WP_Login_Flow_Mail extends WP_Login_Flow {
 		add_filter( 'wp_mail_from_name', array( $this, 'name' ) );
 	}
 
+	/**
+	 * Set custom email from email address
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $email
+	 *
+	 * @return mixed|void
+	 */
 	public function email( $email ) {
 
 		$enable_custom_email = get_option( 'wplf_from_email_enable' );
@@ -28,6 +38,16 @@ class WP_Login_Flow_Mail extends WP_Login_Flow {
 		return $email;
 	}
 
+	/**
+	 * Set custom email from name
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $name
+	 *
+	 * @return mixed|void
+	 */
 	public function name( $name ) {
 
 		$enable_custom_name = get_option( 'wplf_from_name_enable' );

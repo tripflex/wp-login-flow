@@ -9,6 +9,21 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 
 	}
 
+
+	/**
+	 * Check user activation status
+	 *
+	 * Checks 'activation_status' user meta for value of 1 which means account
+	 * is activated.  If meta key does not exist that means it's an existing
+	 * user and check option if existing users require activation.
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $user_id
+	 *
+	 * @return bool
+	 */
 	function check( $user_id ) {
 
 		$status = get_user_meta( $user_id, 'activation_status', false );
@@ -26,6 +41,12 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 	}
 
 	/**
+	 * Set activation user meta values
+	 *
+	 * Sets user's activation status, as well as date of activation and signup
+	 * based on whether or not the account is activated already or not.
+	 *
+	 *
 	 * @param      $user_id
 	 * @param int  $activated
 	 */
@@ -40,6 +61,17 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 
 	}
 
+	/**
+	 * Returns activate URL with rewrites if enabled
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $key
+	 * @param $user_login
+	 *
+	 * @return string
+	 */
 	public function get_url( $key, $user_login ){
 
 		if( get_option( 'wplf_rewrite_activate' ) && get_option( 'wplf_rewrite_activate_slug' ) ){
@@ -52,6 +84,16 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 
 	}
 
+	/**
+	 * Send Admin new user activation email
+	 *
+	 * Sends a new user activated email to administrator email.
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $user
+	 */
 	function send_admin_email( $user ){
 
 		// The blogname option is escaped with esc_html on the way into the database in sanitize_option

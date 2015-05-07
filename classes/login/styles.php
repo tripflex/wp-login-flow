@@ -12,6 +12,16 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 
 	}
 
+	/**
+	 * Set custom URL for wp-login.php logo image
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $url
+	 *
+	 * @return mixed|void
+	 */
 	function logo_url( $url ){
 
 		$custom_url = get_option( 'wplf_logo_url' );
@@ -21,6 +31,16 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 
 	}
 
+	/**
+	 * Set custom title for wp-login.php logo image
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param $title
+	 *
+	 * @return mixed|void
+	 */
 	function logo_title( $title ){
 
 		$custom_title = get_option( 'wplf_logo_url_title' );
@@ -30,6 +50,13 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 
 	}
 
+	/**
+	 * Set custom CSS for wp-login.php page
+	 *
+	 *
+	 * @since @@version
+	 *
+	 */
 	public function login_css() {
 
 		$login_bg_color = get_option( 'wplf_bg_color' );

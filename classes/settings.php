@@ -23,6 +23,13 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 	}
 
+	/**
+	 * Add Login Flow to user submenu
+	 *
+	 *
+	 * @since @@version
+	 *
+	 */
 	function submenu(){
 
 		add_submenu_page(
@@ -36,6 +43,13 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 	}
 
+	/**
+	 * Output WP Login Flow Settings Page
+	 *
+	 *
+	 * @since @@version
+	 *
+	 */
 	function output() {
 
 		self::init_settings();
@@ -88,6 +102,13 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 	}
 
+	/**
+	 * Initialize Settings Fields
+	 *
+	 *
+	 * @since @@version
+	 *
+	 */
 	public static function init_settings() {
 
 		self::$settings = apply_filters(
@@ -486,6 +507,14 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
 	}
 
+	/**
+	 * Return Settings Fields
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @return mixed
+	 */
 	public static function get_settings(){
 
 		if( ! self::$settings ) self::init_settings();
@@ -538,6 +567,17 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 		}
 	}
 
+	/**
+	 * Build arguments to pass to settings fields/handlers
+	 *
+	 *
+	 * @since @@version
+	 *
+	 * @param      $option
+	 * @param bool $register
+	 *
+	 * @return array
+	 */
 	function build_args( $option, $register = true ){
 
 		$submit_handler = 'submit_handler';
