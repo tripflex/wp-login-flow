@@ -6,11 +6,13 @@ class WP_Login_Flow_User extends WP_Login_Flow {
 
 	protected $auth;
 	protected $activation;
+	protected $list_table;
 
 	function __construct() {
 
 		$this->activation = new WP_Login_Flow_User_Activation();
 		$this->auth = new WP_Login_Flow_User_Auth();
+		$this->list_table = new WP_Login_Flow_User_List_Table();
 		add_filter( 'gettext', array($this, 'change_user_strings'), 1 );
 	}
 

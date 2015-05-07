@@ -20,21 +20,29 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 	 *
 	 * @since @@version
 	 *
-	 * @param $user_id
+	 * @param        $user_id
+	 *
+	 * @param bool   $existing   Set to TRUE will return 0 for any user that is existing but requires activation.
 	 *
 	 * @return bool
 	 */
-	function check( $user_id ) {
+	function check( $user_id, $existing = false ) {
 
 		$status = get_user_meta( $user_id, 'activation_status', false );
+
 		// Meta key does not exist, probably existing user
 		if ( is_array($status) && empty( $status ) ) {
-			if( get_option( 'wplf_require_existing_activation' ) ) return false;
+			if( get_option( 'wplf_require_existing_activation' ) ) {
+				if( $existing ) return 0;
+				return false;
+			}
+
+			// Existing users don't have to activate ( setting config )
 			return true;
 		}
 
 		// User has activated, activation_status = 1
-		if( is_array( $status ) && $status[0] ) return true;
+		if ( is_array( $status ) && $status[ 0 ] ) return TRUE;
 
 		// User has not activated, activation_status = 0
 		return false;
