@@ -41,8 +41,8 @@
 			if ( $wp_login !== 'wp-login.php?action=rp' ) return false;
 
 			$site_url    = get_site_url();
-			$redirect    = $this->get_url( 'lost_pw', $location, 'rp' );
-			$cookie_path = $this->get_url( 'lost_pw', $location );
+			$redirect    = self::get_url( 'lost_pw', $location, 'rp' );
+			$cookie_path = self::get_url( 'lost_pw', $location );
 			$this->set_newpass_cookie( $site_url, $cookie_path );
 
 			return $redirect;
@@ -67,8 +67,8 @@
 			if ( $this->get_step() !== 'activate' ) return false;
 
 			$site_url    = get_site_url();
-			$redirect    = $this->get_url( 'activate', $location, 'password' );
-			$cookie_path = $this->get_url( 'activate', $location );
+			$redirect    = self::get_url( 'activate', $location, 'password' );
+			$cookie_path = self::get_url( 'activate', $location );
 			$this->set_newpass_cookie( $site_url, $cookie_path );
 
 			return $redirect;
@@ -157,23 +157,23 @@
 			switch( $args ){
 
 				case "?action=lostpassword":
-					return $this->get_url( 'lost_pw', $url );
+					return self::get_url( 'lost_pw', $url );
 					break;
 
 				case "?action=register":
-					return $this->get_url( 'register', $url );
+					return self::get_url( 'register', $url );
 					break;
 
 				case "?checkemail=confirm":
-					return $this->get_url( 'lost_pw', $url, 'confirm' );
+					return self::get_url( 'lost_pw', $url, 'confirm' );
 					break;
 
 				case "?registration=disabled":
-					return $this->get_url( 'register', $url, 'disabled' );
+					return self::get_url( 'register', $url, 'disabled' );
 					break;
 
 				case "?loggedout=true":
-					return $this->get_url( 'loggedout', $url );
+					return self::get_url( 'loggedout', $url );
 					break;
 			}
 
@@ -181,35 +181,35 @@
 			switch( $args ){
 
 				case "?action=resetpass":
-					if ( $this->get_step() === 'setpw' ) return $this->get_url( 'activate', $url, 'password' );
-					return $this->get_url( 'lost_pw', $url, 'resetpass' );
+					if ( $this->get_step() === 'setpw' ) return self::get_url( 'activate', $url, 'password' );
+					return self::get_url( 'lost_pw', $url, 'resetpass' );
 					break;
 
 				case "?action=lostpassword&error=expiredkey":
-					if ( $this->get_step() === 'setpw' ) return $this->get_url( 'activate', $url, 'expired' );
-					return $this->get_url( 'lost_pw', $url, 'expired' );
+					if ( $this->get_step() === 'setpw' ) return self::get_url( 'activate', $url, 'expired' );
+					return self::get_url( 'lost_pw', $url, 'expired' );
 					break;
 
 				case "?action=lostpassword&error=invalidkey":
-					if ( $this->get_step() === 'setpw' ) return $this->get_url( 'activate', $url, 'invalid' );
-					return $this->get_url( 'lost_pw', $url, 'invalid' );
+					if ( $this->get_step() === 'setpw' ) return self::get_url( 'activate', $url, 'invalid' );
+					return self::get_url( 'lost_pw', $url, 'invalid' );
 					break;
 
 				case "?action=rp":
-					if ( $this->get_step() === 'activate' ) return $this->get_url( 'activate', $url, 'password' );
-					return $this->get_url( 'lost_pw', $url, 'rp' );
+					if ( $this->get_step() === 'activate' ) return self::get_url( 'activate', $url, 'password' );
+					return self::get_url( 'lost_pw', $url, 'rp' );
 					break;
 
 				case "?action=activation&step=pending":
-					return $this->get_url( 'activate', $url, 'pending' );
+					return self::get_url( 'activate', $url, 'pending' );
 					break;
 
 				case "?action=rp&step=setpw":
-					return $this->get_url( 'activate', $url, 'password' );
+					return self::get_url( 'activate', $url, 'password' );
 					break;
 
 				case "":
-					return $this->get_url( 'login', $url );
+					return self::get_url( 'login', $url );
 					break;
 
 				default:
@@ -234,7 +234,7 @@
 		 *
 		 * @return bool|null|string
 		 */
-		function get_url( $name, $original_url = FALSE, $extra_rewrite = NULL ) {
+		static function get_url( $name, $original_url = FALSE, $extra_rewrite = NULL ) {
 
 			$enabled = get_option( "wplf_rewrite_{$name}" );
 			$slug    = get_option( "wplf_rewrite_{$name}_slug" );
@@ -376,9 +376,9 @@
 		function login_url( $url, $redirect ) {
 
 			if ( $redirect ) $redirect = "?redirect_to={$redirect}";
-			if ( ! $this->get_url( 'login' ) ) return $url . $redirect;
+			if ( ! self::get_url( 'login' ) ) return $url . $redirect;
 
-			return $this->get_url( 'login' ) . $redirect;
+			return self::get_url( 'login' ) . $redirect;
 		}
 
 		/**
@@ -395,9 +395,9 @@
 		function lostpassword_url( $url, $redirect ) {
 
 			if ( $redirect ) $redirect = "?redirect_to={$redirect}";
-			if ( ! $this->get_url( 'lost_pw' ) ) return $url . $redirect;
+			if ( ! self::get_url( 'lost_pw' ) ) return $url . $redirect;
 
-			return $this->get_url( 'lost_pw' ) . $redirect;
+			return self::get_url( 'lost_pw' ) . $redirect;
 		}
 
 		/**
@@ -412,9 +412,9 @@
 		 */
 		function register_url( $url ) {
 
-			if ( ! $this->get_url( 'register' ) ) return $url;
+			if ( ! self::get_url( 'register' ) ) return $url;
 
-			return $this->get_url( 'register' );
+			return self::get_url( 'register' );
 		}
 
 		/**
