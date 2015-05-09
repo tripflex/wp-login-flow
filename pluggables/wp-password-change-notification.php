@@ -18,7 +18,7 @@ if ( ! function_exists( 'wp_password_change_notification' ) ) :
 		$activation = new WP_Login_Flow_User_Activation();
 
 		// Check is password reset was triggered by user activating account and setting password
-		if ( ! $activation->check( $user->ID ) ) {
+		if ( ! (bool) $activation->check( $user->ID ) ) {
 			$activation->set( $user->ID );
 			$activation->send_admin_email( $user );
 			login_header( __( 'Password Saved' ), '<p class="message reset-pass">' . get_option( 'wplf_notice_activation_thankyou' ) . '<br>You can now <a href="' . esc_url( wp_login_url() ) . '">' . __( 'Log in' ) . '</a></p>' );
