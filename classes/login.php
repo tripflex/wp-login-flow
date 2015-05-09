@@ -13,7 +13,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 		add_filter( 'wp_login_errors', array( $this, 'wp_login_errors' ), 10, 2 );
 		add_filter( 'registration_redirect', array( $this, 'register_redirect' ), 9999, 1 );
 		add_action( 'login_form_rp', array($this, 'activation_redirect'), 9999 );
-		add_filter( 'gettext', array( $this, 'check_for_string_changes' ) );
+		add_filter( 'gettext', array( $this, 'check_for_string_changes' ), 1 );
 //		Action right before output of password being reset ( wp-login.php:603 )
 //		add_filter( 'validate_password_reset', array( $this, 'activation_password_set' ), 9999, 1 );
 //		add_filter( 'login_enqueue_scripts', array( $this, 'login_script' ), 0 );
@@ -77,7 +77,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 */
 	function check_for_string_changes( $text ){
 
-		if( $text === 'Reset Password' && $this->get_step() === 'activate' ){
+		if( $text === 'Reset Password' && ( $this->get_step() === 'activate' || $this->get_step() === 'setpw' ) ){
 			return __( 'Set Password' );
 		}
 
@@ -87,37 +87,6 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 		}
 
 		return $text;
-
-	}
-
-	/**
-	 * Handle activation redirect to set password
-	 *
-	 * wp-login.php by default sets a cookie, removes the query args, and then redirects
-	 * to wp-login.php?action=rp.  We have to check if cookie is set, and if the request_uri
-	 * matches that, and then we can set the same cookie under our new path, and redirect to
-	 * our activate password URL.
-	 *
-	 *
-	 * @since @@version
-	 *
-	 */
-	function activation_redirect() {
-
-		$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
-		$is_rp = esc_url( $_SERVER[ 'REQUEST_URI' ] ) === '/wp-login.php?action=rp' ? TRUE : FALSE;
-		$cookie_has_colon = 0 < strpos( $_COOKIE[ $rp_cookie ], ':' ) ? TRUE : FALSE;
-
-		// Check for activation/lost password cookie and non-permalink URL
-		if ( $this->get_step() === 'activate' && $is_rp && isset( $_COOKIE[ $rp_cookie ] ) && $cookie_has_colon ) {
-			$rp_path  = 'wp-login.php?action=rp&step=activate';
-			$redirect = $this->get_url( 'activate', site_url( $rp_path ), 'password' );
-			$value    = wp_unslash( $_COOKIE[ $rp_cookie ] );
-			// Set new cookie under our new path, this is required
-			setcookie( $rp_cookie, $value, 0, $rp_path, COOKIE_DOMAIN, is_ssl(), TRUE );
-			wp_redirect( $redirect );
-			exit();
-		}
 
 	}
 

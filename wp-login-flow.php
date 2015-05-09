@@ -5,7 +5,7 @@
  * Description: Complete customization of WordPress core wp-login.php styles, structure, permalinks, including activation by email and more!
  * Author:      Myles McNamara
  * Author URI:  http://smyl.es
- * Version:     1.0.0
+ * Version:     1.1.0
  * Text Domain: wp_login_flow
  * Last Updated: @@timestamp
  */
@@ -19,7 +19,7 @@ Class WP_Login_Flow {
 
 	const PLUGIN_SLUG = 'wp-login-flow';
 	const PROD_ID = 'WP Login Flow';
-	const VERSION = '1.0.0';
+	const VERSION = '1.1.0';
 	protected static $instance;
 	public           $wp_login = 'wp-login.php';
 	private          $plugin_slug;
