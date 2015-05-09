@@ -207,20 +207,41 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									)
 								),
 								array(
+									'name'       => 'wplf_rewrite_resetpass',
+									'std'        => '0',
+									'label'      => __( 'Reset Password' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=rp&key=RESETKEY&login=USERNAME</code>',
+									'disabled' => parent::permalinks_disabled(),
+									'fields' => array(
+										array(
+											'name'       => 'wplf_rewrite_resetpass_slug',
+											'std'        => 'reset-password',
+											'pre'        => '<code>' . home_url() . '/</code>',
+											'post'       => '<code>/USERNAME/RESETKEY</code>',
+											'type'       => 'textbox',
+											'attributes' => array(),
+											'disabled' => parent::permalinks_disabled()
+										)
+									)
+								),
+								array(
 									'name'       => 'wplf_rewrite_activate',
 									'std'        => '0',
 									'label'      => __( 'Activate' ),
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=rp&key=SAMPLEACTIVATIONCODE&login=users@email.com</code>',
+									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=rp&step=activate&key=ACTIVATIONCODE&login=USERNAME</code>',
 									'disabled' => parent::permalinks_disabled(),
 									'fields' => array(
 										array(
 											'name'       => 'wplf_rewrite_activate_slug',
 											'std'        => 'activate',
 											'pre'        => '<code>' . home_url() . '/</code>',
-											'post'       => '<code>/users@email.com/SAMPLEACTIVATIONCODE</code>',
+											'post'       => '<code>/USERNAME/ACTIVATIONCODE</code>',
 											'type'       => 'textbox',
 											'attributes' => array(),
 											'disabled' => parent::permalinks_disabled()
@@ -402,7 +423,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'name'       => 'wplf_activation_subject',
 									'label'      => __( 'Email Subject' ),
 									'desc'       => __( 'This will be used as the subject for the Activation email.  You can use any template tags available in message below.' ),
-									'std'        => 'Account Activation Required',
+									'std'        => __( 'Account Activation Required' ),
 									'type'       => 'textbox',
 									'field_class'      => 'widefat',
 									'attributes' => array(),
@@ -411,7 +432,29 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'name'       => 'wplf_activation_message',
 									'label'      => __( 'Email Message' ),
 									'desc'       => __( 'This template will be used as the first email sent to the user to activate their account.<br /><strong>Template Tags:</strong> <code>%wp_activate_url%</code> - Activation URL, <code>%wp_activation_key%</code> - Activation Key, <code>%wp_user_name%</code> - Username, <code>%wp_user_email%</code> - User Email, <code>%wp_site_url%</code> - Site URL' ),
-									'std'        => 'Thank you for registering your account:<br />' . network_home_url( '/' ) . '<br />Username: %wp_user_name%<br /><br />In order to activate your account and set your password, please visit the following address:<br /><a href="%wp_activate_url%">%wp_activate_url%</a>',
+									'std'        => __( 'Thank you for registering your account:' ) . '<br />%wp_site_url%<br />' . sprintf( __( 'Username: %s' ), '%wp_user_name%' ) . '<br /><br />' . __( 'In order to activate your account and set your password, please visit the following address:' ) . '<br /><a href="%wp_activate_url%">%wp_activate_url%</a>',
+									'type'       => 'wpeditor',
+									'attributes' => array(),
+								),
+							)
+						),
+						'lostpassword' => array(
+							'title' => __( 'Lost Password Email Template' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_lostpassword_subject',
+									'label'      => __( 'Email Subject' ),
+									'desc'       => __( 'This will be used as the subject for the Lost Password email.  You can use any template tags available in message below.' ),
+									'std'        => __( 'Password Lost/Changed' ),
+									'type'       => 'textbox',
+									'field_class'      => 'widefat',
+									'attributes' => array(),
+								),
+								array(
+									'name'       => 'wplf_lostpassword_message',
+									'label'      => __( 'Email Message' ),
+									'desc'       => __( 'This template will be used whenever someone submits a lost password request.<br /><strong>Template Tags:</strong> <code>%wp_lost_pw_url%</code> - Lost Password URL, <code>%wp_lost_pw_key%</code> - Lost Password Key, <code>%wp_user_name%</code> - Username, <code>%wp_user_email%</code> - User Email, <code>%wp_site_url%</code> - Site URL' ),
+									'std'        => __( 'Someone requested that the password be reset for the following account:') . '<br />%wp_site_url%<br />' . sprintf( __( 'Username: %s' ), '%wp_user_name%' ) . '<br /><br />' . __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . '<br />' . __( 'To reset your password, visit the following address:' ) . '<br /><a href="%wp_lost_pw_url%">%wp_lost_pw_url%</a>',
 									'type'       => 'wpeditor',
 									'attributes' => array(),
 								),

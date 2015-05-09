@@ -287,6 +287,7 @@
 				add_rewrite_rule( $lost_pw . '/expired/?', 'wp-login.php?action=lostpassword&error=expiredkey', 'top' );
 				add_rewrite_rule( $lost_pw . '/invalid/?', 'wp-login.php?action=lostpassword&error=invalidkey', 'top' );
 				add_rewrite_rule( $lost_pw . '/?', 'wp-login.php?action=lostpassword', 'top' );
+				add_rewrite_rule( $lost_pw . '/([^/]*)/([^/]*)/', 'wp-login.php?action=rp&key=$2&login=$1', 'top' );
 			}
 
 			/** @var self $activate */
