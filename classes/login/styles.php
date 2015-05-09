@@ -114,6 +114,7 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 			body.login div#login h1 a {
 				background-image: url('<?php echo $logo; ?>');
 				background-size: contain;
+				width: auto;
 			}
 
 			<?php endif; ?>
