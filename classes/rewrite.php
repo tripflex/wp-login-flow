@@ -236,18 +236,27 @@
 		 * @param           $name
 		 * @param bool|null $original_url
 		 * @param null      $extra_rewrite
+		 * @param bool      $validate           Check if URL is valid, if not prepend the home_url
 		 *
 		 * @return bool|null|string
 		 */
-		static function get_url( $name, $original_url = FALSE, $extra_rewrite = NULL ) {
+		static function get_url( $name, $original_url = FALSE, $extra_rewrite = NULL, $validate = false ) {
 
-			$enabled = get_option( "wplf_rewrite_{$name}" );
-			$slug    = get_option( "wplf_rewrite_{$name}_slug" );
+			$enabled  = get_option( "wplf_rewrite_{$name}" );
+			$slug     = get_option( "wplf_rewrite_{$name}_slug" );
+			$home_url = home_url();
 
 			// If rewrite not enabled or no slug value return original URL or FALSE
-			if ( ! $enabled || ! $slug ) return $original_url;
+			if ( ! $enabled || ! $slug ) {
+				if( $validate && ! filter_var( $original_url, FILTER_VALIDATE_URL ) ) {
+					// Remove any slashes at start of string
+					$original_url = ltrim( $original_url, '/\\' );
+					$original_url = "{$home_url}/{$original_url}";
+				}
+				return $original_url;
+			}
 
-			$build_url = home_url() . "/{$slug}";
+			$build_url = "{$home_url}/{$slug}";
 			if ( $extra_rewrite ) $build_url .= "/{$extra_rewrite}";
 
 			return $build_url;
