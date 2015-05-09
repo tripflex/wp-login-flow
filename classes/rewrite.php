@@ -21,6 +21,80 @@
 		}
 
 		/**
+		 * Check redirect for lost pw
+		 *
+		 * Check if the redirect is for the set password page for lost password.
+		 * This needs to be checked as the cookie will need to be set again if
+		 * using permalinks/rewrites.
+		 *
+		 *
+		 * @since @@version
+		 *
+		 * @param $location
+		 *
+		 * @return bool|null|string
+		 */
+		function check_redirect_lostpw( $location ){
+
+			// Non-permalink password reset URL used
+			$wp_login = strstr( $location, 'wp-login.php' );
+			if ( $wp_login !== 'wp-login.php?action=rp' ) return false;
+
+			$site_url    = get_site_url();
+			$redirect    = $this->get_url( 'lost_pw', $location, 'rp' );
+			$cookie_path = $this->get_url( 'lost_pw', $location );
+			$this->set_newpass_cookie( $site_url, $cookie_path );
+
+			return $redirect;
+		}
+
+		/**
+		 * Check redirect for activate pw
+		 *
+		 * Check if the redirect is for the set password page for activating account.
+		 * This needs to be checked as the cookie will need to be set again if using
+		 * permalinks/rewrites.
+		 *
+		 *
+		 * @since @@version
+		 *
+		 * @param $location
+		 *
+		 * @return bool|null|string
+		 */
+		function check_redirect_setpw( $location ){
+
+			if ( $this->get_step() !== 'activate' ) return false;
+
+			$site_url    = get_site_url();
+			$redirect    = $this->get_url( 'activate', $location, 'password' );
+			$cookie_path = $this->get_url( 'activate', $location );
+			$this->set_newpass_cookie( $site_url, $cookie_path );
+
+			return $redirect;
+		}
+
+		/**
+		 * Set new cookie for setting password
+		 *
+		 * The core WordPress wp-login.php file sets a cookie based on specific path/location
+		 * and if we're using permalinks/rewrites we need to set the cookie again under our
+		 * new path/location.
+		 *
+		 * @since @@version
+		 *
+		 * @param $site_url
+		 * @param $cookie_path
+		 */
+		function set_newpass_cookie( $site_url, $cookie_path ){
+
+			$value       = sprintf( '%s:%s', wp_unslash( $_GET[ 'login' ] ), wp_unslash( $_GET[ 'key' ] ) );
+			$cookie_path = str_replace( $site_url, '', $cookie_path );
+			setcookie( 'wp-resetpass-' . COOKIEHASH, $value, 0, $cookie_path, COOKIE_DOMAIN, is_ssl(), TRUE );
+
+		}
+
+		/**
 		 * Handle wp_redirect rewrites
 		 *
 		 * The core wp-login.php does not use permalinks/rewrites and as such it has
@@ -36,48 +110,31 @@
 		 */
 		function site_url_redirect( $location, $status ) {
 
-			$wp_login = strstr( $location, 'wp-login.php' );
-
-			$site_url = get_site_url();
-			$full_url = get_site_url( null, $wp_login );
-
+			// If status is 302 redirect, with rp action and key/login set we need to check
+			// if cookie needs to be set for new path.  This must be above wp-login.php check
+			// in case rewrites are used.
 			if( $status === 302 && $this->get_action() === "rp" && isset( $_GET[ 'key' ] ) && isset( $_GET[ 'login' ] ) ){
-
-				// Non-permalink password reset URL used
-				if( $wp_login === 'wp-login.php?action=rp' ){
-					$redirect = $this->get_url( 'lost_pw', $location, 'rp' );
-					$cookie_path = $this->get_url( 'lost_pw', $location );
-				}
-
-				if( $this->get_step() === 'activate' ){
-					$redirect = $this->get_url( 'activate', $location, 'password' );
-					$cookie_path = $this->get_url( 'activate', $location );
-				}
-
-				$value      = sprintf( '%s:%s', wp_unslash( $_GET[ 'login' ] ), wp_unslash( $_GET[ 'key' ] ) );
-				$cookie_path = str_replace( $site_url, '', $cookie_path );
-				setcookie( 'wp-resetpass-' . COOKIEHASH, $value, 0, $cookie_path, COOKIE_DOMAIN, is_ssl(), TRUE );
-
-				return $redirect;
-
+				$redirect = $this->check_redirect_lostpw( $location );
+				$redirect = $this->check_redirect_setpw( $location );
+				if( $redirect ) return $redirect;
 			}
 
 			// No need to process if location to redirect is not wp-login.php
 			if ( strpos( $location, 'wp-login.php' ) === FALSE ) return $location;
 
-			//$is_activation = $this->check_activation_redirect();
-			//if ( $is_activation ) return $is_activation;
-
-
+			$site_url = get_site_url();
 			$path     = str_replace( $site_url, '', $location );
-
 			$location = $this->site_url( $location, $path, NULL, NULL );
 
 			return $location;
 		}
 
 		/**
-		 * Filter the site URL.
+		 * Filter the site URL
+		 *
+		 * This filter is hooked onto the site_url() function and will be called
+		 * anytime that function is used in WordPress.  We have to use this to be
+		 * able to filter out the non-permalink/rewrite URLs.
 		 *
 		 * @since 1.0.0
 		 *
@@ -96,6 +153,7 @@
 
 			$args = strstr( $path, '?' );
 
+			// Basic wp-login.php argument URLs
 			switch( $args ){
 
 				case "?action=lostpassword":
@@ -119,6 +177,7 @@
 					break;
 			}
 
+			// Custom and modified wp-login.php argument URLs
 			switch( $args ){
 
 				case "?action=resetpass":
@@ -162,78 +221,26 @@
 		}
 
 		/**
-		 * Handle activation redirect to set password
+		 * Get WP Login Flow Custom URL
 		 *
-		 * wp-login.php by default sets a cookie, removes the query args, and then redirects
-		 * to wp-login.php?action=rp.  We have to check if cookie is set, and if the request_uri
-		 * matches that, and then we can set the same cookie under our new path, and redirect to
-		 * our activate password URL.
-		 *
-		 *
-		 * @since @@version
-		 *
-		 */
-		function check_activation_redirect() {
-
-			// First check if this is actuall wp-login.php
-			if ( esc_url( $_SERVER[ 'SCRIPT_NAME' ] ) !== '/wp-login.php' ) return;
-
-			// Check for activation/lost password cookie and non-permalink URL
-			if ( $this->get_step() === 'activate' ) {
-
-				$redirect = $this->get_url( 'activate', site_url( 'wp-login.php?action=rp' ), 'password' );
-
-				//$cookie_has_colon = 0 < strpos( $_COOKIE[ $rp_cookie ], ':' ) ? TRUE : FALSE;
-
-				//$value = sprintf( '%s:%s', wp_unslash( $_GET[ 'login' ] ), wp_unslash( $_GET[ 'key' ] ) );
-
-				$rp_cookie        = 'wp-resetpass-' . COOKIEHASH;
-				$value            = wp_unslash( $_COOKIE[ $rp_cookie ] );
-
-				// Set new cookie under our new path, this is required
-				setcookie( $rp_cookie, $value, 0, '/', COOKIE_DOMAIN, is_ssl(), TRUE );
-
-				return $redirect;
-			}
-
-		}
-
-		function set_activate_cookie() {
-
-			$rp_path          = 'wp-login.php?action=rp';
-			$rp_cookie        = 'wp-resetpass-' . COOKIEHASH;
-			$cookie_has_colon = 0 < strpos( $_COOKIE[ $rp_cookie ], ':' ) ? TRUE : FALSE;
-			$value            = wp_unslash( $_COOKIE[ $rp_cookie ] );
-
-			// Set new cookie under our new path, this is required
-			setcookie( $rp_cookie, $value, 0, $rp_path, COOKIE_DOMAIN, is_ssl(), TRUE );
-
-		}
-
-		/**
-		 * Get URL
-		 *
+		 * Internal WP Login Flow method used to create a custom permalink/rewrite URL
+		 * or return the standard URL if rewrites are not enabled/set.
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param      $name
-		 * @param null $original_url
-		 * @param null $extra_rewrite
+		 * @param           $name
+		 * @param bool|null $original_url
+		 * @param null      $extra_rewrite
 		 *
 		 * @return bool|null|string
 		 */
-		function get_url( $name, $original_url = NULL, $extra_rewrite = NULL ) {
+		function get_url( $name, $original_url = FALSE, $extra_rewrite = NULL ) {
 
 			$enabled = get_option( "wplf_rewrite_{$name}" );
 			$slug    = get_option( "wplf_rewrite_{$name}_slug" );
 
-			if ( ! $original_url ) {
-				$url_response = FALSE;
-			} else {
-				$url_response = $original_url;
-			};
 			// If rewrite not enabled or no slug value return original URL or FALSE
-			if ( ! $enabled || ! $slug ) return $url_response;
+			if ( ! $enabled || ! $slug ) return $original_url;
 
 			$build_url = home_url() . "/{$slug}";
 			if ( $extra_rewrite ) $build_url .= "/{$extra_rewrite}";
@@ -270,9 +277,7 @@
 			}
 
 			/** @var self $login */
-			if ( $login ) {
-				add_rewrite_rule( $login . '/?', 'wp-login.php', 'top' );
-			}
+			if ( $login ) add_rewrite_rule( $login . '/?', 'wp-login.php', 'top' );
 
 			/** @var self $lost_pw */
 			if ( $lost_pw ) {
@@ -300,11 +305,8 @@
 			}
 
 			/** @var self $loggedout */
-			if ( $loggedout ) {
+			if ( $loggedout ) add_rewrite_rule( $loggedout . '/?', 'wp-login.php?loggedout=true', 'top' );
 
-				add_rewrite_rule( $loggedout . '/?', 'wp-login.php?loggedout=true', 'top' );
-
-			}
 		}
 
 		/**
@@ -360,7 +362,7 @@
 		}
 
 		/**
-		 *
+		 * Filter for login_url()
 		 *
 		 *
 		 * @since 1.0.0
@@ -379,7 +381,7 @@
 		}
 
 		/**
-		 * Lost Password URL
+		 * Filter for lostpassword_url()
 		 *
 		 *
 		 * @since 1.0.0
@@ -398,7 +400,7 @@
 		}
 
 		/**
-		 * Register URL
+		 * Filter for register_url()
 		 *
 		 *
 		 * @since 1.0.0
@@ -414,6 +416,16 @@
 			return $this->get_url( 'register' );
 		}
 
+		/**
+		 * Get current step
+		 *
+		 * Checks var step and returns if set, otherwise gets current
+		 * step from $_GET['step']
+		 *
+		 * @since @@version
+		 *
+		 * @return mixed
+		 */
 		function get_step() {
 
 			if ( empty( $this->step ) ) $this->step = filter_input( INPUT_GET, 'step', FILTER_SANITIZE_URL );
@@ -422,6 +434,16 @@
 
 		}
 
+		/**
+		 * Get current action
+		 *
+		 * Checks var action and returns if set, otherwise gets current
+		 * action from $_GET['action']
+		 *
+		 * @since @@version
+		 *
+		 * @return mixed
+		 */
 		function get_action() {
 
 			if ( empty( $this->action ) ) $this->action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_URL );
