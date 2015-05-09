@@ -18,7 +18,7 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 	 * user and check option if existing users require activation.
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param        $user_id
 	 *
@@ -73,7 +73,7 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 	 * Returns activate URL with rewrites if enabled
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $key
 	 * @param $user_login
@@ -98,7 +98,7 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 	 * Sends a new user activated email to administrator email.
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $user
 	 */

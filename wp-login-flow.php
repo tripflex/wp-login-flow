@@ -2,12 +2,15 @@
 /**
  * Plugin Name: WP Login Flow
  * Plugin URI:  http://plugins.smyl.es
- * Description: Complete customization of WordPress core wp-login.php styles, structure, permalinks, including activation by email and more!
+ * Description: Complete wp-login.php customization, including rewrites, require email activation, email templates, custom colors, logo, link, responsiveness, border radius, and more!
  * Author:      Myles McNamara
  * Author URI:  http://smyl.es
- * Version:     1.1.0
- * Text Domain: wp_login_flow
+ * Version:     2.0.0
  * Last Updated: @@timestamp
+ * Domain Path: /languages
+ * Text Domain: wp_login_flow
+ * Tested up to: 4.2.2
+ * Requires at least: 4.1
  */
 
 // Exit if accessed directly
@@ -19,7 +22,7 @@ Class WP_Login_Flow {
 
 	const PLUGIN_SLUG = 'wp-login-flow';
 	const PROD_ID = 'WP Login Flow';
-	const VERSION = '1.1.0';
+	const VERSION = '2.0.0';
 	protected static $instance;
 	public           $wp_login = 'wp-login.php';
 	private          $plugin_slug;
@@ -54,11 +57,26 @@ Class WP_Login_Flow {
 
 	}
 
+	/**
+	 * Check if activation is enabled
+	 *
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool
+	 */
 	function activation_enabled(){
 		if( get_option( 'wplf_require_activation' ) ) return true;
 		return false;
 	}
 
+	/**
+	 * Set rewrites on activate
+	 *
+	 *
+	 * @since 2.0.0
+	 *
+	 */
 	function plugin_activate() {
 
 		$rewrite = new WP_Login_Flow_Rewrite();
@@ -67,6 +85,13 @@ Class WP_Login_Flow {
 
 	}
 
+	/**
+	 * Handle rewrites on deactivate
+	 *
+	 *
+	 * @since 2.0.0
+	 *
+	 */
 	function plugin_deactivate(){
 
 		WP_Login_Flow_Rewrite::$prevent_rewrite = TRUE;
@@ -74,12 +99,26 @@ Class WP_Login_Flow {
 
 	}
 
+	/**
+	 * Executed on uninstall
+	 *
+	 *
+	 * @since 2.0.0
+	 *
+	 */
 	static function plugin_uninstall(){
 
 		delete_option( 'WP_LOGIN_FLOW_VERSION' );
 
 	}
 
+	/**
+	 * Notices on activation
+	 *
+	 *
+	 * @since 2.0.0
+	 *
+	 */
 	public static function admin_notices() {
 
 		// Check if first activation
@@ -118,6 +157,8 @@ Class WP_Login_Flow {
 	}
 
 	/**
+	 * Add links on plugin page
+	 *
 	 * @param $plugin_meta
 	 * @param $plugin_file
 	 * @param $plugin_data
@@ -153,6 +194,14 @@ Class WP_Login_Flow {
 		return self::$instance;
 	}
 
+	/**
+	 * WP_Login_Flow autoloader
+	 *
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param $class
+	 */
 	public static function autoload( $class ){
 
 		$class_file = str_replace( 'WP_Login_Flow_', '', $class );

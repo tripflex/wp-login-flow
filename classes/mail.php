@@ -17,7 +17,7 @@ class WP_Login_Flow_Mail extends WP_Login_Flow {
 	 * Set custom email from email address
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $email
 	 *
@@ -42,7 +42,7 @@ class WP_Login_Flow_Mail extends WP_Login_Flow {
 	 * Set custom email from name
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $name
 	 *

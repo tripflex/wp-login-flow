@@ -12,7 +12,7 @@ class WP_Login_Flow_Template extends WP_Login_Flow {
 	 * Generate template data
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param null  $option
 	 * @param null  $fallback
@@ -36,7 +36,7 @@ class WP_Login_Flow_Template extends WP_Login_Flow {
 	 * Set and filter available template tags
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $values
 	 *
@@ -59,7 +59,7 @@ class WP_Login_Flow_Template extends WP_Login_Flow {
 	 * Replace template tags with actual values
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param       $content
 	 * @param array $values

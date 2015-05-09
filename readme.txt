@@ -1,34 +1,37 @@
 === WP Login Flow ===
 Contributors: tripflex
 Donate link: https://www.gittip.com/tripflex
-Tags: wp-login, wp-login.php, activation, activate, email, background, responsive, color, login, customize, permalink, rewrite, url, register, lost, forgot, password
+Tags: wp-login, wp-login.php, activation, activate, email, background, responsive, color, login, customize, permalink, rewrite, url, register, lost, forgot, password, template
 Requires at least: 3.8
-Tested up to: 4.1.0
-Stable tag: 1.0.0
+Tested up to: 4.2.2
+Stable tag: 2.0.0
 License: GPLv3
 
-Completely customize the flow (and look) of the core WordPress wp-login.php, including background, logo, custom permalinks (instead of wp-login.php), activate new accounts by email,  default email from details, custom email templates, customize/responsify login/register/lost-password box, and more!
+Complete wp-login.php customization, including rewrites, require email activation, email templates, custom colors, logo, link, responsiveness, border radius, and more!
 
 == Description ==
 
-Looking to customize the core WordPress wp-login.php pages?  Maybe you want to use my `example.com/register` instead of `example.com/wp-login.php?action=register`?  What about emailing users an activation link when they register which lets them set their password? You can do all of this and more, with WP Login Flow.
-
-We all know email is insecure, so why would you want to email your users their password in plain text?  This is what WordPress does by default. 
-
-WP Login Flow uses the core WordPress wp-login.php forgot password methods to send users a link to activate their account, and then set their password.  You can completely customize the activation email, as well as completely rewrite *every* wp-login.php url (register, lost password, login, etc) using your own custom permalinks/rewrites.
-
-You can also completely customize the default WordPress wp-login.php page, including background, logo, url, links, colors, border radius, and more!
-
-WP Login Flow was intended to be completely bloat free, and integrate with the core of WordPress as much as possible.
-
 = Features =
 
-* Activation Link instead of Password in New User Emails
-* Custom permalinks for Login, Register, Lost Password, and Activate
-* Custom wp-login.php background, colors, images, etc.
-* New User, Activation, and Reset Password email templates
-* Customize outgoing email Name and Email ( instead of wordpress@yoursite.com )
-* Remove password field on Jobify Theme registration form ( others integrated by request )
+* Activate account via email with link to set password
+* Custom permalinks/rewrites for Login, Register, Lost Password, and Activate
+* Custom wp-login.php background, colors, images, links, etc.
+* Custom outgoing name/email, and Activation/Reset Password email templates
+* Activation status icons on user list table
+* Supports creating new users from admin (checkbox to require activation)
+* Works with any plugins/themes that use native WP user registation/login
+
+Full rewrite support for *every* wp-login.php url (register, lost password, login, etc) using your own custom permalinks/rewrites.
+
+Full activation by email support, user gets sent a customizable activation email with link to set password through core of WordPress.  You can also customize the lost password email as well.
+
+Completely customize the default WordPress wp-login.php page, including background, logo, url, links, colors, border radius, and more!
+
+WP Login Flow was intended to be completely bloat free, and integrate with the core of WordPress as much as possible.  Any themes, plugins, or other code that uses the native WordPress functions and hooks for registration, lost password, etc, should be supported.
+
+Fully documented code
+
+** Known issue with outdated limit login attempts plugin
 
 [Read more about WP Login Flow](https://github.com/tripflex/wp-login-flow).
 
@@ -65,6 +68,20 @@ The manual installation method involves downloading the plugin and uploading it 
 1. Screenshot 1
 
 == Changelog ==
+
+= 2.0.0 =
+* Complete refactor and rewrite of codebase
+* Fully functional rewrites now
+* Added lost password template
+* Lost password Rewrite added
+* Lost password URL now supports rewrites
+* Fixed thank you notification
+* Fixed activation page going to reset password rewrite
+* Reset Password changed to Set Password on activation pages
+* Added activation status column on user list table
+* Support for new users from admin area (checkbox to require activation)
+* Option to require existing users to activate before they can login again
+* Many other enhancements and improvements
 
 = 1.0.0 =
 * Initial Creation

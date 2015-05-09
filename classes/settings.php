@@ -27,7 +27,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 	 * Add Login Flow to user submenu
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 */
 	function submenu(){
@@ -47,7 +47,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 	 * Output WP Login Flow Settings Page
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 */
 	function output() {
@@ -106,7 +106,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 	 * Initialize Settings Fields
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 */
 	public static function init_settings() {
@@ -554,7 +554,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 	 * Return Settings Fields
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @return mixed
 	 */
@@ -614,7 +614,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 	 * Build arguments to pass to settings fields/handlers
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param      $option
 	 * @param bool $register

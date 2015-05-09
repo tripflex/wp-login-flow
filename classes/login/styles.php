@@ -16,7 +16,7 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 	 * Set custom URL for wp-login.php logo image
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $url
 	 *
@@ -35,7 +35,7 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 	 * Set custom title for wp-login.php logo image
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $title
 	 *
@@ -54,7 +54,7 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 	 * Set custom CSS for wp-login.php page
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 */
 	public function login_css() {

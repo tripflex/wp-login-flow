@@ -22,7 +22,7 @@ class WP_Login_Flow_User extends WP_Login_Flow {
 	 * Use WordPress built in translation to handle changing wording of any required
 	 * user strings.
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $text
 	 *

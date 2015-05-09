@@ -15,7 +15,7 @@ class WP_Login_Flow_Emails_ResetPW extends WP_Login_Flow_Emails {
 	 * Lost Password Email Title
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $title
 	 *
@@ -31,7 +31,7 @@ class WP_Login_Flow_Emails_ResetPW extends WP_Login_Flow_Emails {
 	 * Lost Password Email Message
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 * @since 4.1.0 Added `$user_login` and `$user_data` parameters.
 	 *
 	 * @param string  $message    Default mail message.
@@ -53,16 +53,14 @@ class WP_Login_Flow_Emails_ResetPW extends WP_Login_Flow_Emails {
 			'wp_reset_pw_url'   => $this->reset_url( $key, $user_login )
 		);
 
-		$message = $template->generate( 'wplf_lostpassword_message', $message, $template_data );
-
-		return $message;
+		return $template->generate( 'wplf_lostpassword_message', $message, $template_data );
 	}
 
 	/**
 	 * Generate Password Reset URL
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $key
 	 * @param $user_login

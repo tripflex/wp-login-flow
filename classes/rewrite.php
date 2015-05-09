@@ -28,7 +28,7 @@
 		 * using permalinks/rewrites.
 		 *
 		 *
-		 * @since @@version
+		 * @since 2.0.0
 		 *
 		 * @param $location
 		 *
@@ -59,7 +59,7 @@
 		 * permalinks/rewrites.
 		 *
 		 *
-		 * @since @@version
+		 * @since 2.0.0
 		 *
 		 * @param $location
 		 *
@@ -84,7 +84,7 @@
 		 * and if we're using permalinks/rewrites we need to set the cookie again under our
 		 * new path/location.
 		 *
-		 * @since @@version
+		 * @since 2.0.0
 		 *
 		 * @param $site_url
 		 * @param $cookie_path
@@ -430,7 +430,7 @@
 		 * Checks var step and returns if set, otherwise gets current
 		 * step from $_GET['step']
 		 *
-		 * @since @@version
+		 * @since 2.0.0
 		 *
 		 * @return mixed
 		 */
@@ -448,7 +448,7 @@
 		 * Checks var action and returns if set, otherwise gets current
 		 * action from $_GET['action']
 		 *
-		 * @since @@version
+		 * @since 2.0.0
 		 *
 		 * @return mixed
 		 */

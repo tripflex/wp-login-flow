@@ -24,7 +24,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 * Return current action
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @return mixed
 	 */
@@ -37,7 +37,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 * Return current step
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @return mixed
 	 */
@@ -50,7 +50,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 * Execute login init handling
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 */
 	function login_init(){
@@ -69,7 +69,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 * Since we are using the core WordPress login/register/lostpw (wp-login.php) we need
 	 * to make sure some of the strings match what is actually being done (ie set password instead of reset)
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $text
 	 *
@@ -97,7 +97,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 * or the standard URL if activation is disabled.
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $url
 	 *
@@ -117,7 +117,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 * page then output the custom page.
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $errors
 	 * @param $redirect_to
@@ -140,7 +140,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 * Output default or custom template for custom activation pending page.
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 */
 	function activation_pending_page() {
@@ -161,7 +161,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 * to use our own custom templates we need to sometimes unset those errors to prevent them
 	 * from showing.
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $errors
 	 * @param $unset

@@ -8,7 +8,7 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 	 * Handle Button Field Type
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $input
 	 *
@@ -40,7 +40,7 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 	 * Generate backup download
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @return bool
 	 */
@@ -75,7 +75,7 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 	 * Remove all settings options
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @return bool
 	 */
@@ -96,7 +96,7 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 	 * Add updated alert
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $message
 	 */
@@ -110,7 +110,7 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 	 * Add error alert
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $message
 	 */
@@ -124,7 +124,7 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 	 * Handle submit button
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @param $input
 	 *
@@ -141,7 +141,7 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 	 * Handle permalinks being disabled or enabled
 	 *
 	 *
-	 * @since @@version
+	 * @since 2.0.0
 	 *
 	 * @return bool
 	 */
