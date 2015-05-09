@@ -69,7 +69,8 @@ class WP_Login_Flow_Template extends WP_Login_Flow {
 	function replace_tags( $content, $values = array() ){
 
 		foreach ( $this->get_tags( $values ) as $tag => $value ){
-
+			// Hack to prevent URL issues if wp editor prepends http:// in front of template tag for URL
+			if( filter_var( $value, FILTER_VALIDATE_URL ) ) $content = str_replace( "http://%$tag%", $value, $content );
 			$content = str_replace( "%$tag%", $value, $content );
 		}
 
