@@ -207,7 +207,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									)
 								),
 								array(
-									'name'       => 'wplf_rewrite_resetpass',
+									'name'       => 'wplf_rewrite_reset_pw',
 									'std'        => '0',
 									'label'      => __( 'Reset Password' ),
 									'cb_label'   => __( 'Enable' ),
@@ -217,7 +217,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'disabled' => parent::permalinks_disabled(),
 									'fields' => array(
 										array(
-											'name'       => 'wplf_rewrite_resetpass_slug',
+											'name'       => 'wplf_rewrite_reset_pw_slug',
 											'std'        => 'reset-password',
 											'pre'        => '<code>' . home_url() . '/</code>',
 											'post'       => '<code>/USERNAME/RESETKEY</code>',
@@ -445,7 +445,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'name'       => 'wplf_lostpassword_subject',
 									'label'      => __( 'Email Subject' ),
 									'desc'       => __( 'This will be used as the subject for the Lost Password email.  You can use any template tags available in message below.' ),
-									'std'        => __( 'Password Lost/Changed' ),
+									'std'        => __( 'Password Reset' ),
 									'type'       => 'textbox',
 									'field_class'      => 'widefat',
 									'attributes' => array(),
@@ -453,8 +453,8 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								array(
 									'name'       => 'wplf_lostpassword_message',
 									'label'      => __( 'Email Message' ),
-									'desc'       => __( 'This template will be used whenever someone submits a lost password request.<br /><strong>Template Tags:</strong> <code>%wp_lost_pw_url%</code> - Lost Password URL, <code>%wp_lost_pw_key%</code> - Lost Password Key, <code>%wp_user_name%</code> - Username, <code>%wp_user_email%</code> - User Email, <code>%wp_site_url%</code> - Site URL' ),
-									'std'        => __( 'Someone requested that the password be reset for the following account:') . '<br />%wp_site_url%<br />' . sprintf( __( 'Username: %s' ), '%wp_user_name%' ) . '<br /><br />' . __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . '<br />' . __( 'To reset your password, visit the following address:' ) . '<br /><a href="%wp_lost_pw_url%">%wp_lost_pw_url%</a>',
+									'desc'       => __( 'This template will be used whenever someone submits a lost/reset password request.<br /><strong>Template Tags:</strong> <code>%wp_reset_pw_url%</code> - Reset Password URL, <code>%wp_reset_pw_key%</code> - Reset Password Key, <code>%wp_user_name%</code> - Username, <code>%wp_user_email%</code> - User Email, <code>%wp_site_url%</code> - Site URL' ),
+									'std'        => __( 'Someone requested that the password be reset for the following account:') . '<br />%wp_site_url%<br />' . sprintf( __( 'Username: %s' ), '%wp_user_name%' ) . '<br /><br />' . __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . '<br />' . __( 'To reset your password, visit the following address:' ) . '<br /><a href="%wp_reset_pw_url%">%wp_reset_pw_url%</a>',
 									'type'       => 'wpeditor',
 									'attributes' => array(),
 								),
