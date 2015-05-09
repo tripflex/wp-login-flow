@@ -38,7 +38,10 @@
 
 			// Non-permalink password reset URL used
 			$wp_login = strstr( $location, 'wp-login.php' );
-			if ( $wp_login !== 'wp-login.php?action=rp' ) return false;
+			// Permalink/rewrite password reset URL used
+			$resetpw_rewrite = strpos( $location, get_option( 'wplf_rewrite_reset_pw_slug' ) );
+
+			if ( $wp_login !== 'wp-login.php?action=rp' && $resetpw_rewrite === FALSE ) return false;
 
 			$site_url    = get_site_url();
 			$redirect    = self::get_url( 'lost_pw', $location, 'rp' );
@@ -114,9 +117,11 @@
 			// if cookie needs to be set for new path.  This must be above wp-login.php check
 			// in case rewrites are used.
 			if( $status === 302 && $this->get_action() === "rp" && isset( $_GET[ 'key' ] ) && isset( $_GET[ 'login' ] ) ){
-				$redirect = $this->check_redirect_lostpw( $location );
-				$redirect = $this->check_redirect_setpw( $location );
-				if( $redirect ) return $redirect;
+				$redirect_lostpw = $this->check_redirect_lostpw( $location );
+				if( $redirect_lostpw ) return $redirect_lostpw;
+
+				$redirect_setpw = $this->check_redirect_setpw( $location );
+				if( $redirect_setpw ) return $redirect_setpw;
 			}
 
 			// No need to process if location to redirect is not wp-login.php
@@ -287,8 +292,10 @@
 				add_rewrite_rule( $lost_pw . '/expired/?', 'wp-login.php?action=lostpassword&error=expiredkey', 'top' );
 				add_rewrite_rule( $lost_pw . '/invalid/?', 'wp-login.php?action=lostpassword&error=invalidkey', 'top' );
 				add_rewrite_rule( $lost_pw . '/?', 'wp-login.php?action=lostpassword', 'top' );
-				add_rewrite_rule( $lost_pw . '/([^/]*)/([^/]*)/', 'wp-login.php?action=rp&key=$2&login=$1', 'top' );
 			}
+
+			/** @var self $reset_pw */
+			if( $reset_pw ) add_rewrite_rule( $reset_pw . '/([^/]*)/([^/]*)/', 'wp-login.php?action=rp&key=$2&login=$1', 'top' );
 
 			/** @var self $activate */
 			if ( $activate ) {
