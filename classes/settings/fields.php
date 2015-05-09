@@ -111,7 +111,15 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 
-		$editor = apply_filters( 'login_flow_wp_editor_args', array() );
+		$wp_args = array(
+			'wpautop' => false,
+			'drag_drop_upload' => true,
+		    'editor_height' => 200
+		);
+		$default = get_option( 'default_post_edit_rows', 10 );
+		if ( strpos( $o['name'], 'wplf_notice' ) === 0 ) $wp_args['editor_height'] = 100;
+
+		$editor = apply_filters( 'login_flow_wp_editor_args', $wp_args );
 		if ( ! isset( $o[ 'disabled' ] ) || ! $o[ 'disabled' ] ) wp_editor( $args[ 'value' ], $o[ 'name' ] ,$editor );
 		$this->description( $o );
 
