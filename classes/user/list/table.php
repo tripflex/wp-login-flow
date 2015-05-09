@@ -9,6 +9,15 @@ class WP_Login_Flow_User_List_Table extends WP_Login_Flow_User {
 
 		add_filter( 'manage_users_columns', array( $this, 'add_column' ) );
 		add_action( 'manage_users_custom_column', array( $this, 'column_output' ), 10, 3 );
+		// add_filter( 'user_row_actions', array( $this, 'row_actions' ), 10, 2 );
+	}
+
+	function row_actions( array $actions, WP_User $user ){
+
+		$link                   = admin_url( 'users.php?page=wp-login-flow&activation=toggle&user_id=' . $user->ID );
+		$actions[ 'toggle_activation' ] = '<a href="' . $link . '">' . __( 'Toggle Activation' ) . '</a>';
+
+		return $actions;
 	}
 
 	function add_column( $columns ){
