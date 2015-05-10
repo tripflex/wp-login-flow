@@ -43,10 +43,9 @@
 
 			if ( $wp_login !== 'wp-login.php?action=rp' && $resetpw_rewrite === FALSE ) return false;
 
-			$site_url    = get_site_url();
 			$redirect    = self::get_url( 'lost_pw', $location, 'rp' );
 			$cookie_path = self::get_url( 'lost_pw', $location );
-			$this->set_newpass_cookie( $site_url, $cookie_path );
+			$this->set_newpass_cookie( $cookie_path );
 
 			return $redirect;
 		}
@@ -69,10 +68,9 @@
 
 			if ( $this->get_step() !== 'activate' ) return false;
 
-			$site_url    = get_site_url();
 			$redirect    = self::get_url( 'activate', $location, 'password' );
 			$cookie_path = self::get_url( 'activate', $location );
-			$this->set_newpass_cookie( $site_url, $cookie_path );
+			$this->set_newpass_cookie( $cookie_path );
 
 			return $redirect;
 		}
@@ -84,15 +82,18 @@
 		 * and if we're using permalinks/rewrites we need to set the cookie again under our
 		 * new path/location.
 		 *
-		 * @since 2.0.0
+		 * @since    2.0.0
 		 *
-		 * @param $site_url
 		 * @param $cookie_path
 		 */
-		function set_newpass_cookie( $site_url, $cookie_path ){
+		function set_newpass_cookie( $cookie_path ){
+			$site_url = untrailingslashit( get_option( 'siteurl' ) );
+			$site = parse_url( $site_url );
+
+			$site_path = isset( $site['path'] ) ? untrailingslashit( $site['path'] ) : '';
 
 			$value       = sprintf( '%s:%s', wp_unslash( $_GET[ 'login' ] ), wp_unslash( $_GET[ 'key' ] ) );
-			$cookie_path = str_replace( $site_url, '', $cookie_path );
+			$cookie_path = str_replace( $site_url, $site_path, $cookie_path );
 			setcookie( 'wp-resetpass-' . COOKIEHASH, $value, 0, $cookie_path, COOKIE_DOMAIN, is_ssl(), TRUE );
 
 		}
@@ -231,7 +232,7 @@
 		 * Internal WP Login Flow method used to create a custom permalink/rewrite URL
 		 * or return the standard URL if rewrites are not enabled/set.
 		 *
-		 * @since 1.0.0
+		 * @since 2.0.0
 		 *
 		 * @param           $name
 		 * @param bool|null $original_url
@@ -244,19 +245,20 @@
 
 			$enabled  = get_option( "wplf_rewrite_{$name}" );
 			$slug     = get_option( "wplf_rewrite_{$name}_slug" );
-			$home_url = home_url();
+			// Must get site URL from option instead of site_url to prevent loop
+			$site_url = get_option( 'siteurl' );
 
 			// If rewrite not enabled or no slug value return original URL or FALSE
 			if ( ! $enabled || ! $slug ) {
 				if( $validate && ! filter_var( $original_url, FILTER_VALIDATE_URL ) ) {
 					// Remove any slashes at start of string
 					$original_url = ltrim( $original_url, '/\\' );
-					$original_url = "{$home_url}/{$original_url}";
+					$original_url = "{$site_url}/{$original_url}";
 				}
 				return $original_url;
 			}
 
-			$build_url = "{$home_url}/{$slug}";
+			$build_url = "{$site_url}/{$slug}";
 			if ( $extra_rewrite ) $build_url .= "/{$extra_rewrite}";
 
 			return $build_url;
@@ -392,9 +394,8 @@
 		function login_url( $url, $redirect ) {
 
 			if ( $redirect ) $redirect = "?redirect_to={$redirect}";
-			if ( ! self::get_url( 'login' ) ) return $url . $redirect;
 
-			return self::get_url( 'login' ) . $redirect;
+			return self::get_url( 'login', $url ) . $redirect;
 		}
 
 		/**
@@ -411,9 +412,8 @@
 		function lostpassword_url( $url, $redirect ) {
 
 			if ( $redirect ) $redirect = "?redirect_to={$redirect}";
-			if ( ! self::get_url( 'lost_pw' ) ) return $url . $redirect;
 
-			return self::get_url( 'lost_pw' ) . $redirect;
+			return self::get_url( 'lost_pw', $url ) . $redirect;
 		}
 
 		/**
@@ -428,9 +428,7 @@
 		 */
 		function register_url( $url ) {
 
-			if ( ! self::get_url( 'register' ) ) return $url;
-
-			return self::get_url( 'register' );
+			return self::get_url( 'register', $url );
 		}
 
 		/**
