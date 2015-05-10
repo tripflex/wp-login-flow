@@ -12,7 +12,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 		add_action( 'login_init', array( $this, 'login_init' ) );
 		add_filter( 'wp_login_errors', array( $this, 'wp_login_errors' ), 10, 2 );
 		add_filter( 'registration_redirect', array( $this, 'register_redirect' ), 9999, 1 );
-		add_action( 'login_form_rp', array($this, 'activation_redirect'), 9999 );
+//		add_action( 'login_form_rp', array($this, 'activation_redirect'), 9999 );
 		add_filter( 'gettext', array( $this, 'check_for_string_changes' ), 1 );
 //		Action right before output of password being reset ( wp-login.php:603 )
 //		add_filter( 'validate_password_reset', array( $this, 'activation_password_set' ), 9999, 1 );
@@ -145,10 +145,10 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 */
 	function activation_pending_page() {
 
-		$thankyou_notice = sprintf( __( 'Thank you for registering.  Please check your email for your activation link.<br><br>If you do not receive the email please request a <a href="%s">password reset</a> to have the email sent again.' ), wp_lostpassword_url() );
+		$thankyou_notice = sprintf( __( '<p>Thank you for registering.  Please check your email for your activation link.</p><p>If you do not receive the email please request a <a href="%s">password reset</a> to have the email sent again.</p>' ), '%wp_lost_pw_url%' );
 		$template        = new WP_Login_Flow_Template();
 		$thankyou_notice = $template->generate( 'wplf_notice_activation_required', $thankyou_notice );
-		login_header( __( 'Pending Activation' ), '<p class="message reset-pass">' . $thankyou_notice . '</p>' );
+		login_header( __( 'Pending Activation' ), '<div class="message reset-pass">' . $thankyou_notice . '</div>' );
 		login_footer();
 		exit;
 
