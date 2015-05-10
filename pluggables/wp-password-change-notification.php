@@ -21,7 +21,18 @@ if ( ! function_exists( 'wp_password_change_notification' ) ) :
 		if ( ! (bool) $activation->check( $user->ID ) ) {
 			$activation->set( $user->ID );
 			$activation->send_admin_email( $user );
-			login_header( __( 'Password Saved' ), '<p class="message reset-pass">' . get_option( 'wplf_notice_activation_thankyou' ) . '<br>You can now <a href="' . esc_url( wp_login_url() ) . '">' . __( 'Log in' ) . '</a></p>' );
+
+			$template      = new WP_Login_Flow_Template();
+
+			$template_data = array(
+				'wp_user_name'    => $user->user_login,
+				'wp_user_email'   => $user->user_email
+			);
+
+			$message = '<p>' . __( 'Your account has been successfully activated!' ) . '</p><p>' . sprintf( __( 'You can now <a href="%s">Log In</a>' ), '%wp_login_url%' ) . '</p>';
+			$activation_message = $template->generate( 'wplf_notice_activation_thankyou', $message, $template_data );
+
+			login_header( __( 'Password Saved' ), "<div class=\"message reset-pass\">{$activation_message}</div>" );
 			login_footer();
 			exit;
 		}

@@ -471,7 +471,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								array(
 									'name'       => 'wplf_notice_activation_required',
 									'label'      => __( 'Account Requires Activation Notice' ),
-									'std'        => 'Thank you for registering.  Please check your email for your activation link.<br><br>If you do not receive the email please request a <a href="%wp_lost_pw_url%">password reset</a> to have the email sent again.',
+									'std'        => __( 'Thank you for registering.  Please check your email for your activation link.<br><br>If you do not receive the email please request a <a href="%wp_lost_pw_url%">password reset</a> to have the email sent again.' ),
 									'desc'       => __( 'This notice will be shown to the user when they attempt to login but have not activated their account.<br /><strong>Available Template Tags:</strong> <code>%wp_lost_pw_url%</code>, <code>%wp_site_url%</code>, <code>%wp_login_url%</code>' ),
 									'type'       => 'wpeditor',
 									'attributes' => array(),
@@ -479,7 +479,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								array(
 									'name'       => 'wplf_notice_activation_pending',
 									'label'      => __( 'Pending Activation Notice' ),
-									'std'        => '<strong>ERROR</strong>: Your account is still pending activation, please check your email, or you can request a <a href="%wp_lost_pw_url%">password reset</a> for a new activation code.',
+									'std'        => __( '<strong>ERROR</strong>: Your account is still pending activation, please check your email, or you can request a <a href="%wp_lost_pw_url%">password reset</a> for a new activation code.' ),
 									'desc'       => __( 'This notice will be shown to the user when they attempt to login but have not activated their account.<br /><strong>Available Template Tags:</strong> <code>%wp_lost_pw_url%</code>, <code>%wp_site_url%</code>, <code>%wp_login_url%</code>' ),
 									'type'       => 'wpeditor',
 									'attributes' => array(),
@@ -487,7 +487,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								array(
 									'name'       => 'wplf_notice_activation_thankyou',
 									'label'      => __( 'Successful Activation Notice' ),
-									'std'        => 'Your account has been successfully activated!',
+									'std'        => '<p>' . __( 'Your account has been successfully activated!' ) . '</p><p>' . sprintf( __( 'You can now <a href="%s">Log In</a>'), '%wp_login_url%' ) . '</p>',
 									'desc'       => __( 'This notice will be shown to the user once they activate and set the password for their account.<br /><strong>Available Template Tags:</strong> <code>%wp_lost_pw_url%</code>, <code>%wp_site_url%</code>, <code>%wp_login_url%</code>' ),
 									'type'       => 'wpeditor',
 									'attributes' => array(),
