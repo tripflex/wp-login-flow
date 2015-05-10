@@ -70,7 +70,7 @@ class WP_Login_Flow_Emails_ResetPW extends WP_Login_Flow_Emails {
 	function reset_url( $key, $user_login ){
 
 		$std = "wp-login.php?action=rp&key={$key}&login={$user_login}";
-		return WP_Login_Flow_Rewrite::get_url( 'reset_pw', $std, "{$user_login}/{$key}", true );
+		return WP_Login_Flow_Rewrite::get_url( 'reset_pw', $std, "{$user_login}/{$key}/", true );
 
 	}
 
