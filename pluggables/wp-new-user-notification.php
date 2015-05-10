@@ -56,8 +56,8 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 
 		$activation = new WP_Login_Flow_User_Activation();
 
-		// Should only be empty if new user created in admin backend and require activation is unchecked
-		if ( empty( $plaintext_pass ) ){
+		// Check for cookie being set and a few POST vars to determine if new user created in admin backend and require activation is unchecked
+		if ( isset( $_POST['createuser'] ) && ! isset( $_POST['send_password'] ) && isset( $_COOKIE[ 'wp_logged_in_' . COOKIEHASH ] ) ){
 			// Set account to activated and exit to prevent activation email from being sent
 			$activation->set( $user_id, 1 );
 			return;
