@@ -45,6 +45,9 @@ class WP_Login_Flow_Emails_ResetPW extends WP_Login_Flow_Emails {
 
 		if( ! get_option( 'wplf_lostpassword_message' ) ) return $message;
 
+		$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+		$title = get_option( 'wplf_lostpassword_subject', sprintf( __( '[%s] Password Reset' ), $blogname ) );
+
 		$template = new WP_Login_Flow_Template();
 		$template_data = array(
 			'wp_user_name'      => $user_login,
@@ -53,7 +56,13 @@ class WP_Login_Flow_Emails_ResetPW extends WP_Login_Flow_Emails {
 			'wp_reset_pw_url'   => $this->reset_url( $key, $user_login )
 		);
 
-		return $template->generate( 'wplf_lostpassword_message', $message, $template_data );
+		$message = $template->generate( 'wplf_lostpassword_message', $message, $template_data );
+
+		if ( $message && ! wp_mail( $user_data->user_email, wp_specialchars_decode( $title ), $message, 'Content-type: text/html' ) )
+			wp_die( __( 'The e-mail could not be sent.' ) . "<br />\n" . __( 'Possible reason: your host may have disabled the mail() function.' ) );
+
+		// return false to prevent email from being sent twice
+		return false;
 	}
 
 	/**
