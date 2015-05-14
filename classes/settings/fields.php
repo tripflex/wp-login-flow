@@ -12,7 +12,7 @@ class WP_Login_Flow_Settings_Fields {
 		echo "<label><input id=\"{$o['name']}\" type=\"checkbox\" class=\"{$args['field_class']}\" name=\"{$o['name']}\" value=\"1\" {$args['attributes']} {$checked} {$disabled_field}/> {$o['cb_label']} </label>";
 		$this->sub_fields( $o );
 		$this->description( $o );
-
+		$this->check_permalinks( $o );
 	}
 
 	function default_header( $args ) {
@@ -89,6 +89,21 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	function check_permalinks( $o ){
+
+		if ( ! isset( $o[ 'fields' ] ) || empty( $o[ 'fields' ] ) || ! isset( $o['fields'][0] ) || empty( $o['fields'][0] ) ) return;
+		$field = $o['fields'][0];
+		// No need to check if this is not a rewrite field
+		if ( strpos( $field['name'], 'wplf_rewrite_' ) === FALSE ) return false;
+
+		$path = esc_attr( get_option( $field[ 'name' ], $field['std'] ) );
+		$check_page = get_page_by_path( $path );
+		if( ! $check_page ) return false;
+
+		echo "<div class=\"wplf-rewrite-conflict\">" . __( 'This rewrite could possibly conflict with the ' ) . "<a href=\"" . get_edit_post_link( $check_page->ID ) . "\" target=\"_blank\">{$check_page->post_title} {$check_page->post_type}</a>" . __( ' permalink!' ) . "<br /><small>" . __( 'Your rewrites for WP Login Flow should take precendence over any permalinks but this also means that page will not load correctly now!  You should probably use a different permalink or rewrite.' ) . "</small></div>";
+
+	}
+
 	function spinner_field( $args ) {
 
 		$o = $args[ 'option' ];
@@ -155,8 +170,9 @@ class WP_Login_Flow_Settings_Fields {
 
 	function description( $o ) {
 
-		if ( ! empty( $o[ 'desc' ] ) ) echo "<p class=\"description\">{$o['desc']}</p>";
+		if ( ! empty( $o[ 'desc' ] ) ) echo "<div class=\"wpwlf-description description\">{$o['desc']}</div>";
 
+		return false;
 	}
 
 	function sub_fields( $o ) {
