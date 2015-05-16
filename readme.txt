@@ -2,7 +2,7 @@
 Contributors: tripflex
 Donate link: https://www.gittip.com/tripflex
 Tags: wp-login, wp-login.php, activation, activate, email, background, responsive, color, login, customize, permalink, rewrite, url, register, lost, forgot, password, template
-Requires at least: 3.8
+Requires at least: 4.1
 Tested up to: 4.2.2
 Stable tag: 2.0.0
 License: GPLv3
