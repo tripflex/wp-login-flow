@@ -1,3 +1,6 @@
+BEWARE, THIS PLUGIN MAY NOT BE COMPATIBLE WITH WordPress >= 4.3
+There were many changes in version 4.3 including a major change in the way passwords are handled and how the password reset it handled.  I have not had time to test with 4.3, you have been warned
+
 === WP Login Flow ===
 Contributors: tripflex
 Donate link: https://www.gittip.com/tripflex
