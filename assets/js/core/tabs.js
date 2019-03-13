@@ -1,4 +1,10 @@
 jQuery(function($){
+    var css_editor = false;
+
+    if ( typeof wplf_css_codeeditor !== "undefined" ) {
+        css_editor = wp.codeEditor.initialize( $( '#wplf_custom_css' ), wplf_css_codeeditor );
+    }
+
     $( ".nav-tab-wrapper a" ).click(
         function () {
             $( '.settings_panel' ).hide();
@@ -6,7 +12,10 @@ jQuery(function($){
             $( $( this ).attr( 'href' ) ).show();
             var bg_color = $( '.wp-ui-primary' ).getHexBackgroundColor();
             $( this ).addClass( 'nav-tab-active' ).css( 'background', bg_color );
-            $( '#wplf-all-settings .settings_panel' ).css( 'border', '' )
+            $( '#wplf-all-settings .settings_panel' ).css( 'border', '' );
+            if( $(this).data('tab') === 'custom_page' && css_editor ){
+                css_editor.codemirror.refresh();
+            }
             return false;
         }
     );

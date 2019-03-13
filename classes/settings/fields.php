@@ -74,7 +74,7 @@ class WP_Login_Flow_Settings_Fields {
 		$o = $args[ 'option' ];
 
 		echo "<textarea cols=\"50\" rows=\"3\" id=\"{$o['name']}\" class=\"wplf-textarea {$args['field_class']}\" name=\"{$o['name']}\" {$args['attributes']}>";
-		if( isset( $o['value'] ) ) echo esc_textarea( $o[ 'value' ] );
+		if( isset( $args['value'] ) ) echo esc_textarea($args[ 'value' ]);
 		echo "</textarea>";
 		$this->description( $o );
 
@@ -131,8 +131,9 @@ class WP_Login_Flow_Settings_Fields {
 			'drag_drop_upload' => true,
 		    'editor_height' => 400
 		);
+
 		$default = get_option( 'default_post_edit_rows', 10 );
-		if ( strpos( $o['name'], 'wplf_notice' ) === 0 ) $wp_args['editor_height'] = 100;
+		if ( strpos( $o['name'], 'wplf_notice' ) === 0 ) $wp_args['editor_height'] = 400;
 
 		$editor = apply_filters( 'login_flow_wp_editor_args', $wp_args );
 		if ( ! isset( $o[ 'disabled' ] ) || ! $o[ 'disabled' ] ) wp_editor( $args[ 'value' ], $o[ 'name' ] ,$editor );

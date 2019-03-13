@@ -69,7 +69,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 		<?php
 					foreach ( self::$settings as $key => $tab ) {
 						$title = $tab["title"];
-						echo "<a href=\"#settings-{$key}\" class=\"nav-tab\">{$title}</a>";
+						echo "<a href=\"#settings-{$key}\" class=\"nav-tab\" data-tab=\"{$key}\">{$title}</a>";
 					}
 		?>
 				</h2>

@@ -45,6 +45,19 @@ class WP_Login_Flow_Assets {
 		wp_register_script( 'wplf-scripts', WP_LOGIN_FLOW_PLUGIN_URL . $scripts, array( 'jquery', 'wp-color-picker' ), $scripts_version, TRUE );
 		wp_register_script( 'wplf-pointer', WP_LOGIN_FLOW_PLUGIN_URL . $pointer, array( 'jquery' ), $scripts_version, TRUE );
 
+		if ( function_exists( 'wp_enqueue_code_editor' ) ) {
+
+			// Bail if user disabled CodeMirror.
+			if ( apply_filters( 'wp_login_flow_disable_custom_css_codemirror', false ) ) {
+				return;
+			}
+
+			// Enqueue code editor and settings for Custom CSS
+			$css_settings = wp_enqueue_code_editor( array( 'type' => 'css' ) );
+
+			wp_localize_script( 'wplf-scripts', 'wplf_css_codeeditor', array( 'codeEditor' => $css_settings ) );
+
+		}
 //		$this->enqueue_assets();
 	}
 
@@ -58,6 +71,7 @@ class WP_Login_Flow_Assets {
 		wp_enqueue_style( 'wplf-vendor-styles' );
 		wp_enqueue_script( 'wplf-vendor-scripts' );
 		wp_enqueue_script( 'wplf-scripts' );
+		wp_enqueue_style( 'wp-codemirror' );
 
 	}
 
