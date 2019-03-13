@@ -1,6 +1,13 @@
 BEWARE, THIS PLUGIN MAY NOT BE COMPATIBLE WITH WordPress >= 4.3
 There were many changes in version 4.3 including a major change in the way passwords are handled and how the password reset it handled.  I have not had time to test with 4.3, you have been warned
 
+ALL THE PERMALINK FEATURES STILL WORK CORRECTLY!
+
+I AM CURRENTLY WORKING ON A COMPLETELY NEW UPDATE FOR THE PLUGIN, VERSION 3+ WHICH CAN BE FOUND IN THE V3 BRANCH:
+https://github.com/tripflex/wp-login-flow/tree/v3
+
+ONCE FULLY TESTED, THIS WILL BE MERGED INTO MASTER AND UPDATED ON WORDPRESS SVN/PLUGIN SITE
+
 === WP Login Flow ===
 Contributors: tripflex
 Donate link: https://www.gittip.com/tripflex
