@@ -3,20 +3,23 @@
 @default-wp-color: #eee;
 
 #wplf-all-settings {
+    // To prevent showing empty line below
+    margin-top: -1px;
 
     h2 {
-        font-size: 22px;
+        font-size: 18px;
         font-variant: small-caps;
-        padding: 5px;
+        padding: 6px;
         text-align: center;
         text-transform: full-width;
         margin-top: 0;
+        margin-bottom: 0;
     }
 
     .form-table {
 
         margin-top: 0;
-        background: #fff;
+        background: #f1f1f1;
 
         th {
             padding-left: 20px;
@@ -29,6 +32,7 @@
 
         #wplf-settings-inside {
 //            border: 5px solid @head-color;
+            box-shadow: 0px 0px 5px 1px #CCCCCC;
         }
     }
 
@@ -39,6 +43,23 @@
         margin-bottom: 0px;
         color: #ffed00;
         padding: 8px;
+    }
+
+    .wplf-rewrite-conflict {
+        margin-top: 10px;
+        border: 1px solid #bb0000;
+        background-color: #ffadad;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .wplf-textbox {
+        min-width: 15em;
+    }
+
+    pre {
+        display: inline-block;
+        margin: 0;
     }
 }
 

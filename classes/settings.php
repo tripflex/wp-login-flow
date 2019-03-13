@@ -150,13 +150,13 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc'       => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php</code>',
+									'desc'       => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php</pre>',
 									'disabled' => parent::permalinks_disabled(),
 									'fields'     => array(
 									    array(
 											'name'       => 'wplf_rewrite_login_slug',
 											'std'        => 'login',
-											'pre'        => '<code>' . home_url() . '/</code>',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
 											'post'       => '',
 											'type'       => 'textbox',
 											'attributes' => array(),
@@ -171,14 +171,36 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc'       => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=register</code>',
+									'desc'       => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php?action=register</pre>',
 									'disabled'   => parent::permalinks_disabled(),
+									'endpoints' => array( 'disabled', 'checkemail' ),
 									'fields'     => array(
 										array(
 											'name'       => 'wplf_rewrite_register_slug',
 											'std'        => 'register',
-											'pre'        => '<code>' . home_url() . '/</code>',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
 											'post'       => '',
+											'type'       => 'textbox',
+											'attributes' => array(),
+											'disabled'   => parent::permalinks_disabled()
+										)
+									)
+								),
+								array(
+									'name'       => 'wplf_rewrite_activate',
+									'std'        => '0',
+									'label'      => __( 'Activate' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php?action=rp&key=ACTIVATIONCODE&login=USERNAME</pre>',
+									'disabled'   => parent::permalinks_disabled(),
+									'fields'     => array(
+										array(
+											'name'       => 'wplf_rewrite_activate_slug',
+											'std'        => 'activate',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
+											'post'       => '<pre>/USERNAME/ACTIVATIONCODE</pre>',
 											'type'       => 'textbox',
 											'attributes' => array(),
 											'disabled'   => parent::permalinks_disabled()
@@ -192,13 +214,14 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=lostpassword</code>',
+									'desc' => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php?action=lostpassword</pre>',
+									'endpoints' => array( 'rp', 'resetpass', 'confirm', 'expired', 'invalid' ),
 									'disabled' => parent::permalinks_disabled(),
 									'fields' => array(
 										array(
 											'name'       => 'wplf_rewrite_lost_pw_slug',
 											'std'        => 'lost-password',
-											'pre'        => '<code>' . home_url() . '/</code>',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
 											'post'       => '',
 											'type'       => 'textbox',
 											'attributes' => array(),
@@ -213,35 +236,14 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=rp&key=RESETKEY&login=USERNAME</code>',
+									'desc' => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php?action=rp&key=RESETKEY&login=USERNAME</pre>',
 									'disabled' => parent::permalinks_disabled(),
 									'fields' => array(
 										array(
 											'name'       => 'wplf_rewrite_reset_pw_slug',
 											'std'        => 'reset-password',
-											'pre'        => '<code>' . home_url() . '/</code>',
-											'post'       => '<code>/USERNAME/RESETKEY</code>',
-											'type'       => 'textbox',
-											'attributes' => array(),
-											'disabled' => parent::permalinks_disabled()
-										)
-									)
-								),
-								array(
-									'name'       => 'wplf_rewrite_activate',
-									'std'        => '0',
-									'label'      => __( 'Activate' ),
-									'cb_label'   => __( 'Enable' ),
-									'type'       => 'checkbox',
-									'attributes' => array(),
-									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=rp&step=activate&key=ACTIVATIONCODE&login=USERNAME</code>',
-									'disabled' => parent::permalinks_disabled(),
-									'fields' => array(
-										array(
-											'name'       => 'wplf_rewrite_activate_slug',
-											'std'        => 'activate',
-											'pre'        => '<code>' . home_url() . '/</code>',
-											'post'       => '<code>/USERNAME/ACTIVATIONCODE</code>',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
+											'post'       => '<pre>/USERNAME/RESETKEY</pre>',
 											'type'       => 'textbox',
 											'attributes' => array(),
 											'disabled' => parent::permalinks_disabled()
@@ -255,13 +257,13 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc'       => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?loggedout=true</code>',
+									'desc'       => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php?loggedout=true</pre>',
 									'disabled'   => parent::permalinks_disabled(),
 									'fields'     => array(
 										array(
 											'name'       => 'wplf_rewrite_loggedout_slug',
 											'std'        => 'logout/complete',
-											'pre'        => '<code>' . home_url() . '/</code>',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
 											'post'       => '',
 											'type'       => 'textbox',
 											'attributes' => array(),
@@ -269,6 +271,37 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 										)
 									)
 								),
+							)
+						)
+					)
+				),
+				'redirects' => array(
+					'title'  => __( 'Redirects' ),
+					'sections' => array(
+						'login_redirects' => array(
+							'title'  => __( 'Login Redirects' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_login_redirect',
+									'std'        => '0',
+									'label'      => __( 'Login' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php</pre>',
+									'disabled' => parent::permalinks_disabled(),
+									'fields'     => array(
+									    array(
+											'name'       => 'wplf_rewrite_login_slug',
+											'std'        => 'login',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
+											'post'       => '',
+											'type'       => 'textbox',
+											'attributes' => array(),
+									        'disabled'   => parent::permalinks_disabled()
+									    )
+								    )
+								)
 							)
 						)
 					)
@@ -283,6 +316,24 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'name'  => 'wplf_bg_color',
 									'label' => __( 'Background Color' ),
 									'desc'  => __( 'Use a custom background for the default wp-login.php page.' ),
+									'type'  => 'colorpicker'
+								),
+								array(
+									'name'  => 'wplf_font_color',
+									'label' => __( 'Font Color' ),
+									'desc'  => __( 'Use a custom font color for wp-login.php page.' ),
+									'type'  => 'colorpicker'
+								),
+								array(
+									'name'  => 'wplf_link_color',
+									'label' => __( 'Link Color' ),
+									'desc'  => __( 'Use a custom color for links on the wp-login.php page.' ),
+									'type'  => 'colorpicker'
+								),
+								array(
+									'name'  => 'wplf_link_hover_color',
+									'label' => __( 'Link Hover Color' ),
+									'desc'  => __( 'Use a custom color when hovering over links on the wp-login.php page.' ),
 									'type'  => 'colorpicker'
 								),
 								array(

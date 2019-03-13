@@ -9,7 +9,7 @@ class WP_Login_Flow_Settings_Fields {
 		$o       = $args[ 'option' ];
 		$checked = checked( $args[ 'value' ], 1, FALSE );
 		$disabled_field = ( isset( $o[ 'disabled' ] ) && $o[ 'disabled' ] ? "disabled=\"disabled\"" : "" );
-		echo "<label><input id=\"{$o['name']}\" type=\"checkbox\" class=\"{$args['field_class']}\" name=\"{$o['name']}\" value=\"1\" {$args['attributes']} {$checked} {$disabled_field}/> {$o['cb_label']} </label>";
+		echo "<label><input id=\"{$o['name']}\" type=\"checkbox\" class=\"wplf-checkbox {$args['field_class']}\" name=\"{$o['name']}\" value=\"1\" {$args['attributes']} {$checked} {$disabled_field}/> {$o['cb_label']} </label>";
 		$this->sub_fields( $o );
 		$this->description( $o );
 		$this->check_permalinks( $o );
@@ -23,7 +23,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 
-		echo "<button id=\"{$o['name']}\" name=\"button_submit\" value=\"{$o['action']}\" type=\"submit\" class=\"button {$args['field_class']}\" {$args['attributes']}>{$o['caption']}</button>";
+		echo "<button id=\"{$o['name']}\" name=\"button_submit\" value=\"{$o['action']}\" type=\"submit\" class=\"wplf-button button {$args['field_class']}\" {$args['attributes']}>{$o['caption']}</button>";
 		$this->description( $o );
 
 	}
@@ -45,7 +45,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 
-		echo "<a id=\"{$o['name']}\" href=\"{$o['href']}\" class=\"{$args['field_class']}\" {$args['attributes']}>{$o['caption']}</a>";
+		echo "<a id=\"{$o['name']}\" href=\"{$o['href']}\" class=\"wplf-link {$args['field_class']}\" {$args['attributes']}>{$o['caption']}</a>";
 		$this->description( $o );
 
 	}
@@ -54,7 +54,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 
-		echo "<select id=\"{$o['name']}\" class=\"{$args['field_class']}\" name=\"{$o['name']}\" {$args['attributes']}>";
+		echo "<select id=\"{$o['name']}\" class=\"wplf-select {$args['field_class']}\" name=\"{$o['name']}\" {$args['attributes']}>";
 
 		foreach ( $o[ 'options' ] as $key => $name ) {
 			$value    = esc_attr( $key );
@@ -73,7 +73,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 
-		echo "<textarea cols=\"50\" rows=\"3\" id=\"{$o['name']}\" class=\"{$args['field_class']}\" name=\"{$o['name']}\" {$args['attributes']}>";
+		echo "<textarea cols=\"50\" rows=\"3\" id=\"{$o['name']}\" class=\"wplf-textarea {$args['field_class']}\" name=\"{$o['name']}\" {$args['attributes']}>";
 		if( isset( $o['value'] ) ) echo esc_textarea( $o[ 'value' ] );
 		echo "</textarea>";
 		$this->description( $o );
@@ -84,7 +84,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 		$disabled_field = ( isset( $o[ 'disabled' ] ) && $o[ 'disabled' ] ? "disabled=\"disabled\"" : "");
-		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"{$args['field_class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} {$disabled_field}/>";
+		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"wplf-textbox {$args['field_class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} {$disabled_field}/>";
 		$this->description( $o );
 
 	}
@@ -100,7 +100,7 @@ class WP_Login_Flow_Settings_Fields {
 		$check_page = get_page_by_path( $path );
 		if( ! $check_page ) return false;
 
-		echo "<div class=\"wplf-rewrite-conflict\">" . __( 'This rewrite could possibly conflict with the ' ) . "<a href=\"" . get_edit_post_link( $check_page->ID ) . "\" target=\"_blank\">{$check_page->post_title} {$check_page->post_type}</a>" . __( ' permalink!' ) . "<br /><small>" . __( 'Your rewrites for WP Login Flow should take precendence over any permalinks but this also means that page will not load correctly now!  You should probably use a different permalink or rewrite.' ) . "</small></div>";
+		echo "<div class=\"wplf-rewrite-conflict\">" . __( 'This rewrite conflicts with the ' ) . "<a href=\"" . get_edit_post_link( $check_page->ID ) . "\" target=\"_blank\">{$check_page->post_title} {$check_page->post_type}</a>" . __( ' permalink!' ) . "<br /><small>" . __( 'Your rewrites for WP Login Flow should take precendence over any permalinks but this also means that page will not load correctly now!' ) . "</small><br/><small>" . __( "You should probably use a different permalink or rewrite." ) . "</small></div>";
 
 	}
 
@@ -108,7 +108,7 @@ class WP_Login_Flow_Settings_Fields {
 
 		$o = $args[ 'option' ];
 
-		echo "<input id=\"{$o['name']}\" type=\"number\" min=\"1\" max-length=\"3\" max=\"999\" step=\"1\" class=\"{$args['field_class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />px";
+		echo "<input id=\"{$o['name']}\" type=\"number\" min=\"1\" max-length=\"3\" max=\"999\" step=\"1\" class=\"wplf-number {$args['field_class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />px";
 		$this->description( $o );
 
 	}
@@ -129,7 +129,7 @@ class WP_Login_Flow_Settings_Fields {
 		$wp_args = array(
 			'wpautop' => false,
 			'drag_drop_upload' => true,
-		    'editor_height' => 200
+		    'editor_height' => 400
 		);
 		$default = get_option( 'default_post_edit_rows', 10 );
 		if ( strpos( $o['name'], 'wplf_notice' ) === 0 ) $wp_args['editor_height'] = 100;
@@ -170,7 +170,17 @@ class WP_Login_Flow_Settings_Fields {
 
 	function description( $o ) {
 
-		if ( ! empty( $o[ 'desc' ] ) ) echo "<div class=\"wpwlf-description description\">{$o['desc']}</div>";
+		if ( ! empty( $o[ 'desc' ] ) ) echo "<div class=\"wplf-description description\">{$o['desc']}</div>";
+
+		if ( ! empty( $o[ 'endpoints' ] ) ) {
+			echo "<div class=\"wplf-additional-endpoints\"><strong>";
+			_e( 'Endpoints:' );
+			echo "</strong>";
+			foreach( $o['endpoints'] as $endpoint ){
+				echo "<code class=\"wplf-additional-endpoint\">/{$endpoint}</code>";
+			}
+			echo "</div>";
+		}
 
 		return false;
 	}
