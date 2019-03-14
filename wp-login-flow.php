@@ -22,7 +22,7 @@ Class WP_Login_Flow {
 
 	const PLUGIN_SLUG = 'wp-login-flow';
 	const PROD_ID = 'WP Login Flow';
-	const VERSION = '2.0.0';
+	const VERSION = '3.0.0';
 	protected static $instance;
 	public           $wp_login = 'wp-login.php';
 	private          $plugin_slug;
@@ -40,6 +40,7 @@ Class WP_Login_Flow {
 		add_action( 'init', array( $this, 'load_translations' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 4 );
+		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'settings_plugin_link' ) );
 
 		register_activation_hook( __FILE__, array( $this, 'plugin_activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'plugin_deactivate' ) );
@@ -156,6 +157,12 @@ Class WP_Login_Flow {
 		load_plugin_textdomain( 'wp-login-flow', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
 
+	public function settings_plugin_link( $links ){
+
+		$links[] = '<a href="' . admin_url( '/users.php?page=wp-login-flow' ) . '">' . __( 'Settings' ) . '</a>';
+		return $links;
+	}
+
 	/**
 	 * Add links on plugin page
 	 *
@@ -169,8 +176,10 @@ Class WP_Login_Flow {
 	public function add_plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
 
 		if ( self::PLUGIN_SLUG . '/' . self::PLUGIN_SLUG . '.php' == $plugin_file ) {
-			$plugin_meta[ ] = '<a target="_blank" href="http://github.com/tripflex/' . self::PLUGIN_SLUG . '">' . __( 'GitHub' ) . '</a>';
-			$plugin_meta[ ] = '<a target="_blank" href="http://wordpress.org/plugins/' . self::PLUGIN_SLUG . '">' . __( 'Wordpress' ) . '</a>';
+			$plugin_meta[] = '<a target="_blank" href="https://www.patreon.com/smyles"><span class="dashicons dashicons-heart" style="color: #ca2424; font-size: 15px; line-height: 1.5;"></span></a>';
+			$plugin_meta[] = '<a href="' . admin_url( '/users.php?page=wp-login-flow' ) . '">' . __( 'Settings' ) . '</a>';
+			$plugin_meta[ ] = '<a target="_blank" href="http://github.com/tripflex/' . self::PLUGIN_SLUG . '">' . __( 'Open Source' ) . '</a>';
+			$plugin_meta[ ] = '<a target="_blank" href="http://wordpress.org/plugins/' . self::PLUGIN_SLUG . '">' . __( 'WordPress' ) . '</a>';
 			$plugin_meta[ ] = '<a target="_blank" href="https://www.transifex.com/projects/p/' . self::PLUGIN_SLUG . '">' . __( 'Translate' ) . '</a>';
 		}
 

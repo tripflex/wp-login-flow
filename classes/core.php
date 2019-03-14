@@ -11,6 +11,7 @@ class WP_Login_Flow_Core {
 		new WP_Login_Flow_Mail();
 		new WP_Login_Flow_Rewrite();
 		new WP_Login_Flow_Emails();
+		new WP_Login_Flow_Register();
 
 	}
 

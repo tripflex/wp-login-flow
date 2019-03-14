@@ -115,24 +115,10 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 			'wp_login_flow_settings',
 			array(
 				'rewrites' => array(
-					'title'  => __( 'Rewrites' ),
+					'title'  => __( 'Permalinks' ),
 					'sections' => array(
-						'require_activation' => array(
-							'title'  => __( 'Email Activation' ),
-							'fields' => array(
-								array(
-									'name'       => 'wplf_require_activation',
-									'std'        => '0',
-									'label'      => __( 'Require Activation' ),
-									'cb_label'   => __( 'Enable' ),
-									'type'       => 'checkbox',
-									'attributes' => array(),
-									'desc'       => __( 'This will require new accounts to be verified by email before they are able to login.' ),
-								)
-							)
-						),
 						'enable_rewrites' => array(
-							'title'  => __( 'Enable Rewrites' ),
+							'title'  => __( 'Permalinks/Rewrites' ),
 							'fields' => array(
 								array(
 									'name'       => 'wplf_rewrite_login',
@@ -262,6 +248,71 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 										)
 									)
 								),
+							)
+						)
+					)
+				),
+				'registration' => array(
+					'title'  => __( 'Registration' ),
+					'sections' => array(
+						'require_activation' => array(
+							'title'  => __( 'Account Setup' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_require_activation',
+									'std'        => '1',
+									'label'      => __( 'Require Activation' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Email link to set password in email when new users register. This is default method of registration in WordPress.' ),
+								),
+								array(
+									'name'       => 'wplf_register_set_pw',
+									'std'        => '0',
+									'label'      => __( 'Register with Password' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Show password input fields on registration form, and do not require account activation (disables require activation above)' ),
+								)
+							)
+						),
+						'registration' => array(
+							'title'  => __( 'Registration' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_auto_login',
+									'std'        => '0',
+									'label'      => __( 'Auto Login' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Auto login users after completing registration (regardless of account activation status).  Users will still be required to activate account (if enabled) to login again.' ),
+								),
+								array(
+									'name'       => 'wplf_register_loader',
+									'std'        => '0',
+									'label'      => __( 'Loader' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Add a spinning loader and disable the register button after being clicked (and form validated)' ),
+								)
+							)
+						),
+						'registration_fields' => array(
+							'title'  => __( 'Registration Fields' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_registration_email_as_un',
+									'std'        => '0',
+									'label'      => __( 'Email as Username' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Hide the Username field, and use Email as the username.' ),
+								)
 							)
 						)
 					)
