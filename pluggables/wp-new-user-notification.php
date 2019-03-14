@@ -53,7 +53,6 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 		 *  End WordPress Core password reset key generation
 		 *
 		 */
-
 		$activation = new WP_Login_Flow_User_Activation();
 
 		// Check for cookie being set and a few POST vars to determine if new user created in admin backend and require activation is unchecked
