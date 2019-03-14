@@ -2,8 +2,17 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
+/**
+ * Class WP_Login_Flow_Login_Styles
+ *
+ * @since @@version
+ *
+ */
+class WP_Login_Flow_Login_Styles {
 
+	/**
+	 * WP_Login_Flow_Login_Styles constructor.
+	 */
 	function __construct() {
 
 		add_action( 'login_enqueue_scripts', array( $this, 'login_css' ) );
