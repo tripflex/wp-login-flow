@@ -8,6 +8,7 @@ module.exports = function ( grunt ) {
 			pkg: grunt.file.readJSON( 'package.json' ),
 
 			core: {css: 'assets/css/core', js: 'assets/js/core'},
+			frontend: {css: 'assets/css/frontend', js: 'assets/js/frontend'},
 			vendor: {js: 'assets/js/vendor', css: 'assets/css/vendor'},
 			build: {js: 'assets/js/build', css: 'assets/css/build', dir: 'dist/<%= pkg.version %>/<%= pkg.name %>'},
 			min: {css: 'assets/css', js: 'assets/js'},
@@ -20,11 +21,11 @@ module.exports = function ( grunt ) {
 					tasks: [ 'concat', 'cssmin', 'uglify' ]
 				},
 				css: {
-					files: [ '<%= core.css %>/*.css', '<%= vendor.css %>/*.css' ],
+					files: [ '<%= core.css %>/*.css', '<%= frontend.css %>/*.css', '<%= vendor.css %>/*.css' ],
 					tasks: [ 'concat', 'cssmin', 'uglify' ]
 				},
 				less: {
-					files: [ '<%= core.css %>/*.less' ],
+					files: [ '<%= core.css %>/*.less', '<%= frontend.css %>/*.less' ],
 					tasks: [ 'less' ]
 				}
 
@@ -39,6 +40,15 @@ module.exports = function ( grunt ) {
 					},
 					files: {
 						"<%= core.css %>/style.css": "<%= core.css %>/style.less"
+					}
+				},
+				frontend: {
+					options: {
+						paths: [ "<%= frontend.css %>" ],
+						cleancss: true
+					},
+					files: {
+						"<%= frontend.css %>/frontend.css": "<%= frontend.css %>/frontend.less"
 					}
 				}
 			},
@@ -55,6 +65,17 @@ module.exports = function ( grunt ) {
 					],
 					dest: '<%= build.css %>/<%= pkg.acronym %>.css'
 				},
+				frontendcss: {
+					options: {
+						stripBanners: true,
+						banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+						        '<%= grunt.template.today("yyyy-mm-dd") %> */'
+					},
+					src: [
+						'<%= frontend.css %>/*.css'
+					],
+					dest: '<%= build.css %>/frontend.css'
+				},
 				corejs: {
 					src: [
 						'<%= core.js %>/*.js',
@@ -63,6 +84,15 @@ module.exports = function ( grunt ) {
 
 					],
 					dest: '<%= build.js %>/<%= pkg.acronym %>.js'
+				},
+				frontendjs: {
+					src: [
+						'<%= frontend.js %>/*.js',
+						'<%= frontend.js %>/**/*.js',
+						'<%= frontend.js %>/**/**/*.js'
+
+					],
+					dest: '<%= build.js %>/frontend.js'
 				},
 				vendorcss: {
 					options: {
@@ -88,6 +118,10 @@ module.exports = function ( grunt ) {
 					src: '<%= concat.corecss.dest %>',
 					dest: '<%= min.css %>/<%= pkg.acronym %>.min.css'
 				},
+				frontend: {
+					src: '<%= concat.frontendcss.dest %>',
+					dest: '<%= min.css %>/frontend.min.css'
+				},
 				vendor: {
 					src: '<%= concat.vendorcss.dest %>',
 					dest: '<%= min.css %>/vendor.min.css'
@@ -95,7 +129,7 @@ module.exports = function ( grunt ) {
 			},
 
 			uglify: {
-				vendor: {
+				build: {
 					options: {
 						preserveComments: 'none',
 						compress: {
@@ -319,8 +353,9 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'all', [ 'less', 'concat', 'autoprefixer', 'cssmin', 'uglify' ] );
 	grunt.registerTask( 'css', [ 'less:core', 'concat:corecss', 'autoprefixer', 'cssmin:core', 'concat:vendorcss', 'cssmin:vendor' ] );
-	grunt.registerTask( 'vendor', [ 'concat:vendorcss', 'concat:vendorjs', 'autoprefixer', 'cssmin:vendor', 'uglify:vendor' ] );
-	grunt.registerTask( 'core', [ 'less:core', 'concat:corecss', 'autoprefixer', 'concat:corejs', 'cssmin:core', 'uglify:core' ] );
+	grunt.registerTask( 'vendor', [ 'concat:vendorcss', 'concat:vendorjs', 'autoprefixer', 'cssmin:vendor', 'uglify' ] );
+	grunt.registerTask( 'core', [ 'less:core', 'concat:corecss', 'autoprefixer', 'concat:corejs', 'cssmin:core', 'uglify' ] );
+	grunt.registerTask( 'frontend', [ 'less:frontend', 'concat:frontendcss', 'autoprefixer', 'concat:frontendjs', 'cssmin:frontend', 'uglify' ] );
 	grunt.registerTask( 'since', [ 'replace:since' ] );
 
 	grunt.registerTask(

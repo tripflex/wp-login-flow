@@ -4,15 +4,47 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class WP_Login_Flow_Assets
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_Assets {
 
+	/**
+	 * WP_Login_Flow_Assets constructor.
+	 */
 	function __construct() {
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ), 10 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ), 20 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'death_to_heartbeat' ), 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'pointer' ), 50 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'frontend' ) );
+	}
 
+	/**
+	 * Register Frontend CSS/JS
+	 *
+	 *
+	 * @since @@version
+	 *
+	 */
+	public static function frontend(){
+
+		$styles    = '/assets/css/frontend.min.css';
+		$scripts   = '/assets/js/frontend.min.js';
+		$scripts_version = WP_LOGIN_FLOW_VERSION;
+
+		if ( defined( 'WPLF_DEBUG' ) ) {
+			$styles   = '/assets/css/build/frontend.css';
+			$scripts  = '/assets/js/build/frontend.js';
+			$scripts_version = filemtime( WP_LOGIN_FLOW_PLUGIN_DIR . $scripts );
+		}
+
+		wp_register_style( 'wplf-frontend', WP_LOGIN_FLOW_PLUGIN_URL . $styles );
+		wp_register_script( 'wplf-frontend', WP_LOGIN_FLOW_PLUGIN_URL . $scripts, array( 'jquery' ), $scripts_version, true );
 	}
 
 	/**
@@ -61,6 +93,15 @@ class WP_Login_Flow_Assets {
 //		$this->enqueue_assets();
 	}
 
+	/**
+	 * Enqueue Admin Assets (ONLY ON OUR PAGES!)
+	 *
+	 *
+	 * @param $hook
+	 *
+	 * @since @@version
+	 *
+	 */
 	function enqueue_assets( $hook ) {
 
 		if ( empty( $hook ) || ! empty( $hook ) && ! in_array( $hook, array( 'users_page_wp-login-flow' ) ) ) {
@@ -92,6 +133,14 @@ class WP_Login_Flow_Assets {
 
 	}
 
+	/**
+	 * Enqueue and add Pointer in Admin area
+	 *
+	 *
+	 * @return bool|void
+	 * @since @@version
+	 *
+	 */
 	function pointer() {
 
 		if ( ! current_user_can( 'manage_options' ) ) {

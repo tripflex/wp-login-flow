@@ -1,0 +1,52 @@
+#wplf-loader {
+	display: none;
+	z-index: 99999;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	transform: -webkit-translate(-50%, -50%);
+	transform: -moz-translate(-50%, -50%);
+	transform: -ms-translate(-50%, -50%);
+	font-size: 2em;
+
+	#login-loader-icon {
+		font-size: 2em;
+		width: auto;
+		height: auto;
+	}
+}
+
+#wplf-loader-icon {
+	-webkit-animation: wplfspinner 1s infinite ease-in-out reverse;
+	-moz-animation: wplfspinner 1s infinite ease-in-out reverse;
+	-ms-animation: wplfspinner 1s infinite ease-in-out reverse;
+	animation: wplfspinner 1s infinite ease-in-out reverse;
+}
+
+@-moz-keyframes wplfspinner {
+	from {
+		-moz-transform: rotate(0deg);
+	}
+	to {
+		-moz-transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes wplfspinner {
+	from {
+		-webkit-transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@keyframes wplfspinner {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
