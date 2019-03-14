@@ -129,7 +129,12 @@ class WP_Login_Flow_Settings_Fields {
 		$wp_args = array(
 			'wpautop' => false,
 			'drag_drop_upload' => true,
-		    'editor_height' => 400
+			'editor_height' => 425, // In pixels, takes precedence and has no default value
+			'textarea_rows' => 20,  // Has no visible effect if editor_height is set, default is 20
+			'classes' => 'wplf-wp-editor',
+			'tinymce' => array(
+				'height' => 425
+			)
 		);
 
 		$default = get_option( 'default_post_edit_rows', 10 );

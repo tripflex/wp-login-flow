@@ -6,6 +6,16 @@
     // To prevent showing empty line below
     margin-top: -1px;
 
+    //body#tinymce.wp-editor {
+    //    font-family: Verdana, Arial, Helvetica, sans-serif;
+    //    font-size: 14px
+    //}
+
+    // Stupid wp_editor wont respect textarea height!
+    .wp-editor-wrap iframe {
+        min-height: 150px;
+    }
+
     h2 {
         font-size: 18px;
         font-variant: small-caps;
