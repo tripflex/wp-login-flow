@@ -137,6 +137,18 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
 	}
 
+	public function repeatable_handler( $input ) {
+
+		if ( empty( $input ) || ! empty( $_POST[ 'button_submit' ] ) ) return FALSE;
+
+//		if ( is_array( $input ) ) {
+//			$input = maybe_serialize( $input );
+//		}
+
+		return $input;
+
+	}
+
 	/**
 	 * Handle permalinks being disabled or enabled
 	 *

@@ -88,3 +88,95 @@
 
     }
 }
+
+.wplf-repeatable-wrap {
+
+    .repeatable-fields-handle {
+        font-size: 18px;
+        width: 35px;
+        float: left;
+    }
+
+    .wplf-repeatable-form {
+
+        table:nth-of-type(even) {
+
+            tbody {
+                background-color: #efefef;
+            }
+
+        }
+
+        table {
+            margin: 0px 0px 0px 0px;
+        }
+
+        .repeatable-field {
+            float: left;
+
+            th {
+                width: auto;
+            }
+
+        }
+
+        margin-right: -10px;
+
+        .rowGroup {
+
+            &:first-child {
+                .remove-group-row {
+                    display: none;
+                }
+            }
+            margin-left: -10px;
+            border-bottom: 1px solid #dedede;
+
+            thead {
+                float: left;
+                width: 30px;
+                cursor: grab;
+                height: 40px;
+                text-align: center;
+                background: #dedede;
+
+                :active {
+                    cursor: grabbing;
+                }
+            }
+
+            tbody {
+                border-left: 3px solid #dedede;
+                float: right;
+                width: ~"calc( 100% - 33px )";
+            }
+
+        }
+    }
+
+    @media (min-width: 600px) {
+        .repeatable-option {
+            width: 48%;
+        }
+    }
+
+    .repeatable-option:nth-of-type(n+3):nth-of-type(-n+5) {
+        width: 25%;
+        margin-left: 5%;
+    }
+
+    .repeatable-option:nth-of-type(even) {
+        th {
+            padding-left: 10px;
+        }
+    }
+
+    .repeatable-fields-remove-td {
+        float: right;
+        margin-bottom: 0px;
+    }
+
+    .repeatable-add-group-row {
+        padding-top: 10px;
+    }
+}

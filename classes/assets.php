@@ -74,7 +74,7 @@ class WP_Login_Flow_Assets {
 		wp_register_style( 'wplf-styles', WP_LOGIN_FLOW_PLUGIN_URL . $styles );
 		wp_register_style( 'wplf-vendor-styles', WP_LOGIN_FLOW_PLUGIN_URL . $vendor_styles );
 		wp_register_script( 'wplf-vendor-scripts', WP_LOGIN_FLOW_PLUGIN_URL . $vendor_scripts, array( 'jquery' ), $scripts_version, TRUE );
-		wp_register_script( 'wplf-scripts', WP_LOGIN_FLOW_PLUGIN_URL . $scripts, array( 'jquery', 'wp-color-picker' ), $scripts_version, TRUE );
+		wp_register_script( 'wplf-scripts', WP_LOGIN_FLOW_PLUGIN_URL . $scripts, array( 'jquery', 'wp-color-picker', 'jquery-ui-sortable' ), $scripts_version, TRUE );
 		wp_register_script( 'wplf-pointer', WP_LOGIN_FLOW_PLUGIN_URL . $pointer, array( 'jquery' ), $scripts_version, TRUE );
 
 		if ( function_exists( 'wp_enqueue_code_editor' ) ) {

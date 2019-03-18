@@ -312,6 +312,43 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'type'       => 'checkbox',
 									'attributes' => array(),
 									'desc'       => __( 'Hide the Username field, and use Email as the username.' ),
+								),
+								array(
+									'name'       => 'wplf_registration_custom_fields',
+									'std'        => '0',
+									'label'      => __( 'Custom Fields' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'desc'       => __( 'Add any additional custom user meta fields you want on the register form.' ),
+									'rfields' => array(
+										'label'    => array(
+											'label'       => __( 'Field Label' ),
+											'type'        => 'textbox',
+											'help' => __( 'Enter the label to show above the input field' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'required' => true
+										),
+										'meta_key'    => array(
+											'label'       => __( 'Meta Key' ),
+											'type'        => 'textbox',
+											'default'     => '',
+											'help'		=> __( 'Enter the exact user meta key to save this value to.  Example would be first_name, last_name, etc.' ),
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										),
+										'required' => array(
+											'cb_label'          => __( 'Required' ),
+											'label'        => __( 'Required' ),
+											'type'           => 'checkbox',
+											'class'          => '',
+											'default'            => '0',
+											'multiple'       => true,
+											'template_style' => true
+										)
+									)
 								)
 							)
 						)
@@ -728,9 +765,8 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 		$class       = ! empty( $option[ 'class' ] ) ? $option[ 'class' ] : '';
 		$field_class = ! empty( $option[ 'field_class' ] ) ? $option[ 'field_class' ] : '';
 
-		$value       = esc_attr( get_option( $option[ 'name' ] ) );
-		$non_escape_fields = array( 'wpeditor' );
-		if( in_array( $option['type'], $non_escape_fields ) ) $value = get_option( $option['name'] );
+		$non_escape_fields = array( 'wpeditor', 'repeatable' );
+		$value       = in_array( $option['type'], $non_escape_fields ) ? get_option( $option['name'] ) : esc_attr( get_option( $option[ 'name' ] ) );
 
 		$attributes  = "";
 

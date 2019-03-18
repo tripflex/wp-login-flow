@@ -31,6 +31,22 @@ jQuery(function($){
     );
 
     $( '.nav-tab-wrapper a:first' ).click();
+
+    $( '#wplf_register_set_pw' ).click( function(){
+	    if ( $( this ).is( ':checked' ) ) {
+		    $( '#wplf_require_activation' ).prop( 'checked', false );
+	    }
+    });
+
+    $( '#wplf_require_activation' ).click( function(){
+
+    	if( $(this).is(':checked') ){
+		    $( '#wplf_register_set_pw' ).prop( 'checked', false );
+	    }
+
+    });
+
+
 });
 
 jQuery.fn.getHexBackgroundColor = function () {

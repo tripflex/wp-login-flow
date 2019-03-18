@@ -61,17 +61,7 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 
 	}
 
-	/**
-	 * Add Password and/or Custom Registration Fields
-	 *
-	 *
-	 * @since @@version
-	 *
-	 */
-	public function register_fields(){
-		if( get_option( 'wplf_registration_email_as_un', false ) ){
-			echo "<style>#registerform > p:first-child { display: none; }</style>";
-		}
+	public function output_pw_fields(){
 
 		if ( get_option( "wplf_register_set_pw", false ) ) {
 			wp_enqueue_script( 'password-strength-meter' );
@@ -108,6 +98,48 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 			<p class="description indicator-hint"><?php echo wp_get_password_hint(); ?></p><br class="clear"/>
 			<?php
 		}
+
+	}
+
+	/**
+	 * Add Password and/or Custom Registration Fields
+	 *
+	 *
+	 * @since @@version
+	 *
+	 */
+	public function register_fields(){
+		if( get_option( 'wplf_registration_email_as_un', false ) ){
+			echo "<style>#registerform > p:first-child { display: none; }</style>";
+		}
+
+		$custom_fields = get_option( 'wplf_registration_custom_fields', array() );
+		$pw_custom_order = false;
+
+		if( ! empty( $custom_fields ) ){
+
+			foreach( $custom_fields as $custom_field ){
+				$name = esc_attr( $custom_field['meta_key'] );
+				// Allow setting a field with "password" meta key to define where to output password field among other custom fields
+				if( $name === 'password' && get_option( "wplf_register_set_pw", false ) ){
+					$this->output_pw_fields();
+					$pw_custom_order = true;
+					continue;
+				}
+				echo "<p class=\"\">";
+				echo "<label for=\"{$name}\">";
+				echo $custom_field['label'];
+				echo "<input type=\"text\" class=\"input\" name=\"{$name}\" value=\"\" size=\"25\">";
+				echo "</label>";
+				echo "</p>";
+			}
+
+		}
+
+		// If not defined with custom order, output at end of form
+		if( ! $pw_custom_order ){
+			$this->output_pw_fields();
+		}
 	}
 
 	/**
@@ -132,8 +164,29 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 		}
 
 		if ( get_option( "wplf_register_set_pw", false ) ) {
-			if ( empty( $_POST['pass1'] ) || ! empty( $_POST['pass1'] ) && trim( $_POST['pass1'] ) == '' ) {
+			if ( empty( $_POST['pass1'] ) || ( ! empty( $_POST['pass1'] ) && trim( $_POST['pass1'] ) == '' ) ) {
 				$errors->add( 'password1_error', __( '<strong>ERROR</strong>: Password field is required.' ) );
+			}
+		}
+
+		$custom_fields = get_option( 'wplf_registration_custom_fields', array() );
+
+		if ( ! empty( $custom_fields ) ) {
+			foreach( $custom_fields as $custom_field ){
+				$mk = $custom_field['meta_key'];
+				// we don't do any handling for password meta key fields -- this is used for custom sorting of fields
+				if( $mk === 'password' ){
+					continue;
+				}
+				if( array_key_exists( 'required', $custom_field ) && ! empty( $custom_field['required'] ) ){
+
+					$custom_value = array_key_exists( $mk, $_POST ) ? sanitize_text_field( $_POST[ $mk ] ) : false;
+					if( empty( $custom_value ) ){
+						$errors->add( "{$mk}_error", sprintf( __( '<strong>ERROR</strong>: %s field is required.' ), $custom_field['label'] ) );
+						break;
+					}
+
+				}
 			}
 		}
 
@@ -150,6 +203,26 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 *
 	 */
 	public function user_registered( $user_id ){
+
+		$custom_fields   = get_option( 'wplf_registration_custom_fields', array() );
+
+		if ( ! empty( $custom_fields ) ) {
+
+			foreach ( $custom_fields as $custom_field ) {
+				$mk = $custom_field['meta_key'];
+				// we don't do any handling for password meta key fields -- this is used for custom sorting of fields
+				if ( $mk === 'password' ) {
+					continue;
+				}
+
+				// Validation is done for required fields in $this->registration_errors()
+				$custom_value = array_key_exists( $mk, $_POST ) ? sanitize_text_field( $_POST[ $mk ] ) : false;
+				if( ! empty( $custom_value ) ){
+					update_user_meta( $user_id, $mk, $custom_value );
+				}
+			}
+
+		}
 
 		if ( get_option( "wplf_auto_login", false ) ) {
 			wp_set_current_user( $user_id );

@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class WP_Login_Flow_Settings_Fields {
 
 	function checkbox_field( $args ) {
-
+		$args = $this->parse_args( $args );
 		$o       = $args[ 'option' ];
 		$checked = checked( $args[ 'value' ], 1, FALSE );
 		$disabled_field = ( isset( $o[ 'disabled' ] ) && $o[ 'disabled' ] ? "disabled=\"disabled\"" : "" );
@@ -80,11 +80,25 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
-	function textbox_field( $args ) {
+	function parse_args( $args ){
 
-		$o = $args[ 'option' ];
+		$args['field_class'] = isset( $args['field_class'] ) ? $args['field_class'] : '';
+		$args['value'] = isset( $args['value'] ) ? $args['value'] : '';
+		$args['placeholder'] = isset( $args['placeholder'] ) ? $args['placeholder'] : '';
+		$args['attributes'] = isset( $args['attributes'] ) ? $args['attributes'] : '';
+		$args['class'] = isset( $args['class'] ) ? $args['class'] : '';
+
+		return $args;
+	}
+
+	function textbox_field( $a ) {
+
+		$a = $this->parse_args( $a );
+
+		$o = $a[ 'option' ];
+
 		$disabled_field = ( isset( $o[ 'disabled' ] ) && $o[ 'disabled' ] ? "disabled=\"disabled\"" : "");
-		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"wplf-textbox {$args['field_class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} {$disabled_field}/>";
+		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"wplf-textbox {$a['field_class']}\" name=\"{$o['name']}\" value=\"{$a['value']}\" {$a['placeholder']} {$a['attributes']} {$disabled_field}/>";
 		$this->description( $o );
 
 	}
@@ -189,6 +203,166 @@ class WP_Login_Flow_Settings_Fields {
 		}
 
 		return false;
+	}
+
+	function repeatable_field( $a ){
+		$o = $a['option'];
+		$values = isset( $a['value'] ) && ! empty( $a['value'] ) ? maybe_unserialize( $a['value'] ) : array();
+		?>
+		<div class="wplf-repeatable-wrap">
+			<div class="existing">
+
+			</div>
+			<div id="wplf-repeatable">
+				<div class="wplf-repeatable-form" id="repeatable-<?php echo esc_attr( $a['option']['name'] ); ?>-form" data-group="<?php echo esc_attr( $a['option']['name'] ); ?>">
+					<?php
+						if( ! empty( $values ) ){
+							foreach( $values as $index => $value ){
+								$this->repeatable_field_template( $a, $value, $index );
+							}
+						}
+					?>
+				</div>
+			</div>
+
+			<?php $this->repeatable_field_template( $a ); ?>
+		</div>
+
+		<?php
+	}
+	function repeatable_field2( $o ){
+		?>
+		<div>
+			<div class="existing">
+
+			</div>
+			<div id="wplf-repeatable">
+				<div id="repeatable-options-form">
+					<table class="form-table rowGroup options-groupitems" id="groupitems" ref="items">
+					   <thead class="options-handle">
+						  <tr>
+							 <td>
+								<div class="fields-handle">☰</div>
+							 </td>
+						  </tr>
+					   </thead>
+					   <tbody>
+						  <tr class="repeatable-option" valign="top" style="">
+							 <th scope="row">
+								<label for="">Label</label>
+							 </th>
+							 <td>
+								<input placeholder="Caption" name="options[option_label][0]" class="widefat options-group-input" type="text" ref="options" id="field_undefined_option_label" value="">
+							 </td>
+						  </tr>
+						  <tr class="repeatable-option" valign="top" style="" id="jmfe-modal-field_undefined_option_value-tr">
+							 <th scope="row">
+								<label for="field_undefined_option_value"><?php _e('Meta Key'); ?></label>
+							 </th>
+							 <td>
+								<input placeholder="value" name="options[option_value][0]" class="widefat options-group-input" type="text" ref="options" id="field_undefined_option_value" value="">
+							 </td>
+						  </tr>
+						  <tr class="repeatable-option" valign="top" style="" id="jmfe-modal-field_undefined_option_default-tr">
+							 <th scope="row">
+								<label for="field_undefined_option_default"><?php _e('Required'); ?></label>
+							 </th>
+							 <td class="jmfe-modal-field_undefined_option_default-td">
+								<p><label style="margin-left: 8px;"><input type="checkbox" class="jmfe-option-default" name="options[option_default][0]" id="field_undefined_option_default_0" value="1"> </label></p>
+							 </td>
+						  </tr>
+						  <tr class="repeatable-option" valign="top" id="jmfe-modal-options-remove-tr">
+							 <td class="options-remove-td">
+								<div class="button button-primary right remove-group-row"><?php _e('Remove'); ?></div>
+							 </td>
+						  </tr>
+					   </tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="add-group-row"><button class="button add-group-row-button" type="button" data-rowtemplate="group-options-tmpl"><?php _e('Add'); ?></button></div>
+		</div>
+
+		<?php
+	}
+
+	function repeatable_field_template( $a, $value = false, $index = false ){
+		$o = $a['option'];
+		$existing_output = ! empty( $value ) && $index !== false;
+
+		if ( isset( $o['rfields'] ) && ! empty( $o['rfields'] ) ) {
+
+			if( ! $existing_output ){
+				echo "<div class=\"repeatable-add-group-row\"><button class=\"button repeatable-add-group-row-button\" type=\"button\" data-group=\"" . $o['name'] . "\" data-rowtemplate=\"group-" . $o['name'] . "-tmpl\">" . __( 'Add Another' ) . "</button></div>\r\n";
+				echo "<script type=\"text/html\" id=\"group-" . $o['name'] . "-tmpl\">\r\n";
+			}
+
+			echo "	<table class=\"form-table rowGroup {$o['name']}-groupitems\" id=\"groupitems\" ref=\"items\">\r\n";
+			?>
+			<thead class="repeatable-fields-handle">
+					<tr>
+						<td>
+							<div class="<?php echo esc_attr( $o['name'] ); ?>-repeatable-fields-handle">☰</div>
+						</td>
+					</tr>
+				</thead>
+			<?php
+			echo "		<tbody>\r\n";
+			$c = 0;
+			foreach ( $o['rfields'] as $field => $settings ) {
+				$c++;
+				$type_func = $settings['type'] . '_field';
+				if ( ! method_exists( $this, $type_func ) ) {
+					continue;
+				}
+				$count = ! $existing_output ? "__count__" : "{$index}";
+
+				//dump($settings);
+				$id        = 'field_{{id}}_' . $field;
+				$name      = "{$o['name']}[{$count}][{$field}]";
+//				$label     = '{{label_' . $field . '}}';
+				$label = $settings['label'];
+
+				$row_style = ( isset( $settings['template_style'] ) ? '{{style_' . $field . '}}' : '' );
+				$caption   = ( isset( $settings['caption'] ) ? $settings['caption'] : '' );
+				echo "<tr class=\"repeatable-field repeatable-fields-{$o['name']}\" valign=\"top\" style=\"" . $row_style . "\" id=\"repeatable-fields-" . $id . "-tr\">\r\n";
+				echo "<th scope=\"row\">\r\n";
+				echo "<label for=\"" . $id . "\">" . $label . "</label>\r\n";
+				echo "</th>\r\n";
+				echo "<td class=\"repeatable-fields-{$id}-td\">\r\n";
+
+				$gen_options = array(
+					'name' => $name
+				);
+
+				$new_options = array_merge( $settings, $gen_options );
+				$type_args = $existing_output ? array( 'value' => isset( $value[ $field ] ) ? $value[ $field ] : "", 'option' => $new_options ) : array( 'option' => $new_options );
+
+				if( isset( $settings['required'] ) && ! empty( $settings['required'] ) ){
+					$type_args['attributes'] = "required=\"required\"";
+				}
+
+				$this->$type_func( $type_args );
+
+				if ( ! empty( $caption ) ) {
+					echo "<p class=\"description\">" . $caption . "</p>\r\n";
+				}
+				echo "</td>\r\n";
+				echo "</tr>\r\n";
+				if ( $c === count( $o['rfields'] ) ) {
+					echo "<tr class=\"repeatable-fields-{$o['name']}\" valign=\"top\" id=\"repeatable-fields-" . $o['name'] . "-remove-tr\">\r\n";
+					echo "<td class=\"repeatable-fields-remove-td repeatable-fields-{$o['name']}-remove-td\">\r\n";
+					echo "  <div data-group=\"{$o['name']}\" class=\"button button-primary right repeatable-fields-remove-group-row\">" . __( 'Remove' ) . '</div>';
+					echo '</td></tr>';
+				}
+			}
+			echo "		</tbody>\r\n";
+			echo "	</table>\r\n";
+			if ( ! $existing_output ) {
+				echo "</script>";
+			}
+		}
 	}
 
 	function sub_fields( $o ) {
