@@ -7,8 +7,9 @@ class WP_Login_Flow_User_Auth extends WP_Login_Flow_User {
 
 	function __construct() {
 
+		// Run at priority 21+ -- after WordPress runs filter for wp_authenticate_username_password and wp_authenticate_email_password
 		add_action( 'authenticate', array( $this, 'check' ), 30, 3 );
-		add_action( 'set_auth_cookie', array( $this, 'attempt_login' ), 20, 5 );
+//		add_action( 'set_auth_cookie', array( $this, 'attempt_login' ), 20, 5 );
 	}
 
 	/**
@@ -45,6 +46,16 @@ class WP_Login_Flow_User_Auth extends WP_Login_Flow_User {
 	 * @return WP_Error
 	 */
 	function check( $user, $username, $password ) {
+
+		/**
+		 * When user successfully logs in, $user will not be null or wp_error, as the filters in
+		 * wp_authenticate_username_password and wp_authenticate_email_password are ran at a lower
+		 * priority than this fn is called in.
+		 */
+		if ( ! empty( $user ) && ! is_wp_error( $user ) ) {
+			// Allow user to login with username/pw is correct (regardless of activation state)
+			return $user;
+		}
 
 		if ( strpos( $username, '@' ) ) {
 			$user_data = get_user_by( 'email', trim( $username ) );

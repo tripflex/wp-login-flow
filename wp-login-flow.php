@@ -127,7 +127,7 @@ Class WP_Login_Flow {
 		if ( WP_LOGIN_FLOW_VERSION != get_option( 'WP_LOGIN_FLOW_VERSION' ) ) {
 			update_option( 'WP_LOGIN_FLOW_VERSION', WP_LOGIN_FLOW_VERSION );
 			$html = '<div class="updated"><p>';
-			$html .= __( 'WP Login Flow is now activated, you can find <strong>Login Flow</strong> under the <strong>Users</strong> menu.<br />Dont forget to check/enable <strong>Anyone can register</strong> under <strong>Settings > General</strong>' );
+			$html .= __( 'WP Login Flow is now activated, you can find <strong>Login Flow</strong> under the <strong>Users</strong> menu.' );
 			$html .= '</p></div>';
 
 			echo $html;
@@ -139,7 +139,7 @@ Class WP_Login_Flow {
 		if( is_multisite() && ! get_option( 'WP_LOGIN_MS_NOTICE' ) ){
 			$html = '<div class="error">';
 			$html .= '<p style="float:right;"><a href="'. esc_url( add_query_arg( "dismiss-wplf-ms-notice", "1" ) ) . '">' . __( 'Hide notice' ) . '</a></p>';
-			$html .= '<p>' . __( 'WP Login Flow is not recommended for multisite installations.  Some features may work but other may have issues.  <strong>You have been warned.</strong>' );
+			$html .= '<p>' . __( 'WP Login Flow is recommended for single site installations -- not multisite installations.  All the features "should" work, but PLEASE thoroughly test everything manually, and report any issues you find on GitHub.' );
 			$html .= '</p></div>';
 
 			echo $html;

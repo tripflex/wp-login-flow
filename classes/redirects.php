@@ -68,7 +68,7 @@ class WP_Login_Flow_Redirects {
 		}
 
 		// Check users
-		if ( ! empty( $users ) && ! empty( $user ) && ! is_wp_error( $user ) ) {
+		if ( ! empty( $users ) && ! empty( $user ) && ! is_wp_error( $user ) && isset( $user->ID )) {
 			foreach ( $users as $ucfg ) {
 				if ( absint( $ucfg['id'] ) === absint( $user->ID ) ) {
 					return site_url( $ucfg['redirect'] );
@@ -77,7 +77,7 @@ class WP_Login_Flow_Redirects {
 		}
 
 		// Check roles
-		if ( ! empty( $roles ) && ! empty( $user ) && ! is_wp_error( $user ) ) {
+		if ( ! empty( $roles ) && ! empty( $user ) && ! is_wp_error( $user ) && isset( $user->roles ) ) {
 			foreach ( (array) $roles as $rcfg ) {
 				if ( in_array( $rcfg['role'], (array) $user->roles ) ) {
 					return site_url( $rcfg['redirect'] );

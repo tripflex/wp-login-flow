@@ -301,6 +301,11 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 */
 	public function user_registered( $user_id ){
 
+		// User created from admin area (go no further)
+		if( isset( $_POST['createuser'], $_POST['action'] ) && $_POST['action'] === 'createuser' ){
+			return;
+		}
+
 		$custom_fields   = get_option( 'wplf_registration_custom_fields', array() );
 
 		if ( ! empty( $custom_fields ) ) {
@@ -325,26 +330,11 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 			wp_set_current_user( $user_id );
 			wp_set_auth_cookie( $user_id );
 			$user = get_user_by( 'id', $user_id );
+			$requested_redirect = isset( $_POST['redirect_to'] ) ? esc_url( $_POST['redirect_to'] ) : '';
+			$login_redirect = WP_Login_Flow_Redirects::get_user_login_redirect( site_url(), $requested_redirect, $user );
 
-			$login_redirect = WP_Login_Flow_Redirects::get_user_login_redirect( '', '', $user );
+			wp_new_user_notification( $user_id, null, 'both' );
 			wp_redirect( $login_redirect );
-
-//			$redirect = get_option( "alnuar_auto_login_new_user_after_registration_redirect" );
-//
-//			if ( $redirect == "" ) {
-//				global $_POST;
-//				if ( $_POST['redirect_to'] == "" ) {
-//					$redirect = get_home_url();
-//					$redirect .= "/wp-login.php?checkemail=registered";
-//				} else {
-//					$redirect = $_POST['redirect_to'];
-//				}
-//			}
-//
-//			wp_redirect( $redirect );
-//
-//			wp_new_user_notification( $user_id, null, 'both' ); //'admin' or blank sends admin notification email only. Anything else will send admin email and user email
-
 			exit;
 		}
 

@@ -336,7 +336,7 @@ class WP_Login_Flow_Rewrite {
 		if ( self::$prevent_rewrite ) return FALSE;
 
 		// Set known variable variables to false to prevent PHP notices
-		$login = $lost_pw = $activate = $register = $loggedout = FALSE;
+		$login = $lost_pw = $activate = $register = $loggedout = $reset_pw = FALSE;
 		// Get all options and filter out only the rewrite ones
 		$settings = WP_Login_Flow_Settings::get_settings( 'rewrites' );
 		$options  = array_column_recursive( $settings, 'name' );
