@@ -50,9 +50,10 @@ Class WP_Login_Flow {
 		if ( $this->activation_enabled() ) {
 			new WP_Login_Flow_Login();
 			new WP_Login_Flow_User();
-			include( 'pluggables/wp-new-user-notification.php' );
 			include( 'pluggables/wp-password-change-notification.php' );
 		}
+
+		include( 'pluggables/wp-new-user-notification.php' );
 
 		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
 

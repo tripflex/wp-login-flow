@@ -15,7 +15,7 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 */
 	function __construct() {
 		add_action( 'user_register', array( $this, 'user_registered' ) );
-//		add_action( 'register_new_user', array( $this, 'user_registered' ) );
+		add_action( 'register_new_user', array( $this, 'register_new_user' ) );
 		add_filter( 'wp_pre_insert_user_data', array( $this, 'maybe_set_password' ), 99999, 3 );
 		add_action( 'register_form', array( $this, 'register_fields' ) );
 		add_filter( 'registration_errors', array( $this, 'registration_errors'), 10, 3 );
@@ -111,6 +111,10 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 			if ( get_option( 'wplf_register_set_pw', false ) ) {
 				return ''; // Return empty string if user is allowed to set password
 			}
+		}
+
+		if( $text === 'Username or Email Address' && get_option( 'wplf_registration_email_as_un', false ) ){
+			return __( 'Email Address' );
 		}
 
 		return $text;
@@ -257,7 +261,37 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	}
 
 	/**
+	 * New User Registered (fired after default pw nag set)
+	 *
+	 * Called from `register_new_user` after updating password nag
+	 *
+	 *
+	 *
+	 * @param $user_id
+	 *
+	 * @since @@version
+	 *
+	 */
+	public function register_new_user( $user_id ){
+
+//		add_action( 'register_new_user', 'wp_send_new_user_notifications' );
+//		add_action( 'edit_user_created_user', 'wp_send_new_user_notifications', 10, 2 );
+
+		// Remove default password nag as user set pw initially
+		if ( get_option( "wplf_register_set_pw", false ) ) {
+			delete_user_setting( 'default_password_nag' );
+			update_user_option( $user_id, 'default_password_nag', false, true );
+		}
+
+	}
+
+	/**
 	 * New User Registered
+	 *
+	 * Called from `wp_insert_user` after inserting user and updating meta,
+	 * called before `register_new_user` hook is called.
+	 *
+	 * register_new_user > wp_create_user > wp_insert_user
 	 *
 	 *
 	 * @param $user_id

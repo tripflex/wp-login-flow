@@ -81,6 +81,11 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 							<div id="wplf-settings-inside">
 		<?php
 							foreach( $tab['sections'] as $skey => $section ) {
+
+								if ( array_key_exists( 'hide_if', $section ) && ! empty( $section['hide_if'] ) ) {
+									continue;
+								}
+
 								echo "<h2 class=\"wp-ui-primary\">{$section['title']}</h2>";
 								if( $skey === 'enable_rewrites' && parent::permalinks_disabled() ){
 									echo "<h3 class=\"permalink-error\">" . sprintf( __( 'You <strong>must</strong> enable <a href="%1$s">permalinks</a> to use custom rewrites!' ), admin_url('options-permalink.php') ). "</h3>";
@@ -626,10 +631,11 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 					)
 				),
 				'templates' => array(
-					'title'  => __( 'Templates' ),
+					'title'  => __( 'Email Templates' ),
 					'sections' => array(
 						'activation' => array(
-							'title' => __( 'User Activation Email Template' ),
+							'title' => __( 'New User Activation Email Template' ),
+							'hide_if' => get_option( 'wplf_register_set_pw', false ),
 							'fields' => array(
 								array(
 									'name'       => 'wplf_activation_subject',
@@ -645,6 +651,29 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'label'      => __( 'Email Message' ),
 									'desc'       => __( 'This template will be used as the first email sent to the user to activate their account.<br /><strong>Available Template Tags:</strong> <code>%wp_activate_url%</code>, <code>%wp_activation_key%</code>, <code>%wp_user_name%</code>, <code>%wp_user_email%</code>, <code>%wp_site_url%</code>, <code>%wp_login_url%</code>' ),
 									'std'        => __( 'Thank you for registering your account:' ) . '<br />%wp_site_url%<br />' . sprintf( __( 'Username: %s' ), '%wp_user_name%' ) . '<br /><br />' . __( 'In order to activate your account and set your password, please visit the following address:' ) . '<br /><a href="%wp_activate_url%">%wp_activate_url%</a>',
+									'type'       => 'wpeditor',
+									'attributes' => array(),
+								),
+							)
+						),
+						'new_user' => array(
+							'title' => __( 'New User Email Template' ),
+							'hide_if' => get_option( 'wplf_require_activation', true ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_new_user_subject',
+									'label'      => __( 'Email Subject' ),
+									'desc'       => __( 'This will be used as the subject for the new user registered email.  You can use any template tags available in message below.' ),
+									'std'        => __( 'Your Account Information' ),
+									'type'       => 'textbox',
+									'field_class'      => 'widefat',
+									'attributes' => array(),
+								),
+								array(
+									'name'       => 'wplf_new_user_message',
+									'label'      => __( 'Email Message' ),
+									'desc'       => __( 'This template will be used as the first email sent to the user after creating an account (with their own password).<br /><strong>Available Template Tags:</strong> <code>%wp_user_name%</code>, <code>%wp_user_email%</code>, <code>%wp_site_url%</code>, <code>%wp_login_url%</code>' ),
+									'std'        => __( 'Thank you for registering your account:' ) . '<br />%wp_site_url%<br />' . sprintf( __( 'Username: %s' ), '%wp_user_name%' ) . '<br /><br />' . __( 'To login to your account, please visit the following address:' ) . '<br /><a href="%wp_login_url%">%wp_login_url%</a>',
 									'type'       => 'wpeditor',
 									'attributes' => array(),
 								),
@@ -800,6 +829,10 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 		foreach ( self::$settings as $key => $tab ) {
 
 			foreach( $tab['sections'] as $skey => $section ) {
+
+				if( array_key_exists( 'hide_if', $section ) && ! empty( $section['hide_if'] ) ){
+					continue;
+				}
 
 				$section_header = "default_header";
 				if ( method_exists( $this, "{$key}_{$skey}_header" ) ) $section_header = "{$key}_{$skey}_header";
