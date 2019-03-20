@@ -67,7 +67,7 @@ Class WP_Login_Flow {
 	 * @return bool
 	 */
 	function activation_enabled(){
-		if( get_option( 'wplf_require_activation' ) ) return true;
+		if( get_option( 'wplf_require_activation', true ) ) return true;
 		return false;
 	}
 

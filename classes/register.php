@@ -15,10 +15,66 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 */
 	function __construct() {
 		add_action( 'user_register', array( $this, 'user_registered' ) );
+//		add_action( 'register_new_user', array( $this, 'user_registered' ) );
+		add_filter( 'wp_pre_insert_user_data', array( $this, 'maybe_set_password' ), 99999, 3 );
 		add_action( 'register_form', array( $this, 'register_fields' ) );
 		add_filter( 'registration_errors', array( $this, 'registration_errors'), 10, 3 );
 		add_filter( 'gettext', array( $this, 'check_for_string_changes' ), 1 );
 		add_filter( 'login_form_register', array( $this, 'login_form_register' ) );
+		add_filter( 'wp_login_errors', array( $this, 'registration_complete' ), 15, 2 );
+	}
+
+	/**
+	 * Change Registration Check Email Notice
+	 *
+	 * When user is allowed to set password, this method will change the error notice to show "You can now login",
+	 * instead of the default "Please check your email"
+	 *
+	 *
+	 * @param $errors
+	 * @param $redirect_to
+	 *
+	 * @return mixed
+	 * @since @@version
+	 *
+	 */
+	function registration_complete( $errors, $redirect_to ) {
+
+		if( is_wp_error( $errors ) && $errors->error_data && array_key_exists( 'registered', $errors->error_data ) && $errors->error_data['registered'] === 'message' ){
+
+			if( get_option( "wplf_register_set_pw", false ) && ! get_option( "wplf_auto_login", false ) ){
+				$errors = new WP_Error();
+				$errors->add( 'registered', __( 'Registration complete. You can now login to your account below.' ), 'message' );
+			}
+
+		}
+
+		return $errors;
+	}
+
+	/**
+	 * Maybe Hash and Set User Configured Password
+	 *
+	 * When a new user registers, if setting is enabled to allow user to set their own password, we use this method
+	 * through the filter, to set the hashed password to the actual password (instead of random one generated), as
+	 * default method for WordPress now requires users to activate so it just generates a random one.
+	 *
+	 *
+	 * @param $data
+	 * @param $update
+	 * @param $update_user_id
+	 *
+	 * @return mixed
+	 * @since @@version
+	 *
+	 */
+	function maybe_set_password( $data, $update, $update_user_id ){
+
+		if( ! $update && isset( $_POST['pass1'] ) && ! empty( $_POST['pass1'] ) && get_option( "wplf_register_set_pw", false ) && isset( $_POST['wp-submit'] ) && $_POST['wp-submit'] === esc_attr( 'Register' ) ){
+			$data['user_pass'] = wp_hash_password( $_POST['pass1'] );
+		}
+
+		return $data;
 	}
 
 	/**
@@ -61,6 +117,13 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 
 	}
 
+	/**
+	 * Output Password Field (and Strength Indicator)
+	 *
+	 *
+	 * @since @@version
+	 *
+	 */
 	public function output_pw_fields(){
 
 		if ( get_option( "wplf_register_set_pw", false ) ) {
@@ -227,6 +290,10 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 		if ( get_option( "wplf_auto_login", false ) ) {
 			wp_set_current_user( $user_id );
 			wp_set_auth_cookie( $user_id );
+			$user = get_user_by( 'id', $user_id );
+
+			$login_redirect = WP_Login_Flow_Redirects::get_user_login_redirect( '', '', $user );
+			wp_redirect( $login_redirect );
 
 //			$redirect = get_option( "alnuar_auto_login_new_user_after_registration_redirect" );
 //
