@@ -141,9 +141,15 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
 		if ( empty( $input ) || ! empty( $_POST[ 'button_submit' ] ) ) return FALSE;
 
-//		if ( is_array( $input ) ) {
-//			$input = maybe_serialize( $input );
-//		}
+		// For now until frontend validation is added, we remove any duplicate roles selected
+		// to prevent having multiple redirects for the same role
+		if ( is_array( $input ) ) {
+			// First let's make sure it's roles we're handling
+			$roles = array_column( $input, 'role' );
+			if( ! empty( $roles ) ){
+				$input = array_unique_assoc( $input, 'role' );
+			}
+		}
 
 		return $input;
 

@@ -361,26 +361,108 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 							'title'  => __( 'Login Redirects' ),
 							'fields' => array(
 								array(
-									'name'       => 'wplf_login_redirect',
+									'name'        => 'wplf_default_login_redirect',
+									'label'       => __( 'Default Login Redirect' ),
+									'desc'        => __( 'Enter the endpoint for default redirect after a user logs in (if they don\'t match any other rules below)' ),
+									'placeholder'         => '/my-account',
+									'type'        => 'textbox',
+									'field_class' => '',
+									'attributes'  => array(),
+								),
+								array(
+									'name'       => 'wplf_role_login_redirects',
 									'std'        => '0',
-									'label'      => __( 'Login' ),
-									'cb_label'   => __( 'Enable' ),
+									'label'      => __( 'Role Login Redirects' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'single_val' => 'role', // Signify this group has single val fields to check on page init
+									'desc'       => __( 'Select any custom redirects to use for specific user roles' ),
+									'rfields'    => array(
+										'role'    => array(
+											'label'       => __( 'Role' ),
+											'type'        => 'userroles',
+											'help'        => __( 'Enter the label to show above the input field' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'single_val'  => true, // Means values can't be selected more than once in repeatable
+											'required'    => true
+										),
+										'redirect' => array(
+											'label'       => __( 'Redirect' ),
+											'type'        => 'textbox',
+											'default'     => '',
+											'placeholder' => '/some-endpoint',
+											'help'        => __( 'Endpoint (on this site) to redirect to (do NOT include website URL)' ),
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								),
+								array(
+									'name'       => 'wplf_redirect_to_login_redirects',
+									'std'        => '0',
+									'label'      => sprintf( __( '%s Precedence' ), 'redirect_to' ),
+									'cb_label'   => sprintf( __( 'Yes, allow a POST or GET %s variable to take priority over above settings' ), '<code>redirect_to</code>' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc'       => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php</pre>',
-									'disabled' => parent::permalinks_disabled(),
-									'fields'     => array(
-									    array(
-											'name'       => 'wplf_rewrite_login_slug',
-											'std'        => 'login',
-											'pre'        => '<pre>' . home_url() . '/</pre>',
-											'post'       => '',
-											'type'       => 'textbox',
-											'attributes' => array(),
-									        'disabled'   => parent::permalinks_disabled()
-									    )
-								    )
-								)
+									'desc'       => __( 'By enabling this setting, any redirect_to value set in GET or POST params will take priority over the above rules.  More than likely you will want to leave this disabled.' ),
+								),
+							)
+						),
+						'logout_redirects' => array(
+							'title'  => __( 'Logout Redirects' ),
+							'fields' => array(
+								array(
+									'name'        => 'wplf_default_logout_redirect',
+									'label'       => __( 'Default Logout Redirect' ),
+									'desc'        => __( 'Enter the endpoint for default redirect after a user logs out (if they don\'t match any other rules below)' ),
+									'placeholder'         => '/my-account',
+									'type'        => 'textbox',
+									'field_class' => '',
+									'attributes'  => array(),
+								),
+								array(
+									'name'       => 'wplf_role_logout_redirects',
+									'std'        => '0',
+									'label'      => __( 'Role Logout Redirects' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'single_val' => 'role', // Signify this group has single val fields to check on page init
+									'desc'       => __( 'Select any custom redirects to use for specific user roles' ),
+									'rfields'    => array(
+										'role'    => array(
+											'label'       => __( 'Role' ),
+											'type'        => 'userroles',
+											'help'        => __( 'Enter the label to show above the input field' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'single_val'  => true, // Means values can't be selected more than once in repeatable
+											'required'    => true
+										),
+										'redirect' => array(
+											'label'       => __( 'Redirect' ),
+											'type'        => 'textbox',
+											'default'     => '',
+											'placeholder' => '/some-endpoint',
+											'help'        => __( 'Endpoint (on this site) to redirect to (do NOT include website URL)' ),
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								),
+								array(
+									'name'       => 'wplf_redirect_to_logout_redirects',
+									'std'        => '0',
+									'label'      => sprintf( __( '%s Precedence' ), 'redirect_to' ),
+									'cb_label'   => sprintf( __( 'Yes, allow a POST or GET %s variable to take priority over above settings' ), '<code>redirect_to</code>' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'By enabling this setting, any redirect_to value set in GET or POST params will take priority over the above rules.  More than likely you will want to leave this disabled.' ),
+								),
 							)
 						)
 					)
@@ -657,6 +739,15 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'label'      => __( 'Remove on Uninstall' ),
 									'cb_label'   => __( 'Enable' ),
 									'desc'       => __( 'This will remove all configuration and options when you uninstall the plugin (disabled by default)' ),
+									'type'       => 'checkbox',
+									'attributes' => array()
+								),
+								array(
+									'name'       => 'wplf_show_admin_bar_only_admins',
+									'std'        => '0',
+									'label'      => __( 'Admin Bar' ),
+									'cb_label'   => __( 'Only show admin bar for administrators (users with manage_options capability)' ),
+									'desc'       => __( 'By default, WordPress will show the admin bar for any kind of user when browsing the site.  Enable this setting to only show for Administrators.' ),
 									'type'       => 'checkbox',
 									'attributes' => array()
 								),

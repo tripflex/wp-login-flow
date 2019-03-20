@@ -26,7 +26,6 @@ class WP_Login_Flow_Login {
 
 		add_action( 'login_init', array( $this, 'login_init' ) );
 		add_filter( 'wp_login_errors', array( $this, 'wp_login_errors' ), 10, 2 );
-		add_filter( 'registration_redirect', array( $this, 'register_redirect' ), 9999, 1 );
 //		add_action( 'login_form_rp', array($this, 'activation_redirect'), 9999 );
 		add_filter( 'gettext', array( $this, 'check_for_string_changes' ), 1 );
 //		Action right before output of password being reset ( wp-login.php:603 )
@@ -138,25 +137,6 @@ class WP_Login_Flow_Login {
 		}
 
 		return $text;
-
-	}
-
-	/**
-	 * Set registration redirection URL to pending activation
-	 *
-	 * If activation is enabled this method will set the redirect URL to the pending page URL
-	 * or the standard URL if activation is disabled.
-	 *
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param $url
-	 *
-	 * @return string|void
-	 */
-	function register_redirect( $url ){
-
-		return site_url( 'wp-login.php?action=activation&step=pending' );
 
 	}
 

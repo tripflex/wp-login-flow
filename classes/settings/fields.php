@@ -69,6 +69,30 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	function userroles_field( $args ) {
+		$args = $this->parse_args( $args );
+		$o = $args['option'];
+
+		$svalue = isset( $args['value'] ) ? $args['value'] : '';
+
+		$all_roles = wp_roles()->roles;
+
+		echo "<select id=\"{$o['name']}\" class=\"wplf-select wplf-user-roles {$args['field_class']}\" name=\"{$o['name']}\" {$args['attributes']}>";
+
+		foreach ( $all_roles as $role => $details ) {
+			$name = translate_user_role( $details['name'] );
+			$value    = esc_attr( $role );
+			$label    = esc_attr( $name );
+			$selected = selected( $svalue, $role, FALSE );
+
+			echo "<option value=\"{$value}\" {$selected}> {$label} </option>";
+		}
+
+		echo "</select>";
+		$this->description( $o );
+
+	}
+
 	function textarea_field( $args ) {
 
 		$o = $args[ 'option' ];
@@ -208,13 +232,11 @@ class WP_Login_Flow_Settings_Fields {
 	function repeatable_field( $a ){
 		$o = $a['option'];
 		$values = isset( $a['value'] ) && ! empty( $a['value'] ) ? maybe_unserialize( $a['value'] ) : array();
+		$single_val = isset( $o['single_val'] ) && ! empty( $o['single_val'] ) ? "data-singleval=\"{$o['single_val']}\"" : '';
 		?>
 		<div class="wplf-repeatable-wrap">
-			<div class="existing">
-
-			</div>
 			<div id="wplf-repeatable">
-				<div class="wplf-repeatable-form" id="repeatable-<?php echo esc_attr( $a['option']['name'] ); ?>-form" data-group="<?php echo esc_attr( $a['option']['name'] ); ?>">
+				<div class="wplf-repeatable-form" id="repeatable-<?php echo esc_attr( $a['option']['name'] ); ?>-form" data-group="<?php echo esc_attr( $a['option']['name'] ); ?>" <?php echo $single_val; ?>>
 					<?php
 						if( ! empty( $values ) ){
 							foreach( $values as $index => $value ){
@@ -226,62 +248,6 @@ class WP_Login_Flow_Settings_Fields {
 			</div>
 
 			<?php $this->repeatable_field_template( $a ); ?>
-		</div>
-
-		<?php
-	}
-	function repeatable_field2( $o ){
-		?>
-		<div>
-			<div class="existing">
-
-			</div>
-			<div id="wplf-repeatable">
-				<div id="repeatable-options-form">
-					<table class="form-table rowGroup options-groupitems" id="groupitems" ref="items">
-					   <thead class="options-handle">
-						  <tr>
-							 <td>
-								<div class="fields-handle">☰</div>
-							 </td>
-						  </tr>
-					   </thead>
-					   <tbody>
-						  <tr class="repeatable-option" valign="top" style="">
-							 <th scope="row">
-								<label for="">Label</label>
-							 </th>
-							 <td>
-								<input placeholder="Caption" name="options[option_label][0]" class="widefat options-group-input" type="text" ref="options" id="field_undefined_option_label" value="">
-							 </td>
-						  </tr>
-						  <tr class="repeatable-option" valign="top" style="" id="jmfe-modal-field_undefined_option_value-tr">
-							 <th scope="row">
-								<label for="field_undefined_option_value"><?php _e('Meta Key'); ?></label>
-							 </th>
-							 <td>
-								<input placeholder="value" name="options[option_value][0]" class="widefat options-group-input" type="text" ref="options" id="field_undefined_option_value" value="">
-							 </td>
-						  </tr>
-						  <tr class="repeatable-option" valign="top" style="" id="jmfe-modal-field_undefined_option_default-tr">
-							 <th scope="row">
-								<label for="field_undefined_option_default"><?php _e('Required'); ?></label>
-							 </th>
-							 <td class="jmfe-modal-field_undefined_option_default-td">
-								<p><label style="margin-left: 8px;"><input type="checkbox" class="jmfe-option-default" name="options[option_default][0]" id="field_undefined_option_default_0" value="1"> </label></p>
-							 </td>
-						  </tr>
-						  <tr class="repeatable-option" valign="top" id="jmfe-modal-options-remove-tr">
-							 <td class="options-remove-td">
-								<div class="button button-primary right remove-group-row"><?php _e('Remove'); ?></div>
-							 </td>
-						  </tr>
-					   </tbody>
-					</table>
-				</div>
-			</div>
-
-			<div class="add-group-row"><button class="button add-group-row-button" type="button" data-rowtemplate="group-options-tmpl"><?php _e('Add'); ?></button></div>
 		</div>
 
 		<?php
