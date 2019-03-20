@@ -9,30 +9,6 @@ class WP_Login_Flow_User_Auth extends WP_Login_Flow_User {
 
 		// Run at priority 21+ -- after WordPress runs filter for wp_authenticate_username_password and wp_authenticate_email_password
 		add_action( 'authenticate', array( $this, 'check' ), 30, 3 );
-//		add_action( 'set_auth_cookie', array( $this, 'attempt_login' ), 20, 5 );
-	}
-
-	/**
-	 * Redirect to pending activation
-	 *
-	 * If the user's account is still pending activation, this method
-	 * will redirect to the pending activation page when core WordPress
-	 * attempts to set the authorization cookie (if supplied password is correct).
-	 *
-	 * @param $auth_cookie
-	 * @param $expire
-	 * @param $expiration
-	 * @param $user_id
-	 * @param $scheme
-	 */
-	public function attempt_login( $auth_cookie, $expire, $expiration, $user_id, $scheme ) {
-
-		// Exit function is user is already activated
-		if ( ! $this->activation()->check( $user_id ) ) {
-			wp_redirect( wp_login_url() . '?registration=complete&activation=pending' );
-			exit();
-		}
-
 	}
 
 	/**
