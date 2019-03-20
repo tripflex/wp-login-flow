@@ -116,7 +116,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 	 */
 	public static function init_settings() {
 
-		self::$settings = apply_filters(
+		$settings = apply_filters(
 			'wp_login_flow_settings',
 			array(
 				'rewrites' => array(
@@ -359,6 +359,25 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 						)
 					)
 				),
+				'login' => array(
+					'title'  => __( 'Login' ),
+					'sections' => array(
+						'registration' => array(
+							'title'  => __( 'Login General' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_login_loader',
+									'std'        => '0',
+									'label'      => __( 'Loader' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Add a spinning loader and disable the register button after being clicked (and form validated)' ),
+								)
+							)
+						)
+					)
+				),
 				'redirects' => array(
 					'title'  => __( 'Redirects' ),
 					'sections' => array(
@@ -570,7 +589,8 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'fields'     => array(
 										array(
 											'name'        => 'wplf_login_box_border_radius',
-											'type'  => 'spinner'
+											'type'  => 'spinner',
+											'post' => 'px'
 										)
 									),
 								)
@@ -756,6 +776,172 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 					    )
 				    )
 				),
+				'login_limiter' => array(
+					'title'    => __( 'Login Limiter' ),
+					'sections' => array(
+						'login_limiter_general'   => array(
+							'title'  => __( 'Login Limiter Settings' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_login_limiter_enable',
+									'std'        => '0',
+									'label'      => __( 'Limit Login Attempts' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Limit login attempts based on configuration below.' ),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_log',
+									'std'        => '0',
+									'label'      => __( 'Lockout Log' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Enable to log all lockouts' ),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_email_lockouts',
+									'std'        => '0',
+									'label'      => __( 'Lockout Email' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'break'      => true,
+									'desc'       => __( 'Send email regarding lockouts after configuration above.' ),
+									'fields'     => array(
+										array(
+											'name' => 'wplf_login_limiter_email_to',
+											'type' => 'textbox',
+											'pre'  => __( 'Send email to:' ),
+											'post' => __( 'after' )
+										),
+										array(
+											'name' => 'wplf_login_limiter_email_after',
+											'type' => 'spinner',
+											'std'  => 4,
+											'post' => __( 'lockouts' )
+										)
+									),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_attempts',
+									'std'        => '4',
+									'label'      => __( 'Allowed Attempts' ),
+									'type'       => 'spinner',
+									'attributes' => array(),
+									'desc'       => __( 'Set how many failed login attempts before triggering a lockout' ),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_lockout',
+									'std'        => '20',
+									'label'      => __( 'Lockout Minutes' ),
+									'type'       => 'spinner',
+									'attributes' => array(),
+									'desc'       => __( 'Set how many minutes to lockout a user/IP after failed login attempts set above.' ),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_lockouts_allowed',
+									'std'        => '4',
+									'label'      => __( 'Lockouts Allowed' ),
+									'type'       => 'spinner',
+									'attributes' => array(),
+									'desc'       => __( 'Set how many lockouts will be allowed before increasing lockout time set below.' ),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_lockouts_increase',
+									'std'        => '24',
+									'label'      => __( 'Lockout Increase' ),
+									'type'       => 'spinner',
+									'attributes' => array(),
+									'desc'       => __( 'Set how many hours to increase the lockout time after number of failed total lockouts above.' ),
+								)
+							)
+						),
+						'login_limiter_whitelist' => array(
+							'title'  => __( 'Login Limiter Whitelist' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_login_limiter_whitelist_ips',
+									'label'      => __( 'IP Whitelist' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'desc'       => __( 'Add any IP addresses to the whitelist. This can be a single IP (x.x.x.x) or a range (1.2.3.4-5.6.7.8)' ),
+									'rfields'    => array(
+										'label' => array(
+											'label'       => __( 'IP Address' ),
+											'type'        => 'textbox',
+											'help'        => __( 'Format should be a single IP address (1.2.3.4) or a range separated by hyphen (1.2.3.4-5.6.7.8)' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								),
+								array(
+									'name'       => 'wplf_login_limiter_whitelist_users',
+									'label'      => __( 'User Whitelist' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'desc'       => __( 'Add any specific usernames to omit from login limiter' ),
+									'rfields'    => array(
+										'label' => array(
+											'label'       => __( 'Username/Email' ),
+											'type'        => 'textbox',
+											'help'        => __( 'Enter any username or email address to omit from the login limiter' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								)
+							)
+						),
+						'login_limiter_blacklist' => array(
+							'title'  => __( 'Login Limiter Blacklist' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_login_limiter_blacklist_ips',
+									'label'      => __( 'IP Blacklist' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'desc'       => __( 'Add any IP addresses to the blacklist. This can be a single IP (x.x.x.x) or a range (1.2.3.4-5.6.7.8)' ),
+									'rfields'    => array(
+										'label' => array(
+											'label'       => __( 'IP Address' ),
+											'type'        => 'textbox',
+											'help'        => __( 'Format should be a single IP address (1.2.3.4) or a range separated by hyphen (1.2.3.4-5.6.7.8)' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								),
+								array(
+									'name'       => 'wplf_login_limiter_blacklist_users',
+									'label'      => __( 'User Blacklist' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'desc'       => __( 'Add any specific usernames to blacklist from logging in' ),
+									'rfields'    => array(
+										'label' => array(
+											'label'       => __( 'Username/Email' ),
+											'type'        => 'textbox',
+											'help'        => __( 'Enter any username or email address to blacklist from logging in' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								)
+							)
+						)
+					)
+				),
 				'settings' => array(
 					'title'    => __( 'Settings' ),
 					'sections' => array(
@@ -798,6 +984,10 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 			)
 		);
 
+		// TODO: add login limiter handling
+		unset( $settings['login_limiter'] );
+
+		self::$settings = $settings;
 	}
 
 	/**

@@ -10,6 +10,9 @@ class WP_Login_Flow_Settings_Fields {
 		$checked = checked( $args[ 'value' ], 1, FALSE );
 		$disabled_field = ( isset( $o[ 'disabled' ] ) && $o[ 'disabled' ] ? "disabled=\"disabled\"" : "" );
 		echo "<label><input id=\"{$o['name']}\" type=\"checkbox\" class=\"wplf-checkbox {$args['field_class']}\" name=\"{$o['name']}\" value=\"1\" {$args['attributes']} {$checked} {$disabled_field}/> {$o['cb_label']} </label>";
+		if ( isset( $o['break'] ) ) {
+			echo "<br />";
+		}
 		$this->sub_fields( $o );
 		$this->description( $o );
 		$this->check_permalinks( $o );
@@ -118,11 +121,12 @@ class WP_Login_Flow_Settings_Fields {
 	function textbox_field( $a ) {
 
 		$a = $this->parse_args( $a );
-
 		$o = $a[ 'option' ];
+		$append = isset( $o['append'] ) ? $o['append'] : '';
+		$prepend = isset( $o['prepend'] ) ? $o['prepend'] : '';
 
 		$disabled_field = ( isset( $o[ 'disabled' ] ) && $o[ 'disabled' ] ? "disabled=\"disabled\"" : "");
-		echo "<input id=\"{$o['name']}\" type=\"text\" class=\"wplf-textbox {$a['field_class']}\" name=\"{$o['name']}\" value=\"{$a['value']}\" {$a['placeholder']} {$a['attributes']} {$disabled_field}/>";
+		echo "{$prepend}<input id=\"{$o['name']}\" type=\"text\" class=\"wplf-textbox {$a['field_class']}\" name=\"{$o['name']}\" value=\"{$a['value']}\" {$a['placeholder']} {$a['attributes']} {$disabled_field}/>{$append}";
 		$this->description( $o );
 
 	}
@@ -145,8 +149,10 @@ class WP_Login_Flow_Settings_Fields {
 	function spinner_field( $args ) {
 
 		$o = $args[ 'option' ];
+		$append = isset( $o['append'] ) ? $o['append'] : '';
+		$prepend = isset( $o['prepend'] ) ? $o['prepend'] : '';
 
-		echo "<input id=\"{$o['name']}\" type=\"number\" min=\"1\" max-length=\"3\" max=\"999\" step=\"1\" class=\"wplf-number {$args['field_class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />px";
+		echo "{$prepend}<input id=\"{$o['name']}\" type=\"number\" min=\"1\" max-length=\"3\" max=\"999\" step=\"1\" class=\"wplf-number {$args['field_class']}\" name=\"{$o['name']}\" value=\"{$args['value']}\" {$args['placeholder']} {$args['attributes']} />{$append}";
 		$this->description( $o );
 
 	}
@@ -340,10 +346,10 @@ class WP_Login_Flow_Settings_Fields {
 			$type_func = $field[ 'type' ] . '_field';
 			if ( ! method_exists( $this, $type_func ) ) continue;
 
-			echo "<br />";
-			if( ! empty( $field['pre'] ) ) echo $field['pre'];
+			if( isset( $field['break'] ) ) echo "<br />";
+			if( ! empty( $field['pre'] ) ) echo " {$field['pre']} ";
 			$this->$type_func( $this->build_args( $field ), false );
-			if( ! empty( $field['post'] ) ) echo $field['post'];
+			if( ! empty( $field['post'] ) ) echo " {$field['post']} ";
 
 		}
 
