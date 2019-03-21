@@ -2,9 +2,18 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class WP_Login_Flow_User_List_Table
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_User_List_Table extends WP_Login_Flow_User {
 
 
+	/**
+	 * WP_Login_Flow_User_List_Table constructor.
+	 */
 	function __construct() {
 
 		add_filter( 'manage_users_columns', array( $this, 'add_column' ) );
@@ -12,6 +21,17 @@ class WP_Login_Flow_User_List_Table extends WP_Login_Flow_User {
 		// add_filter( 'user_row_actions', array( $this, 'row_actions' ), 10, 2 );
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param array    $actions
+	 * @param \WP_User $user
+	 *
+	 * @return array
+	 * @since @@version
+	 *
+	 */
 	function row_actions( array $actions, WP_User $user ){
 
 		$link                   = admin_url( 'users.php?page=wp-login-flow&activation=toggle&user_id=' . $user->ID );
@@ -20,6 +40,16 @@ class WP_Login_Flow_User_List_Table extends WP_Login_Flow_User {
 		return $actions;
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $columns
+	 *
+	 * @return mixed
+	 * @since @@version
+	 *
+	 */
 	function add_column( $columns ){
 
 		$columns['activation_status'] = __('Activation Status');
@@ -27,6 +57,18 @@ class WP_Login_Flow_User_List_Table extends WP_Login_Flow_User {
 		return $columns;
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $value
+	 * @param $column_name
+	 * @param $user_id
+	 *
+	 * @return string
+	 * @since @@version
+	 *
+	 */
 	function column_output( $value, $column_name, $user_id ){
 
 		// Return passed value if this is not the activation_status column

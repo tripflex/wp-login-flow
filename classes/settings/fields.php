@@ -2,8 +2,23 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class WP_Login_Flow_Settings_Fields
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_Settings_Fields {
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function checkbox_field( $args ) {
 		$args = $this->parse_args( $args );
 		$o       = $args[ 'option' ];
@@ -18,10 +33,28 @@ class WP_Login_Flow_Settings_Fields {
 		$this->check_permalinks( $o );
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function default_header( $args ) {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function button_field( $args ) {
 
 		$o = $args[ 'option' ];
@@ -31,6 +64,15 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function backup_field( $args ) {
 
 		$o   = $args[ 'option' ];
@@ -44,6 +86,15 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function link_field( $args ) {
 
 		$o = $args[ 'option' ];
@@ -53,6 +104,15 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function select_field( $args ) {
 
 		$o = $args[ 'option' ];
@@ -72,6 +132,15 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function userroles_field( $args ) {
 		$args = $this->parse_args( $args );
 		$o = $args['option'];
@@ -96,6 +165,15 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function textarea_field( $args ) {
 
 		$o = $args[ 'option' ];
@@ -107,6 +185,16 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @return mixed
+	 * @since @@version
+	 *
+	 */
 	function parse_args( $args ){
 
 		$args['field_class'] = isset( $args['field_class'] ) ? $args['field_class'] : '';
@@ -118,6 +206,15 @@ class WP_Login_Flow_Settings_Fields {
 		return $args;
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $a
+	 *
+	 * @since @@version
+	 *
+	 */
 	function textbox_field( $a ) {
 
 		$a = $this->parse_args( $a );
@@ -131,6 +228,16 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $o
+	 *
+	 * @return bool|void
+	 * @since @@version
+	 *
+	 */
 	function check_permalinks( $o ){
 
 		if ( ! isset( $o[ 'fields' ] ) || empty( $o[ 'fields' ] ) || ! isset( $o['fields'][0] ) || empty( $o['fields'][0] ) ) return;
@@ -146,6 +253,15 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function spinner_field( $args ) {
 
 		$o = $args[ 'option' ];
@@ -157,6 +273,15 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function colorpicker_field( $args ){
 
 		wp_enqueue_style( 'wp-color-picker' );
@@ -166,6 +291,15 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function wpeditor_field( $args ){
 
 		$o = $args[ 'option' ];
@@ -190,6 +324,15 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $args
+	 *
+	 * @since @@version
+	 *
+	 */
 	function upload_field( $args ){
 
 		wp_enqueue_media();
@@ -218,6 +361,16 @@ class WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $o
+	 *
+	 * @return bool
+	 * @since @@version
+	 *
+	 */
 	function description( $o ) {
 
 		if ( ! empty( $o[ 'desc' ] ) ) echo "<div class=\"wplf-description description\">{$o['desc']}</div>";
@@ -235,6 +388,15 @@ class WP_Login_Flow_Settings_Fields {
 		return false;
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $a
+	 *
+	 * @since @@version
+	 *
+	 */
 	function repeatable_field( $a ){
 		$o = $a['option'];
 		$values = isset( $a['value'] ) && ! empty( $a['value'] ) ? maybe_unserialize( $a['value'] ) : array();
@@ -259,6 +421,17 @@ class WP_Login_Flow_Settings_Fields {
 		<?php
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param      $a
+	 * @param bool $value
+	 * @param bool $index
+	 *
+	 * @since @@version
+	 *
+	 */
 	function repeatable_field_template( $a, $value = false, $index = false ){
 		$o = $a['option'];
 		$existing_output = ! empty( $value ) && $index !== false;
@@ -337,6 +510,15 @@ class WP_Login_Flow_Settings_Fields {
 		}
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $o
+	 *
+	 * @since @@version
+	 *
+	 */
 	function sub_fields( $o ) {
 
 		if( ! isset( $o['fields'] ) || empty( $o[ 'fields' ] ) ) return;

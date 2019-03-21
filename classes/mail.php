@@ -2,11 +2,26 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class WP_Login_Flow_Mail
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_Mail extends WP_Login_Flow {
 
+	/**
+	 * @var
+	 */
 	protected $email;
+	/**
+	 * @var
+	 */
 	protected $name;
 
+	/**
+	 * WP_Login_Flow_Mail constructor.
+	 */
 	function __construct() {
 
 		add_filter( 'wp_mail_from', array( $this, 'email' ) );

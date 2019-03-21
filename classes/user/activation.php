@@ -2,9 +2,18 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class WP_Login_Flow_User_Activation
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 
 
+	/**
+	 * WP_Login_Flow_User_Activation constructor.
+	 */
 	function __construct() {
 
 	}

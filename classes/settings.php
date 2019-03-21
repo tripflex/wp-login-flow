@@ -5,13 +5,34 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 require_once( WP_LOGIN_FLOW_PLUGIN_DIR . '/classes/settings/fields.php' );
 require_once( WP_LOGIN_FLOW_PLUGIN_DIR . '/classes/settings/handlers.php' );
 
+/**
+ * Class WP_Login_Flow_Settings
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 
+	/**
+	 * @var
+	 */
 	protected static $settings;
+	/**
+	 * @var string
+	 */
 	protected $settings_group;
+	/**
+	 * @var int
+	 */
 	protected $process_count;
+	/**
+	 * @var
+	 */
 	protected $field_data;
 
+	/**
+	 * WP_Login_Flow_Settings constructor.
+	 */
 	function __construct() {
 
 		$this->settings_group = 'wp_login_flow';

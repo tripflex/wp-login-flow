@@ -18,19 +18,45 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 include_once( 'functions.php' );
 
+/**
+ * Class WP_Login_Flow
+ *
+ * @since @@version
+ *
+ */
 Class WP_Login_Flow {
 
 	const PLUGIN_SLUG = 'wp-login-flow';
 	const PROD_ID = 'WP Login Flow';
 	const VERSION = '3.0.0';
+	/**
+	 * @var Singleton Instance
+	 */
 	protected static $instance;
-	public           $wp_login = 'wp-login.php';
-	private          $plugin_slug;
-	protected        $settings;
-	protected        $assets;
-	protected        $mail;
-	protected        $auth;
+	/**
+	 * @var string
+	 */
+	public    $wp_login = 'wp-login.php';
+	/**
+	 * @var \WP_Login_Flow_Settings
+	 */
+	protected $settings;
+	/**
+	 * @var
+	 */
+	protected $assets;
+	/**
+	 * @var
+	 */
+	protected $mail;
+	/**
+	 * @var
+	 */
+	protected $auth;
 
+	/**
+	 * WP_Login_Flow constructor.
+	 */
 	function __construct() {
 
 		if ( ! defined( 'WP_LOGIN_FLOW_VERSION' ) ) define( 'WP_LOGIN_FLOW_VERSION', WP_Login_Flow::VERSION );
@@ -158,6 +184,16 @@ Class WP_Login_Flow {
 		load_plugin_textdomain( 'wp-login-flow', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
 
+	/**
+	 * Add Settings link to plugins page
+	 *
+	 *
+	 * @param $links
+	 *
+	 * @return array
+	 * @since @@version
+	 *
+	 */
 	public function settings_plugin_link( $links ){
 
 		$links[] = '<a href="' . admin_url( '/users.php?page=wp-login-flow' ) . '">' . __( 'Settings' ) . '</a>';

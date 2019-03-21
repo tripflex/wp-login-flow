@@ -2,12 +2,30 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class WP_Login_Flow_User
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_User extends WP_Login_Flow {
 
+	/**
+	 * @var \WP_Login_Flow_User_Auth
+	 */
 	protected $auth;
+	/**
+	 * @var \WP_Login_Flow_User_Activation
+	 */
 	protected $activation;
+	/**
+	 * @var \WP_Login_Flow_User_List_Table
+	 */
 	protected $list_table;
 
+	/**
+	 * WP_Login_Flow_User constructor.
+	 */
 	function __construct() {
 
 		$this->activation = new WP_Login_Flow_User_Activation();
@@ -37,11 +55,27 @@ class WP_Login_Flow_User extends WP_Login_Flow {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @return \WP_Login_Flow_User_Activation
+	 * @since @@version
+	 *
+	 */
 	function activation(){
 		if( ! $this->activation ) $this->activation = new WP_Login_Flow_User_Activation();
 		return $this->activation;
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @return \WP_Login_Flow_User_Auth
+	 * @since @@version
+	 *
+	 */
 	function auth() {
 		if ( ! $this->auth ) $this->auth = new WP_Login_Flow_User_Auth();
 		return $this->auth;

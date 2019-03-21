@@ -11,7 +11,7 @@ wp-login permalinks, auto login, register w/ pass, login/logout redirects, email
 
 == Description ==
 
-WP Login Flow is a complete solution to make `wp-login.php` not suck!  Below are all the features organized by what they relate to.
+WP Login Flow is a complete solution to make `wp-login.php` not suck!  Below are all the features organized by what they relate to.  This plugin is completely open source, and has **NO ADS OR UPSELLS**
 
 = Registration =
 * Enhances Registration flow and wording for "Activation" (more below)
@@ -53,6 +53,7 @@ WP Login Flow is a complete solution to make `wp-login.php` not suck!  Below are
 * Customize Successful Activation Notice
 
 = Other Features =
+* Color scheme matches WordPress admin area color scheme
 * Fully documented and clean code base
 * Login Page Spinning Loader
 * Hide frontend Admin Bar from non-admin Users

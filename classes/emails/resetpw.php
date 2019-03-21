@@ -2,8 +2,17 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class WP_Login_Flow_Emails_ResetPW
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_Emails_ResetPW extends WP_Login_Flow_Emails {
 
+	/**
+	 * WP_Login_Flow_Emails_ResetPW constructor.
+	 */
 	function __construct() {
 
 		add_filter( 'retrieve_password_title', array( $this, 'title' ), 9999, 1 );

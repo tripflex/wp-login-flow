@@ -2,15 +2,38 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class WP_Login_Flow_Rewrite
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_Rewrite {
 
+	/**
+	 * @var
+	 */
 	private       $step;
+	/**
+	 * @var
+	 */
 	private       $action;
-	private       $doing_redirect = FALSE;
+	/**
+	 * @var
+	 */
 	public static $prevent_rewrite;
+	/**
+	 * @var null
+	 */
 	public static $blog_id = null;
+	/**
+	 * @var null
+	 */
 	public static $scheme = null;
 
+	/**
+	 * WP_Login_Flow_Rewrite constructor.
+	 */
 	function __construct() {
 
 		add_action( 'shutdown', array($this, 'check_for_updates') );

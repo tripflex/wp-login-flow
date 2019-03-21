@@ -2,6 +2,12 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class WP_Login_Flow_Settings_Handlers
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
 	/**
@@ -137,6 +143,16 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 
 	}
 
+	/**
+	 *
+	 *
+	 *
+	 * @param $input
+	 *
+	 * @return array|bool
+	 * @since @@version
+	 *
+	 */
 	public function repeatable_handler( $input ) {
 
 		if ( empty( $input ) || ! empty( $_POST[ 'button_submit' ] ) ) return FALSE;

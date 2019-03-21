@@ -2,8 +2,17 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class WP_Login_Flow_Template
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_Template extends WP_Login_Flow {
 
+	/**
+	 * WP_Login_Flow_Template constructor.
+	 */
 	function __construct() {
 
 	}

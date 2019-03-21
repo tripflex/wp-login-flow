@@ -1,56 +1,127 @@
-# Copyright (C) 2014 Myles McNamara
+# Copyright (C) 2019 Myles McNamara
 # This file is distributed under the same license as the WP Login Flow package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Login Flow 1.0.0\n"
+"Project-Id-Version: WP Login Flow 3.0.0\n"
 "Report-Msgid-Bugs-To: http://plugins.smyl.es\n"
-"POT-Creation-Date: 2014-12-04 01:05:29+00:00\n"
+"POT-Creation-Date: 2019-03-21 21:38:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Myles McNamara\n"
 "Language-Team: sMyles <get@smyl.es>\n"
-"X-Generator: grunt-wp-i18n 0.4.8\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: classes/assets.php:93
+#: classes/assets.php:156
 msgid "WP Login Flow Settings"
 msgstr ""
 
-#: classes/assets.php:94
+#: classes/assets.php:157
 msgid ""
 "The settings for WP Login Flow can be found under the <strong>User</strong> "
 "menu"
 msgstr ""
 
-#: classes/login.php:36
-msgid ""
-"Thank you for registering.  Please check your email for your activation "
-"link.<br><br>If you do not receive the email please request a <a "
-"href=\"%s\">password reset</a> to have the email sent again."
+#: classes/emails/resetpw.php:49
+msgid "[%s] Password Reset"
 msgstr ""
 
-#: classes/login.php:39
+#: classes/emails/resetpw.php:62
+msgid "The e-mail could not be sent."
+msgstr ""
+
+#: classes/emails/resetpw.php:62
+msgid "Possible reason: your host may have disabled the mail() function."
+msgstr ""
+
+#: classes/login.php:136
+msgid "Set Password"
+msgstr ""
+
+#: classes/login.php:179
+msgid ""
+"<p>Thank you for registering.  Please check your email for your activation "
+"link.</p><p>If you do not receive the email please request a <a "
+"href=\"%s\">password reset</a> to have the email sent again.</p>"
+msgstr ""
+
+#: classes/login.php:182
 msgid "Pending Activation"
 msgstr ""
 
-#: classes/login.php:61
-msgid "You will be emailed a link to set your password."
+#: classes/register.php:47
+msgid "Registration complete. You can now login to your account below."
 msgstr ""
 
-#: classes/settings/fields.php:135 classes/settings.php:436
+#: classes/register.php:117
+msgid "Email Address"
+msgstr ""
+
+#: classes/register.php:140
+msgid "Password"
+msgstr ""
+
+#: classes/register.php:150
+msgid "Strength indicator"
+msgstr ""
+
+#: classes/register.php:155
+msgid "Confirm use of weak password"
+msgstr ""
+
+#: classes/register.php:161
+msgid "Confirm new password"
+msgstr ""
+
+#: classes/register.php:235
+msgid "<strong>ERROR</strong>: Password field is required."
+msgstr ""
+
+#: classes/register.php:252
+msgid "<strong>ERROR</strong>: %s field is required."
+msgstr ""
+
+#: classes/settings/fields.php:145
+msgid "This rewrite conflicts with the "
+msgstr ""
+
+#: classes/settings/fields.php:145
+msgid " permalink!"
+msgstr ""
+
+#: classes/settings/fields.php:145
+msgid ""
+"Your rewrites for WP Login Flow should take precendence over any permalinks "
+"but this also means that page will not load correctly now!"
+msgstr ""
+
+#: classes/settings/fields.php:145
+msgid "You should probably use a different permalink or rewrite."
+msgstr ""
+
+#: classes/settings/fields.php:208 classes/settings/fields.php:328
+#: classes/settings.php:770
 msgid "Remove"
 msgstr ""
 
-#: classes/settings/fields.php:143
+#: classes/settings/fields.php:216
 msgid "Select Logo"
 msgstr ""
 
-#: classes/settings/handlers.php:18
+#: classes/settings/fields.php:227
+msgid "Endpoints:"
+msgstr ""
+
+#: classes/settings/fields.php:269
+msgid "Add Another"
+msgstr ""
+
+#: classes/settings/handlers.php:28
 msgid "All field configurations removed!"
 msgstr ""
 
-#: classes/settings.php:30 classes/settings.php:31
+#: classes/settings.php:37 classes/settings.php:38
 msgid "Login Flow"
 msgstr ""
 
@@ -58,374 +129,869 @@ msgstr ""
 msgid "WP Login Flow"
 msgstr ""
 
-#: classes/settings.php:72
+#: classes/settings.php:91
 msgid ""
 "You <strong>must</strong> enable <a href=\"%1$s\">permalinks</a> to use "
 "custom rewrites!"
 msgstr ""
 
-#: classes/settings.php:97
-msgid "Rewrites"
+#: classes/settings.php:123
+msgid "Permalinks"
 msgstr ""
 
-#: classes/settings.php:100
-msgid "Email Activation"
+#: classes/settings.php:126
+msgid "Permalinks/Rewrites"
 msgstr ""
 
-#: classes/settings.php:105
-msgid "Require Activation"
-msgstr ""
-
-#: classes/settings.php:106 classes/settings.php:120 classes/settings.php:141
-#: classes/settings.php:162 classes/settings.php:183 classes/settings.php:204
-#: classes/settings.php:278 classes/settings.php:298 classes/settings.php:324
-#: classes/settings.php:344 classes/settings.php:455
-msgid "Enable"
-msgstr ""
-
-#: classes/settings.php:109
-msgid ""
-"This will require new accounts to be verified by email before they are able "
-"to login."
-msgstr ""
-
-#: classes/settings.php:114
-msgid "Enable Rewrites"
-msgstr ""
-
-#: classes/settings.php:119
+#: classes/settings.php:131 classes/settings.php:363
 msgid "Login"
 msgstr ""
 
-#: classes/settings.php:123 classes/settings.php:144 classes/settings.php:165
-#: classes/settings.php:186 classes/settings.php:207
+#: classes/settings.php:132 classes/settings.php:153 classes/settings.php:175
+#: classes/settings.php:196 classes/settings.php:218 classes/settings.php:239
+#: classes/settings.php:270 classes/settings.php:279 classes/settings.php:293
+#: classes/settings.php:302 classes/settings.php:316 classes/settings.php:372
+#: classes/settings.php:565 classes/settings.php:585 classes/settings.php:612
+#: classes/settings.php:632 classes/settings.php:789 classes/settings.php:798
+#: classes/settings.php:807 classes/settings.php:955
+msgid "Enable"
+msgstr ""
+
+#: classes/settings.php:135 classes/settings.php:156 classes/settings.php:178
+#: classes/settings.php:199 classes/settings.php:221 classes/settings.php:242
 msgid "Default"
 msgstr ""
 
-#: classes/settings.php:140
-msgid "Lost Password"
-msgstr ""
-
-#: classes/settings.php:161
+#: classes/settings.php:152
 msgid "Register"
 msgstr ""
 
-#: classes/settings.php:182
+#: classes/settings.php:174
 msgid "Activate"
 msgstr ""
 
-#: classes/settings.php:203
+#: classes/settings.php:195
+msgid "Lost Password"
+msgstr ""
+
+#: classes/settings.php:217
+msgid "Reset Password"
+msgstr ""
+
+#: classes/settings.php:238
 msgid "Logged Out"
 msgstr ""
 
-#: classes/settings.php:226
-msgid "Customize Page"
+#: classes/settings.php:261 classes/settings.php:287
+msgid "Registration"
 msgstr ""
 
-#: classes/settings.php:229
-msgid "Page Customizations"
+#: classes/settings.php:264
+msgid "Account Setup"
 msgstr ""
 
-#: classes/settings.php:233 classes/settings.php:290
-msgid "Background Color"
-msgstr ""
-
-#: classes/settings.php:234
-msgid "Use a custom background for the default wp-login.php page."
-msgstr ""
-
-#: classes/settings.php:239
-msgid "Custom CSS"
-msgstr ""
-
-#: classes/settings.php:240
-msgid "Add any custom CSS you want added to login page here."
-msgstr ""
-
-#: classes/settings.php:246
-msgid "Logo Customizations"
-msgstr ""
-
-#: classes/settings.php:250
-msgid "Logo URL Title"
-msgstr ""
-
-#: classes/settings.php:251 classes/settings.php:333
-msgid "My Website"
-msgstr ""
-
-#: classes/settings.php:252
-msgid "Title attribute for the logo url link"
-msgstr ""
-
-#: classes/settings.php:257
-msgid "Logo URL"
-msgstr ""
-
-#: classes/settings.php:259
-msgid "Custom URL to use for the logo."
-msgstr ""
-
-#: classes/settings.php:264 classes/settings.php:265
-msgid "Custom Logo"
-msgstr ""
-
-#: classes/settings.php:266
-msgid "Set Custom Logo"
-msgstr ""
-
-#: classes/settings.php:267
-msgid "Use a custom logo on the default wp-login.php page."
+#: classes/settings.php:269
+msgid "Require Activation"
 msgstr ""
 
 #: classes/settings.php:273
-msgid "Login Box"
+msgid ""
+"Email link to set password in email when new users register. This is "
+"default method of registration in WordPress."
 msgstr ""
 
-#: classes/settings.php:277
-msgid "Responsive Width"
+#: classes/settings.php:278
+msgid "Register with Password"
 msgstr ""
 
-#: classes/settings.php:279
-msgid "Screen sizes above 1200px use default 50%, smaller screens use 90% width."
+#: classes/settings.php:282
+msgid ""
+"Show password input fields on registration form, and do not require account "
+"activation (disables require activation above)"
 msgstr ""
 
-#: classes/settings.php:284
+#: classes/settings.php:292
+msgid "Auto Login"
+msgstr ""
+
+#: classes/settings.php:296
+msgid ""
+"Auto login users after completing registration (regardless of account "
+"activation status).  Users will still be required to activate account (if "
+"enabled) to login again."
+msgstr ""
+
+#: classes/settings.php:301 classes/settings.php:371
+msgid "Loader"
+msgstr ""
+
+#: classes/settings.php:305 classes/settings.php:375
+msgid ""
+"Add a spinning loader and disable the register button after being clicked "
+"(and form validated)"
+msgstr ""
+
+#: classes/settings.php:310
+msgid "Registration Fields"
+msgstr ""
+
+#: classes/settings.php:315
+msgid "Email as Username"
+msgstr ""
+
+#: classes/settings.php:319
+msgid "Hide the Username field, and use Email as the username."
+msgstr ""
+
+#: classes/settings.php:324
+msgid "Custom Fields"
+msgstr ""
+
+#: classes/settings.php:327
+msgid "Add any additional custom user meta fields you want on the register form."
+msgstr ""
+
+#: classes/settings.php:330
+msgid "Field Label"
+msgstr ""
+
+#: classes/settings.php:332 classes/settings.php:408 classes/settings.php:462
+msgid "Enter the label to show above the input field"
+msgstr ""
+
+#: classes/settings.php:339
+msgid "Meta Key"
+msgstr ""
+
+#: classes/settings.php:342
+msgid ""
+"Enter the exact user meta key to save this value to.  Example would be "
+"first_name, last_name, etc."
+msgstr ""
+
+#: classes/settings.php:348 classes/settings.php:349
+msgid "Required"
+msgstr ""
+
+#: classes/settings.php:366
+msgid "Login General"
+msgstr ""
+
+#: classes/settings.php:382
+msgid "Redirects"
+msgstr ""
+
+#: classes/settings.php:385
+msgid "Login Redirects"
+msgstr ""
+
+#: classes/settings.php:389
+msgid "Default Login Redirect"
+msgstr ""
+
+#: classes/settings.php:390
+msgid ""
+"Enter the endpoint for default redirect after a user logs in (if they don't "
+"match any other rules below)"
+msgstr ""
+
+#: classes/settings.php:399
+msgid "Role Login Redirects"
+msgstr ""
+
+#: classes/settings.php:403 classes/settings.php:457
+msgid "Select any custom redirects to use for specific user roles"
+msgstr ""
+
+#: classes/settings.php:406 classes/settings.php:460
+msgid "Role"
+msgstr ""
+
+#: classes/settings.php:416 classes/settings.php:470
+msgid "Redirect"
+msgstr ""
+
+#: classes/settings.php:420 classes/settings.php:474
+msgid "Endpoint (on this site) to redirect to (do NOT include website URL)"
+msgstr ""
+
+#: classes/settings.php:430 classes/settings.php:484
+msgid "%s Precedence"
+msgstr ""
+
+#: classes/settings.php:431 classes/settings.php:485
+msgid "Yes, allow a POST or GET %s variable to take priority over above settings"
+msgstr ""
+
+#: classes/settings.php:434 classes/settings.php:488
+msgid ""
+"By enabling this setting, any redirect_to value set in GET or POST params "
+"will take priority over the above rules.  More than likely you will want to "
+"leave this disabled."
+msgstr ""
+
+#: classes/settings.php:439
+msgid "Logout Redirects"
+msgstr ""
+
+#: classes/settings.php:443
+msgid "Default Logout Redirect"
+msgstr ""
+
+#: classes/settings.php:444
+msgid ""
+"Enter the endpoint for default redirect after a user logs out (if they "
+"don't match any other rules below)"
+msgstr ""
+
+#: classes/settings.php:453
+msgid "Role Logout Redirects"
+msgstr ""
+
+#: classes/settings.php:495
+msgid "Customize Page"
+msgstr ""
+
+#: classes/settings.php:498
+msgid "Page Customizations"
+msgstr ""
+
+#: classes/settings.php:502 classes/settings.php:577
+msgid "Background Color"
+msgstr ""
+
+#: classes/settings.php:503
+msgid "Use a custom background for the default wp-login.php page."
+msgstr ""
+
+#: classes/settings.php:508 classes/settings.php:571
 msgid "Font Color"
 msgstr ""
 
-#: classes/settings.php:285
+#: classes/settings.php:509
+msgid "Use a custom font color for wp-login.php page."
+msgstr ""
+
+#: classes/settings.php:514
+msgid "Link Color"
+msgstr ""
+
+#: classes/settings.php:515
+msgid "Use a custom color for links on the wp-login.php page."
+msgstr ""
+
+#: classes/settings.php:520
+msgid "Link Hover Color"
+msgstr ""
+
+#: classes/settings.php:521
+msgid "Use a custom color when hovering over links on the wp-login.php page."
+msgstr ""
+
+#: classes/settings.php:526
+msgid "Custom CSS"
+msgstr ""
+
+#: classes/settings.php:527
+msgid "Add any custom CSS you want added to login page here."
+msgstr ""
+
+#: classes/settings.php:533
+msgid "Logo Customizations"
+msgstr ""
+
+#: classes/settings.php:537
+msgid "Logo URL Title"
+msgstr ""
+
+#: classes/settings.php:538 classes/settings.php:621
+msgid "My Website"
+msgstr ""
+
+#: classes/settings.php:539
+msgid "Title attribute for the logo url link"
+msgstr ""
+
+#: classes/settings.php:544
+msgid "Logo URL"
+msgstr ""
+
+#: classes/settings.php:546
+msgid "Custom URL to use for the logo."
+msgstr ""
+
+#: classes/settings.php:551 classes/settings.php:552
+msgid "Custom Logo"
+msgstr ""
+
+#: classes/settings.php:553
+msgid "Set Custom Logo"
+msgstr ""
+
+#: classes/settings.php:554
+msgid "Use a custom logo on the default wp-login.php page."
+msgstr ""
+
+#: classes/settings.php:560
+msgid "Login Box"
+msgstr ""
+
+#: classes/settings.php:564
+msgid "Responsive Width"
+msgstr ""
+
+#: classes/settings.php:566
+msgid "Screen sizes above 1200px use default 50%, smaller screens use 90% width."
+msgstr ""
+
+#: classes/settings.php:572
 msgid "Custom font color for Login Box"
 msgstr ""
 
-#: classes/settings.php:291
+#: classes/settings.php:578
 msgid "Custom background color for Login Box"
 msgstr ""
 
-#: classes/settings.php:297
+#: classes/settings.php:584
 msgid "Border Radius"
 msgstr ""
 
-#: classes/settings.php:301
+#: classes/settings.php:588
 msgid ""
 "Set a custom border radius on the login box, will only work with modern "
 "browsers that support CSS3."
 msgstr ""
 
-#: classes/settings.php:315
+#: classes/settings.php:603
 msgid "Email"
 msgstr ""
 
-#: classes/settings.php:318
+#: classes/settings.php:606
 msgid "Customize Email Options"
 msgstr ""
 
-#: classes/settings.php:323
+#: classes/settings.php:611
 msgid "From Name"
 msgstr ""
 
-#: classes/settings.php:325
+#: classes/settings.php:613
 msgid "Use a custom name on emails from WordPress."
 msgstr ""
 
-#: classes/settings.php:343
+#: classes/settings.php:631
 msgid "From E-Mail"
 msgstr ""
 
-#: classes/settings.php:345
+#: classes/settings.php:633
 msgid "Use a custom e-mail on emails from WordPress."
 msgstr ""
 
-#: classes/settings.php:353
+#: classes/settings.php:641
 msgid "support@mydomain.com"
 msgstr ""
 
-#: classes/settings.php:366
-msgid "Templates"
+#: classes/settings.php:654
+msgid "Email Templates"
 msgstr ""
 
-#: classes/settings.php:369
-msgid "User Activation Email Template"
+#: classes/settings.php:657
+msgid "New User Activation Email Template"
 msgstr ""
 
-#: classes/settings.php:373
+#: classes/settings.php:662 classes/settings.php:685 classes/settings.php:707
 msgid "Email Subject"
 msgstr ""
 
-#: classes/settings.php:374
+#: classes/settings.php:663
 msgid ""
 "This will be used as the subject for the Activation email.  You can use any "
 "template tags available in message below."
 msgstr ""
 
-#: classes/settings.php:382
+#: classes/settings.php:664
+msgid "Account Activation Required"
+msgstr ""
+
+#: classes/settings.php:671 classes/settings.php:694 classes/settings.php:716
 msgid "Email Message"
 msgstr ""
 
-#: classes/settings.php:383
+#: classes/settings.php:672
 msgid ""
 "This template will be used as the first email sent to the user to activate "
-"their account.<br /><strong>Template Tags:</strong> "
-"<code>%wp_activate_url%</code> - Activation URL, "
-"<code>%wp_activation_key%</code> - Activation Key, "
-"<code>%wp_user_name%</code> - Username, <code>%wp_user_email%</code> - User "
-"Email, <code>%wp_site_url%</code> - Site URL"
+"their account.<br /><strong>Available Template Tags:</strong> "
+"<code>%wp_activate_url%</code>, <code>%wp_activation_key%</code>, "
+"<code>%wp_user_name%</code>, <code>%wp_user_email%</code>, "
+"<code>%wp_site_url%</code>, <code>%wp_login_url%</code>"
 msgstr ""
 
-#: classes/settings.php:393
+#: classes/settings.php:673 classes/settings.php:696
+msgid "Thank you for registering your account:"
+msgstr ""
+
+#: classes/settings.php:673 classes/settings.php:696 classes/settings.php:718
+#: classes/user/activation.php:114 pluggables/wp-new-user-notification.php:72
+#: pluggables/wp-new-user-notification.php:172
+#. translators: %s: user login
+msgid "Username: %s"
+msgstr ""
+
+#: classes/settings.php:673
+msgid ""
+"In order to activate your account and set your password, please visit the "
+"following address:"
+msgstr ""
+
+#: classes/settings.php:680
+msgid "New User Email Template"
+msgstr ""
+
+#: classes/settings.php:686
+msgid ""
+"This will be used as the subject for the new user registered email.  You "
+"can use any template tags available in message below."
+msgstr ""
+
+#: classes/settings.php:687
+msgid "Your Account Information"
+msgstr ""
+
+#: classes/settings.php:695
+msgid ""
+"This template will be used as the first email sent to the user after "
+"creating an account (with their own password).<br /><strong>Available "
+"Template Tags:</strong> <code>%wp_user_name%</code>, "
+"<code>%wp_user_email%</code>, <code>%wp_site_url%</code>, "
+"<code>%wp_login_url%</code>"
+msgstr ""
+
+#: classes/settings.php:696
+msgid "To login to your account, please visit the following address:"
+msgstr ""
+
+#: classes/settings.php:703
+msgid "Lost Password Email Template"
+msgstr ""
+
+#: classes/settings.php:708
+msgid ""
+"This will be used as the subject for the Lost Password email.  You can use "
+"any template tags available in message below."
+msgstr ""
+
+#: classes/settings.php:709
+msgid "Password Reset"
+msgstr ""
+
+#: classes/settings.php:717
+msgid ""
+"This template will be used whenever someone submits a lost/reset password "
+"request.<br /><strong>Available Template Tags:</strong> "
+"<code>%wp_reset_pw_url%</code>, <code>%wp_reset_pw_key%</code>, "
+"<code>%wp_user_name%</code>, <code>%wp_user_email%</code>, "
+"<code>%wp_site_url%</code>, <code>%wp_login_url%</code>"
+msgstr ""
+
+#: classes/settings.php:718
+msgid "Someone requested that the password be reset for the following account:"
+msgstr ""
+
+#: classes/settings.php:718
+msgid "If this was a mistake, just ignore this email and nothing will happen."
+msgstr ""
+
+#: classes/settings.php:718
+msgid "To reset your password, visit the following address:"
+msgstr ""
+
+#: classes/settings.php:727
 msgid "Notices"
 msgstr ""
 
-#: classes/settings.php:396
+#: classes/settings.php:730
 msgid "Activation Notices"
 msgstr ""
 
-#: classes/settings.php:400
+#: classes/settings.php:734
 msgid "Account Requires Activation Notice"
 msgstr ""
 
-#: classes/settings.php:402 classes/settings.php:410
+#: classes/settings.php:735
 msgid ""
-"This notice will be shown to the user when they attempt to login but have "
-"not activated their account.  Use <code>%wp_lost_pw_url%</code> for the "
-"lost password URL."
+"Thank you for registering.  Please check your email for your activation "
+"link.<br><br>If you do not receive the email please request a <a "
+"href=\"%wp_lost_pw_url%\">password reset</a> to have the email sent again."
 msgstr ""
 
-#: classes/settings.php:408
+#: classes/settings.php:736 classes/settings.php:744
+msgid ""
+"This notice will be shown to the user when they attempt to login but have "
+"not activated their account.<br /><strong>Available Template Tags:</strong> "
+"<code>%wp_lost_pw_url%</code>, <code>%wp_site_url%</code>, "
+"<code>%wp_login_url%</code>"
+msgstr ""
+
+#: classes/settings.php:742
 msgid "Pending Activation Notice"
 msgstr ""
 
-#: classes/settings.php:416
+#: classes/settings.php:743
+msgid ""
+"<strong>ERROR</strong>: Your account is still pending activation, please "
+"check your email, or you can request a <a "
+"href=\"%wp_lost_pw_url%\">password reset</a> for a new activation code."
+msgstr ""
+
+#: classes/settings.php:750
 msgid "Successful Activation Notice"
 msgstr ""
 
-#: classes/settings.php:418
-msgid ""
-"This notice will be shown to the user once they activate and set the "
-"password for their account."
+#: classes/settings.php:751 pluggables/wp-password-change-notification.php:29
+msgid "Your account has been successfully activated!"
 msgstr ""
 
-#: classes/settings.php:427
+#: classes/settings.php:751 pluggables/wp-password-change-notification.php:29
+msgid "You can now <a href=\"%s\">Log In</a>"
+msgstr ""
+
+#: classes/settings.php:752
+msgid ""
+"This notice will be shown to the user once they activate and set the "
+"password for their account.<br /><strong>Available Template Tags:</strong> "
+"<code>%wp_lost_pw_url%</code>, <code>%wp_site_url%</code>, "
+"<code>%wp_login_url%</code>"
+msgstr ""
+
+#: classes/settings.php:761
 msgid "Integrations"
 msgstr ""
 
-#: classes/settings.php:430
+#: classes/settings.php:764
 msgid "Jobify"
 msgstr ""
 
-#: classes/settings.php:435
+#: classes/settings.php:769
 msgid "Jobify Password Field"
 msgstr ""
 
-#: classes/settings.php:437
+#: classes/settings.php:771
 msgid "Remove the password box from Jobify registration form."
 msgstr ""
 
-#: classes/settings.php:446
+#: classes/settings.php:780
+msgid "Login Limiter"
+msgstr ""
+
+#: classes/settings.php:783
+msgid "Login Limiter Settings"
+msgstr ""
+
+#: classes/settings.php:788
+msgid "Limit Login Attempts"
+msgstr ""
+
+#: classes/settings.php:792
+msgid "Limit login attempts based on configuration below."
+msgstr ""
+
+#: classes/settings.php:797
+msgid "Lockout Log"
+msgstr ""
+
+#: classes/settings.php:801
+msgid "Enable to log all lockouts"
+msgstr ""
+
+#: classes/settings.php:806
+msgid "Lockout Email"
+msgstr ""
+
+#: classes/settings.php:811
+msgid "Send email regarding lockouts after configuration above."
+msgstr ""
+
+#: classes/settings.php:816
+msgid "Send email to:"
+msgstr ""
+
+#: classes/settings.php:817
+msgid "after"
+msgstr ""
+
+#: classes/settings.php:823
+msgid "lockouts"
+msgstr ""
+
+#: classes/settings.php:830
+msgid "Allowed Attempts"
+msgstr ""
+
+#: classes/settings.php:833
+msgid "Set how many failed login attempts before triggering a lockout"
+msgstr ""
+
+#: classes/settings.php:838
+msgid "Lockout Minutes"
+msgstr ""
+
+#: classes/settings.php:841
+msgid ""
+"Set how many minutes to lockout a user/IP after failed login attempts set "
+"above."
+msgstr ""
+
+#: classes/settings.php:846
+msgid "Lockouts Allowed"
+msgstr ""
+
+#: classes/settings.php:849
+msgid ""
+"Set how many lockouts will be allowed before increasing lockout time set "
+"below."
+msgstr ""
+
+#: classes/settings.php:854
+msgid "Lockout Increase"
+msgstr ""
+
+#: classes/settings.php:857
+msgid ""
+"Set how many hours to increase the lockout time after number of failed "
+"total lockouts above."
+msgstr ""
+
+#: classes/settings.php:862
+msgid "Login Limiter Whitelist"
+msgstr ""
+
+#: classes/settings.php:866
+msgid "IP Whitelist"
+msgstr ""
+
+#: classes/settings.php:869
+msgid ""
+"Add any IP addresses to the whitelist. This can be a single IP (x.x.x.x) or "
+"a range (1.2.3.4-5.6.7.8)"
+msgstr ""
+
+#: classes/settings.php:872 classes/settings.php:913
+msgid "IP Address"
+msgstr ""
+
+#: classes/settings.php:874 classes/settings.php:915
+msgid ""
+"Format should be a single IP address (1.2.3.4) or a range separated by "
+"hyphen (1.2.3.4-5.6.7.8)"
+msgstr ""
+
+#: classes/settings.php:884
+msgid "User Whitelist"
+msgstr ""
+
+#: classes/settings.php:887
+msgid "Add any specific usernames to omit from login limiter"
+msgstr ""
+
+#: classes/settings.php:890 classes/settings.php:931
+msgid "Username/Email"
+msgstr ""
+
+#: classes/settings.php:892
+msgid "Enter any username or email address to omit from the login limiter"
+msgstr ""
+
+#: classes/settings.php:903
+msgid "Login Limiter Blacklist"
+msgstr ""
+
+#: classes/settings.php:907
+msgid "IP Blacklist"
+msgstr ""
+
+#: classes/settings.php:910
+msgid ""
+"Add any IP addresses to the blacklist. This can be a single IP (x.x.x.x) or "
+"a range (1.2.3.4-5.6.7.8)"
+msgstr ""
+
+#: classes/settings.php:925
+msgid "User Blacklist"
+msgstr ""
+
+#: classes/settings.php:928
+msgid "Add any specific usernames to blacklist from logging in"
+msgstr ""
+
+#: classes/settings.php:933
+msgid "Enter any username or email address to blacklist from logging in"
+msgstr ""
+
+#: classes/settings.php:946 wp-login-flow.php:163 wp-login-flow.php:181
 msgid "Settings"
 msgstr ""
 
-#: classes/settings.php:449
+#: classes/settings.php:949
 msgid "Configuration"
 msgstr ""
 
-#: classes/settings.php:454
+#: classes/settings.php:954
 msgid "Remove on Uninstall"
 msgstr ""
 
-#: classes/settings.php:456
+#: classes/settings.php:956
 msgid ""
 "This will remove all configuration and options when you uninstall the "
 "plugin (disabled by default)"
 msgstr ""
 
-#: classes/settings.php:464 classes/settings.php:465
+#: classes/settings.php:963
+msgid "Admin Bar"
+msgstr ""
+
+#: classes/settings.php:964
+msgid ""
+"Only show admin bar for administrators (users with manage_options "
+"capability)"
+msgstr ""
+
+#: classes/settings.php:965
+msgid ""
+"By default, WordPress will show the admin bar for any kind of user when "
+"browsing the site.  Enable this setting to only show for Administrators."
+msgstr ""
+
+#: classes/settings.php:973 classes/settings.php:974
 msgid "Reset to Defaults"
 msgstr ""
 
-#: classes/settings.php:466
+#: classes/settings.php:975
 msgid ""
 "<strong>CAUTION!</strong> This will remove ALL configuration values, and "
 "reset everything to default!"
 msgstr ""
 
-#: classes/user/activation.php:49
+#: classes/user/activation.php:113
 msgid "New user activation on your site %s:"
 msgstr ""
 
-#: classes/user/activation.php:50
-msgid "Username: %s"
-msgstr ""
-
-#: classes/user/activation.php:51
+#: classes/user/activation.php:115
 msgid "E-mail: %s"
 msgstr ""
 
-#: classes/user/activation.php:53
+#: classes/user/activation.php:117
 msgid "[%s] New User Activation"
 msgstr ""
 
-#: classes/user/auth.php:52
+#: classes/user/auth.php:57
 msgid ""
 "<strong>ERROR</strong>: Your account is still pending activation, please "
 "check your email, or you can request a <a href=\"%s\">password reset</a> "
 "for a new activation code."
 msgstr ""
 
-#: pluggables/wp-new-user-notification.php:67
+#: classes/user/list/table.php:18
+msgid "Toggle Activation"
+msgstr ""
+
+#: classes/user/list/table.php:25
+msgid "Activation Status"
+msgstr ""
+
+#: classes/user/list/table.php:37
+msgid "Existing User Requires Activation"
+msgstr ""
+
+#: classes/user/list/table.php:40
+msgid "Activated"
+msgstr ""
+
+#: classes/user/list/table.php:42
+msgid "Requires Activation"
+msgstr ""
+
+#: classes/user.php:33
+msgid "Require Activation?"
+msgstr ""
+
+#: classes/user.php:34
+msgid "Send an email to new user with link to activate and set password."
+msgstr ""
+
+#: pluggables/wp-new-user-notification.php:70
+#. translators: %s: site title
+msgid "New user registration on your site %s:"
+msgstr ""
+
+#: pluggables/wp-new-user-notification.php:74
+#. translators: %s: user email address
+msgid "Email: %s"
+msgstr ""
+
+#: pluggables/wp-new-user-notification.php:79
+#. translators: Password change notification email subject. %s: Site title
+msgid "[%s] New User Registration"
+msgstr ""
+
+#: pluggables/wp-new-user-notification.php:163
 msgid "[%s] Account Activation"
 msgstr ""
 
-#: pluggables/wp-new-user-notification.php:68
+#: pluggables/wp-new-user-notification.php:164
 msgid ""
 "Welcome to %s! Please visit the link below to activate your account and set "
 "your password:"
 msgstr ""
 
-#: pluggables/wp-password-change-notification.php:24
-msgid "Password Saved"
+#: pluggables/wp-new-user-notification.php:170
+msgid "[%s] Account Information"
 msgstr ""
 
-#: pluggables/wp-password-change-notification.php:24
-msgid "Log in"
+#: pluggables/wp-new-user-notification.php:171
+msgid "Welcome to %s! Your account information is as follows:"
+msgstr ""
+
+#: pluggables/wp-new-user-notification.php:173
+msgid "You can login to your account at the URL below:"
 msgstr ""
 
 #: pluggables/wp-password-change-notification.php:32
+msgid "Password Saved"
+msgstr ""
+
+#: pluggables/wp-password-change-notification.php:40
 msgid "Password Lost and Changed for user: %s"
 msgstr ""
 
-#: pluggables/wp-password-change-notification.php:36
+#: pluggables/wp-password-change-notification.php:44
 msgid "[%s] Password Lost/Changed"
 msgstr ""
 
-#: wp-login-flow.php:89
+#: wp-login-flow.php:130
 msgid ""
 "WP Login Flow is now activated, you can find <strong>Login Flow</strong> "
-"under the <strong>Users</strong> menu.<br />Dont forget to check/enable "
-"<strong>Anyone can register</strong> under <strong>Settings > "
-"General</strong>"
+"under the <strong>Users</strong> menu."
 msgstr ""
 
-#: wp-login-flow.php:100
+#: wp-login-flow.php:141
 msgid "Hide notice"
 msgstr ""
 
-#: wp-login-flow.php:101
+#: wp-login-flow.php:142
 msgid ""
-"WP Login Flow is not recommended for multisite installations.  Some "
-"features may work but other may have issues.  <strong>You have been "
-"warned.</strong>"
+"WP Login Flow is recommended for single site installations -- not multisite "
+"installations.  All the features \"should\" work, but PLEASE thoroughly "
+"test everything manually, and report any issues you find on GitHub."
 msgstr ""
 
-#: wp-login-flow.php:131
-msgid "GitHub"
+#: wp-login-flow.php:182
+msgid "Open Source"
 msgstr ""
 
-#: wp-login-flow.php:132
-msgid "Wordpress"
+#: wp-login-flow.php:183
+msgid "WordPress"
 msgstr ""
 
-#: wp-login-flow.php:133
+#: wp-login-flow.php:184
 msgid "Translate"
 msgstr ""
 
@@ -435,8 +1001,9 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Complete customization of WordPress core wp-login.php styles, structure, "
-"permalinks, including activation by email and more!"
+"Complete wp-login.php customization, including rewrites, require email "
+"activation, email templates, custom colors, logo, link, responsiveness, "
+"border radius, and more!"
 msgstr ""
 
 #. Author of the plugin/theme
