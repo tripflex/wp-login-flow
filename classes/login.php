@@ -48,7 +48,7 @@ class WP_Login_Flow_Login {
 		if ( ( $action === 'register' && get_option( 'wplf_register_loader', false ) ) || ( $action === 'login' && get_option( 'wplf_login_loader', false ) ) ) {
 			?>
 			<div id="wplf-loader">
-				<span id="login-loader-icon" class="dashicons dashicons-image-rotate"></span>
+				<span id="wplf-loader-icon" class="dashicons dashicons-image-rotate"></span>
 			</div>
 			<?php
 		}
