@@ -21,7 +21,7 @@ class WP_Login_Flow_Rewrite {
 	/**
 	 * @var
 	 */
-	public static $prevent_rewrite;
+	public static $prevent_rewrite = false;
 	/**
 	 * @var null
 	 */
@@ -43,7 +43,7 @@ class WP_Login_Flow_Rewrite {
 		add_filter( 'site_url', array($this, 'site_url'), 9999, 4 );
 		add_filter( 'network_site_url', array($this, 'network_site_url'), 9999, 4 );
 		add_filter( 'wp_redirect', array($this, 'site_url_redirect'), 9999, 2 );
-
+		add_action( 'wp_loaded', array( $this, 'set_rewrite_rules' ) );
 	}
 
 	/**
