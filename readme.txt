@@ -67,6 +67,7 @@ WP Login Flow was intended to be completely bloat free, and integrate with the c
 
 = Features Coming Soon =
 * Login Limiter based on Limit Login Attempts
+* Bulk remove unactivated accounts
 * [Your IDEA!](https://github.com/tripflex/wp-login-flow/issues/new)
 
 = WP Login Flow History =

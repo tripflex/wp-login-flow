@@ -186,4 +186,16 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 		return false;
 	}
 
+	/**
+	 * Check if "Anyone can Register" is enabled
+	 *
+	 *
+	 * @return bool
+	 * @since @@version
+	 *
+	 */
+	static function registration_enabled(){
+		$enabled = get_option( 'users_can_register' );
+		return ! empty( $enabled );
+	}
 }

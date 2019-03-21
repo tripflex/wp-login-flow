@@ -214,6 +214,7 @@ Class WP_Login_Flow {
 
 		if ( self::PLUGIN_SLUG . '/' . self::PLUGIN_SLUG . '.php' == $plugin_file ) {
 			$plugin_meta[] = '<a target="_blank" href="https://www.patreon.com/smyles"><span class="dashicons dashicons-heart" style="color: #ca2424; font-size: 15px; line-height: 1.5;"></span></a>';
+			$plugin_meta[] = '<a target="_blank" href="http://wordpress.org/plugins/' . self::PLUGIN_SLUG . '/reviews/#new-post"><span class="dashicons dashicons-star-filled" style="font-size: 15px; line-height: 1.5;"></span></a>';
 			$plugin_meta[] = '<a href="' . admin_url( '/users.php?page=wp-login-flow' ) . '">' . __( 'Settings' ) . '</a>';
 			$plugin_meta[ ] = '<a target="_blank" href="http://github.com/tripflex/' . self::PLUGIN_SLUG . '">' . __( 'Open Source' ) . '</a>';
 			$plugin_meta[ ] = '<a target="_blank" href="http://wordpress.org/plugins/' . self::PLUGIN_SLUG . '">' . __( 'WordPress' ) . '</a>';

@@ -111,6 +111,9 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 								if( $skey === 'enable_rewrites' && parent::permalinks_disabled() ){
 									echo "<h3 class=\"permalink-error\">" . sprintf( __( 'You <strong>must</strong> enable <a href="%1$s">permalinks</a> to use custom rewrites!' ), admin_url('options-permalink.php') ). "</h3>";
 								}
+								if( $skey === 'require_activation' && ! parent::registration_enabled() ){
+									echo "<h3 class=\"permalink-error\">" . sprintf( __( '"%1$s" needs to be enabled <a href="%2$s">on this page</a> for users to register on your site!' ), __('Anyone can register') , admin_url('options-general.php') ). "</h3>";
+								}
 								do_settings_sections( "wplf_{$key}_{$skey}_section" );
 							}
 		?>
