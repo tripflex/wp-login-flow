@@ -11,7 +11,6 @@ jQuery( function ( $ ) {
 			// Same ID for login/register/lostpw/etc
 			$( '#login' ).css( 'opacity', '0.5' );
 		}
-
 	});
 
 });

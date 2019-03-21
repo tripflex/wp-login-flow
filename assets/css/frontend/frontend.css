@@ -10,12 +10,10 @@
   transform: -ms-translate(-50%, -50%);
   font-size: 2em;
 }
-#wplf-loader #login-loader-icon {
+#wplf-loader-icon {
   font-size: 2em;
   width: auto;
   height: auto;
-}
-#wplf-loader-icon {
   -webkit-animation: wplfspinner 1s infinite ease-in-out reverse;
   -moz-animation: wplfspinner 1s infinite ease-in-out reverse;
   -ms-animation: wplfspinner 1s infinite ease-in-out reverse;
