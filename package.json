@@ -1,0 +1,30 @@
+{
+  "name": "wp-login-flow",
+  "title": "WP Login Flow",
+  "acronym": "wplf",
+  "version": "3.0.0",
+  "homepage": "http://plugins.smyl.es",
+  "author_homepage": "http://smyl.es",
+  "class": "WP_Login_Flow",
+  "CAP_NAME": "WP_LOGIN_FLOW",
+  "main": "Gruntfile.js",
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-autoprefixer": "^3.0.4",
+    "grunt-checktextdomain": "^1.0.1",
+    "grunt-contrib-clean": "^2.0.0",
+    "grunt-contrib-compress": "^1.4.3",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^3.0.0",
+    "grunt-contrib-less": "^2.0.0",
+    "grunt-contrib-uglify": "^4.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-exec": "^3.0.0",
+    "grunt-po2mo": "^0.1.2",
+    "grunt-replace": "^1.0.1",
+    "grunt-shell": "^3.0.1",
+    "grunt-wp-i18n": "^1.0.3",
+    "load-grunt-tasks": "^4.0.0"
+  }
+}
