@@ -2,9 +2,18 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class WP_Login_Flow_User_Auth
+ *
+ * @since @@version
+ *
+ */
 class WP_Login_Flow_User_Auth extends WP_Login_Flow_User {
 
 
+	/**
+	 * WP_Login_Flow_User_Auth constructor.
+	 */
 	function __construct() {
 
 		// Run at priority 21+ -- after WordPress runs filter for wp_authenticate_username_password and wp_authenticate_email_password

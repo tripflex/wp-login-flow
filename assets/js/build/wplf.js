@@ -45,6 +45,11 @@ var wplf = {
 			$('.wplf-repeatable-form').each( function(){
 				var group = $(this).data( 'group' );
 				wplf.repeatable.sortCreate( group );
+
+				var single_val_field = $(this).data('singleval');
+				if( single_val_field ){
+					console.log( 'single val field ', single_val_field );
+				}
 			});
 		},
 		sortCreate: function (group) {
