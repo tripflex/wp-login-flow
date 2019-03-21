@@ -2,8 +2,17 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
+/**
+ * Class WP_Login_Flow_Login_Styles
+ *
+ * @since @@version
+ *
+ */
+class WP_Login_Flow_Login_Styles {
 
+	/**
+	 * WP_Login_Flow_Login_Styles constructor.
+	 */
 	function __construct() {
 
 		add_action( 'login_enqueue_scripts', array( $this, 'login_css' ) );
@@ -60,6 +69,10 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 	public function login_css() {
 
 		$login_bg_color = get_option( 'wplf_bg_color' );
+		$login_link_color = get_option( 'wplf_link_color' );
+		$login_link_hover_color = get_option( 'wplf_link_hover_color' );
+		$font_color = get_option( 'wplf_font_color' );
+
 		$custom_css = get_option( 'wplf_custom_css' );
 
 		$login_box_responsive = get_option( 'wplf_login_box_responsive' );
@@ -77,11 +90,18 @@ class WP_Login_Flow_Login_Styles extends WP_Login_Flow_Login {
 			@media (max-width: 1200px) {#login {width: 90% !important;}}
 			@media (min-width: 1200px) {#login {width: 50% !important;}}
 			<?php endif; ?>
-
+			<?php if ( ! empty( $font_color ) ): ?>
+			body {color: <?php echo $font_color; ?> !important;}
+			<?php endif; ?>
 			<?php if ( ! empty( $login_bg_color ) ): ?>
 			body {background-color: <?php echo $login_bg_color; ?> !important;}
 			<?php endif; ?>
-
+			<?php if ( ! empty( $login_link_color ) ): ?>
+			.login #nav a, #backtoblog a {color: <?php echo $login_link_color; ?> !important;}
+			<?php endif; ?>
+			<?php if ( ! empty( $login_link_hover_color ) ): ?>
+			.login #nav a:hover, #backtoblog a:hover {color: <?php echo $login_link_hover_color; ?> !important;}
+			<?php endif; ?>
 			<?php
 				$login_form_css = '.login #login form, .login #login form label {';
 

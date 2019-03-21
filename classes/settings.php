@@ -69,7 +69,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 		<?php
 					foreach ( self::$settings as $key => $tab ) {
 						$title = $tab["title"];
-						echo "<a href=\"#settings-{$key}\" class=\"nav-tab\">{$title}</a>";
+						echo "<a href=\"#settings-{$key}\" class=\"nav-tab\" data-tab=\"{$key}\">{$title}</a>";
 					}
 		?>
 				</h2>
@@ -81,6 +81,11 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 							<div id="wplf-settings-inside">
 		<?php
 							foreach( $tab['sections'] as $skey => $section ) {
+
+								if ( array_key_exists( 'hide_if', $section ) && ! empty( $section['hide_if'] ) ) {
+									continue;
+								}
+
 								echo "<h2 class=\"wp-ui-primary\">{$section['title']}</h2>";
 								if( $skey === 'enable_rewrites' && parent::permalinks_disabled() ){
 									echo "<h3 class=\"permalink-error\">" . sprintf( __( 'You <strong>must</strong> enable <a href="%1$s">permalinks</a> to use custom rewrites!' ), admin_url('options-permalink.php') ). "</h3>";
@@ -111,37 +116,14 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 	 */
 	public static function init_settings() {
 
-		self::$settings = apply_filters(
+		$settings = apply_filters(
 			'wp_login_flow_settings',
 			array(
 				'rewrites' => array(
-					'title'  => __( 'Rewrites' ),
+					'title'  => __( 'Permalinks' ),
 					'sections' => array(
-						'require_activation' => array(
-							'title'  => __( 'Email Activation' ),
-							'fields' => array(
-								array(
-									'name'       => 'wplf_require_activation',
-									'std'        => '0',
-									'label'      => __( 'Require Activation' ),
-									'cb_label'   => __( 'Enable' ),
-									'type'       => 'checkbox',
-									'attributes' => array(),
-									'desc'       => __( 'This will require new accounts to be verified by email before they are able to login.' ),
-								),
-								array(
-									'name'       => 'wplf_require_existing_activation',
-									'std'        => '0',
-									'label'      => __( 'Existing Users' ),
-									'cb_label'   => __( 'Enable' ),
-									'type'       => 'checkbox',
-									'attributes' => array(),
-									'desc'       => __( 'Should existing users (created before using this plugin) be required to confirm their emails?  Enabling this will require them to activate their email upon next login attempt.' ),
-								)
-							)
-						),
 						'enable_rewrites' => array(
-							'title'  => __( 'Enable Rewrites' ),
+							'title'  => __( 'Permalinks/Rewrites' ),
 							'fields' => array(
 								array(
 									'name'       => 'wplf_rewrite_login',
@@ -150,13 +132,13 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc'       => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php</code>',
+									'desc'       => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php</pre>',
 									'disabled' => parent::permalinks_disabled(),
 									'fields'     => array(
 									    array(
 											'name'       => 'wplf_rewrite_login_slug',
 											'std'        => 'login',
-											'pre'        => '<code>' . home_url() . '/</code>',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
 											'post'       => '',
 											'type'       => 'textbox',
 											'attributes' => array(),
@@ -171,14 +153,36 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc'       => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=register</code>',
+									'desc'       => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php?action=register</pre>',
 									'disabled'   => parent::permalinks_disabled(),
+									'endpoints' => array( 'disabled', 'checkemail' ),
 									'fields'     => array(
 										array(
 											'name'       => 'wplf_rewrite_register_slug',
 											'std'        => 'register',
-											'pre'        => '<code>' . home_url() . '/</code>',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
 											'post'       => '',
+											'type'       => 'textbox',
+											'attributes' => array(),
+											'disabled'   => parent::permalinks_disabled()
+										)
+									)
+								),
+								array(
+									'name'       => 'wplf_rewrite_activate',
+									'std'        => '0',
+									'label'      => __( 'Activate' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php?action=rp&key=ACTIVATIONCODE&login=USERNAME</pre>',
+									'disabled'   => parent::permalinks_disabled(),
+									'fields'     => array(
+										array(
+											'name'       => 'wplf_rewrite_activate_slug',
+											'std'        => 'activate',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
+											'post'       => '<pre>/USERNAME/ACTIVATIONCODE</pre>',
 											'type'       => 'textbox',
 											'attributes' => array(),
 											'disabled'   => parent::permalinks_disabled()
@@ -192,13 +196,14 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=lostpassword</code>',
+									'desc' => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php?action=lostpassword</pre>',
+									'endpoints' => array( 'rp', 'resetpass', 'confirm', 'expired', 'invalid' ),
 									'disabled' => parent::permalinks_disabled(),
 									'fields' => array(
 										array(
 											'name'       => 'wplf_rewrite_lost_pw_slug',
 											'std'        => 'lost-password',
-											'pre'        => '<code>' . home_url() . '/</code>',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
 											'post'       => '',
 											'type'       => 'textbox',
 											'attributes' => array(),
@@ -213,35 +218,14 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=rp&key=RESETKEY&login=USERNAME</code>',
+									'desc' => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php?action=rp&key=RESETKEY&login=USERNAME</pre>',
 									'disabled' => parent::permalinks_disabled(),
 									'fields' => array(
 										array(
 											'name'       => 'wplf_rewrite_reset_pw_slug',
 											'std'        => 'reset-password',
-											'pre'        => '<code>' . home_url() . '/</code>',
-											'post'       => '<code>/USERNAME/RESETKEY</code>',
-											'type'       => 'textbox',
-											'attributes' => array(),
-											'disabled' => parent::permalinks_disabled()
-										)
-									)
-								),
-								array(
-									'name'       => 'wplf_rewrite_activate',
-									'std'        => '0',
-									'label'      => __( 'Activate' ),
-									'cb_label'   => __( 'Enable' ),
-									'type'       => 'checkbox',
-									'attributes' => array(),
-									'desc' => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?action=rp&step=activate&key=ACTIVATIONCODE&login=USERNAME</code>',
-									'disabled' => parent::permalinks_disabled(),
-									'fields' => array(
-										array(
-											'name'       => 'wplf_rewrite_activate_slug',
-											'std'        => 'activate',
-											'pre'        => '<code>' . home_url() . '/</code>',
-											'post'       => '<code>/USERNAME/ACTIVATIONCODE</code>',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
+											'post'       => '<pre>/USERNAME/RESETKEY</pre>',
 											'type'       => 'textbox',
 											'attributes' => array(),
 											'disabled' => parent::permalinks_disabled()
@@ -255,19 +239,253 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'cb_label'   => __( 'Enable' ),
 									'type'       => 'checkbox',
 									'attributes' => array(),
-									'desc'       => __( 'Default' ) . ': <code>' . home_url() . '/wp-login.php?loggedout=true</code>',
+									'desc'       => '<strong>' . __( 'Default' ) . ':</strong> <pre>' . home_url() . '/wp-login.php?loggedout=true</pre>',
 									'disabled'   => parent::permalinks_disabled(),
 									'fields'     => array(
 										array(
 											'name'       => 'wplf_rewrite_loggedout_slug',
 											'std'        => 'logout/complete',
-											'pre'        => '<code>' . home_url() . '/</code>',
+											'pre'        => '<pre>' . home_url() . '/</pre>',
 											'post'       => '',
 											'type'       => 'textbox',
 											'attributes' => array(),
 											'disabled'   => parent::permalinks_disabled()
 										)
 									)
+								),
+							)
+						)
+					)
+				),
+				'registration' => array(
+					'title'  => __( 'Registration' ),
+					'sections' => array(
+						'require_activation' => array(
+							'title'  => __( 'Account Setup' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_require_activation',
+									'std'        => '1',
+									'label'      => __( 'Require Activation' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Email link to set password in email when new users register. This is default method of registration in WordPress.' ),
+								),
+								array(
+									'name'       => 'wplf_register_set_pw',
+									'std'        => '0',
+									'label'      => __( 'Register with Password' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Show password input fields on registration form, and do not require account activation (disables require activation above)' ),
+								)
+							)
+						),
+						'registration' => array(
+							'title'  => __( 'Registration' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_auto_login',
+									'std'        => '0',
+									'label'      => __( 'Auto Login' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Auto login users after completing registration (regardless of account activation status).  Users will still be required to activate account (if enabled) to login again.' ),
+								),
+								array(
+									'name'       => 'wplf_register_loader',
+									'std'        => '0',
+									'label'      => __( 'Loader' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Add a spinning loader and disable the register button after being clicked (and form validated)' ),
+								)
+							)
+						),
+						'registration_fields' => array(
+							'title'  => __( 'Registration Fields' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_registration_email_as_un',
+									'std'        => '0',
+									'label'      => __( 'Email as Username' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Hide the Username field, and use Email as the username.' ),
+								),
+								array(
+									'name'       => 'wplf_registration_custom_fields',
+									'std'        => '0',
+									'label'      => __( 'Custom Fields' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'desc'       => __( 'Add any additional custom user meta fields you want on the register form.' ),
+									'rfields' => array(
+										'label'    => array(
+											'label'       => __( 'Field Label' ),
+											'type'        => 'textbox',
+											'help' => __( 'Enter the label to show above the input field' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'required' => true
+										),
+										'meta_key'    => array(
+											'label'       => __( 'Meta Key' ),
+											'type'        => 'textbox',
+											'default'     => '',
+											'help'		=> __( 'Enter the exact user meta key to save this value to.  Example would be first_name, last_name, etc.' ),
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										),
+										'required' => array(
+											'cb_label'          => __( 'Required' ),
+											'label'        => __( 'Required' ),
+											'type'           => 'checkbox',
+											'class'          => '',
+											'default'            => '0',
+											'multiple'       => true,
+											'template_style' => true
+										)
+									)
+								)
+							)
+						)
+					)
+				),
+				'login' => array(
+					'title'  => __( 'Login' ),
+					'sections' => array(
+						'registration' => array(
+							'title'  => __( 'Login General' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_login_loader',
+									'std'        => '0',
+									'label'      => __( 'Loader' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Add a spinning loader and disable the register button after being clicked (and form validated)' ),
+								)
+							)
+						)
+					)
+				),
+				'redirects' => array(
+					'title'  => __( 'Redirects' ),
+					'sections' => array(
+						'login_redirects' => array(
+							'title'  => __( 'Login Redirects' ),
+							'fields' => array(
+								array(
+									'name'        => 'wplf_default_login_redirect',
+									'label'       => __( 'Default Login Redirect' ),
+									'desc'        => __( 'Enter the endpoint for default redirect after a user logs in (if they don\'t match any other rules below)' ),
+									'placeholder'         => '/my-account',
+									'type'        => 'textbox',
+									'field_class' => '',
+									'attributes'  => array(),
+								),
+								array(
+									'name'       => 'wplf_role_login_redirects',
+									'std'        => '0',
+									'label'      => __( 'Role Login Redirects' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'single_val' => 'role', // Signify this group has single val fields to check on page init
+									'desc'       => __( 'Select any custom redirects to use for specific user roles' ),
+									'rfields'    => array(
+										'role'    => array(
+											'label'       => __( 'Role' ),
+											'type'        => 'userroles',
+											'help'        => __( 'Enter the label to show above the input field' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'single_val'  => true, // Means values can't be selected more than once in repeatable
+											'required'    => true
+										),
+										'redirect' => array(
+											'label'       => __( 'Redirect' ),
+											'type'        => 'textbox',
+											'default'     => '',
+											'placeholder' => '/some-endpoint',
+											'help'        => __( 'Endpoint (on this site) to redirect to (do NOT include website URL)' ),
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								),
+								array(
+									'name'       => 'wplf_redirect_to_login_redirects',
+									'std'        => '0',
+									'label'      => sprintf( __( '%s Precedence' ), 'redirect_to' ),
+									'cb_label'   => sprintf( __( 'Yes, allow a POST or GET %s variable to take priority over above settings' ), '<code>redirect_to</code>' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'By enabling this setting, any redirect_to value set in GET or POST params will take priority over the above rules.  More than likely you will want to leave this disabled.' ),
+								),
+							)
+						),
+						'logout_redirects' => array(
+							'title'  => __( 'Logout Redirects' ),
+							'fields' => array(
+								array(
+									'name'        => 'wplf_default_logout_redirect',
+									'label'       => __( 'Default Logout Redirect' ),
+									'desc'        => __( 'Enter the endpoint for default redirect after a user logs out (if they don\'t match any other rules below)' ),
+									'placeholder'         => '/my-account',
+									'type'        => 'textbox',
+									'field_class' => '',
+									'attributes'  => array(),
+								),
+								array(
+									'name'       => 'wplf_role_logout_redirects',
+									'std'        => '0',
+									'label'      => __( 'Role Logout Redirects' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'single_val' => 'role', // Signify this group has single val fields to check on page init
+									'desc'       => __( 'Select any custom redirects to use for specific user roles' ),
+									'rfields'    => array(
+										'role'    => array(
+											'label'       => __( 'Role' ),
+											'type'        => 'userroles',
+											'help'        => __( 'Enter the label to show above the input field' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'single_val'  => true, // Means values can't be selected more than once in repeatable
+											'required'    => true
+										),
+										'redirect' => array(
+											'label'       => __( 'Redirect' ),
+											'type'        => 'textbox',
+											'default'     => '',
+											'placeholder' => '/some-endpoint',
+											'help'        => __( 'Endpoint (on this site) to redirect to (do NOT include website URL)' ),
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								),
+								array(
+									'name'       => 'wplf_redirect_to_logout_redirects',
+									'std'        => '0',
+									'label'      => sprintf( __( '%s Precedence' ), 'redirect_to' ),
+									'cb_label'   => sprintf( __( 'Yes, allow a POST or GET %s variable to take priority over above settings' ), '<code>redirect_to</code>' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'By enabling this setting, any redirect_to value set in GET or POST params will take priority over the above rules.  More than likely you will want to leave this disabled.' ),
 								),
 							)
 						)
@@ -283,6 +501,24 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'name'  => 'wplf_bg_color',
 									'label' => __( 'Background Color' ),
 									'desc'  => __( 'Use a custom background for the default wp-login.php page.' ),
+									'type'  => 'colorpicker'
+								),
+								array(
+									'name'  => 'wplf_font_color',
+									'label' => __( 'Font Color' ),
+									'desc'  => __( 'Use a custom font color for wp-login.php page.' ),
+									'type'  => 'colorpicker'
+								),
+								array(
+									'name'  => 'wplf_link_color',
+									'label' => __( 'Link Color' ),
+									'desc'  => __( 'Use a custom color for links on the wp-login.php page.' ),
+									'type'  => 'colorpicker'
+								),
+								array(
+									'name'  => 'wplf_link_hover_color',
+									'label' => __( 'Link Hover Color' ),
+									'desc'  => __( 'Use a custom color when hovering over links on the wp-login.php page.' ),
 									'type'  => 'colorpicker'
 								),
 								array(
@@ -353,7 +589,8 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'fields'     => array(
 										array(
 											'name'        => 'wplf_login_box_border_radius',
-											'type'  => 'spinner'
+											'type'  => 'spinner',
+											'post' => 'px'
 										)
 									),
 								)
@@ -414,10 +651,11 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 					)
 				),
 				'templates' => array(
-					'title'  => __( 'Templates' ),
+					'title'  => __( 'Email Templates' ),
 					'sections' => array(
 						'activation' => array(
-							'title' => __( 'User Activation Email Template' ),
+							'title' => __( 'New User Activation Email Template' ),
+							'hide_if' => get_option( 'wplf_register_set_pw', false ),
 							'fields' => array(
 								array(
 									'name'       => 'wplf_activation_subject',
@@ -433,6 +671,29 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'label'      => __( 'Email Message' ),
 									'desc'       => __( 'This template will be used as the first email sent to the user to activate their account.<br /><strong>Available Template Tags:</strong> <code>%wp_activate_url%</code>, <code>%wp_activation_key%</code>, <code>%wp_user_name%</code>, <code>%wp_user_email%</code>, <code>%wp_site_url%</code>, <code>%wp_login_url%</code>' ),
 									'std'        => __( 'Thank you for registering your account:' ) . '<br />%wp_site_url%<br />' . sprintf( __( 'Username: %s' ), '%wp_user_name%' ) . '<br /><br />' . __( 'In order to activate your account and set your password, please visit the following address:' ) . '<br /><a href="%wp_activate_url%">%wp_activate_url%</a>',
+									'type'       => 'wpeditor',
+									'attributes' => array(),
+								),
+							)
+						),
+						'new_user' => array(
+							'title' => __( 'New User Email Template' ),
+							'hide_if' => get_option( 'wplf_require_activation', true ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_new_user_subject',
+									'label'      => __( 'Email Subject' ),
+									'desc'       => __( 'This will be used as the subject for the new user registered email.  You can use any template tags available in message below.' ),
+									'std'        => __( 'Your Account Information' ),
+									'type'       => 'textbox',
+									'field_class'      => 'widefat',
+									'attributes' => array(),
+								),
+								array(
+									'name'       => 'wplf_new_user_message',
+									'label'      => __( 'Email Message' ),
+									'desc'       => __( 'This template will be used as the first email sent to the user after creating an account (with their own password).<br /><strong>Available Template Tags:</strong> <code>%wp_user_name%</code>, <code>%wp_user_email%</code>, <code>%wp_site_url%</code>, <code>%wp_login_url%</code>' ),
+									'std'        => __( 'Thank you for registering your account:' ) . '<br />%wp_site_url%<br />' . sprintf( __( 'Username: %s' ), '%wp_user_name%' ) . '<br /><br />' . __( 'To login to your account, please visit the following address:' ) . '<br /><a href="%wp_login_url%">%wp_login_url%</a>',
 									'type'       => 'wpeditor',
 									'attributes' => array(),
 								),
@@ -515,6 +776,172 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 					    )
 				    )
 				),
+				'login_limiter' => array(
+					'title'    => __( 'Login Limiter' ),
+					'sections' => array(
+						'login_limiter_general'   => array(
+							'title'  => __( 'Login Limiter Settings' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_login_limiter_enable',
+									'std'        => '0',
+									'label'      => __( 'Limit Login Attempts' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Limit login attempts based on configuration below.' ),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_log',
+									'std'        => '0',
+									'label'      => __( 'Lockout Log' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Enable to log all lockouts' ),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_email_lockouts',
+									'std'        => '0',
+									'label'      => __( 'Lockout Email' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'break'      => true,
+									'desc'       => __( 'Send email regarding lockouts after configuration above.' ),
+									'fields'     => array(
+										array(
+											'name' => 'wplf_login_limiter_email_to',
+											'type' => 'textbox',
+											'pre'  => __( 'Send email to:' ),
+											'post' => __( 'after' )
+										),
+										array(
+											'name' => 'wplf_login_limiter_email_after',
+											'type' => 'spinner',
+											'std'  => 4,
+											'post' => __( 'lockouts' )
+										)
+									),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_attempts',
+									'std'        => '4',
+									'label'      => __( 'Allowed Attempts' ),
+									'type'       => 'spinner',
+									'attributes' => array(),
+									'desc'       => __( 'Set how many failed login attempts before triggering a lockout' ),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_lockout',
+									'std'        => '20',
+									'label'      => __( 'Lockout Minutes' ),
+									'type'       => 'spinner',
+									'attributes' => array(),
+									'desc'       => __( 'Set how many minutes to lockout a user/IP after failed login attempts set above.' ),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_lockouts_allowed',
+									'std'        => '4',
+									'label'      => __( 'Lockouts Allowed' ),
+									'type'       => 'spinner',
+									'attributes' => array(),
+									'desc'       => __( 'Set how many lockouts will be allowed before increasing lockout time set below.' ),
+								),
+								array(
+									'name'       => 'wplf_login_limiter_lockouts_increase',
+									'std'        => '24',
+									'label'      => __( 'Lockout Increase' ),
+									'type'       => 'spinner',
+									'attributes' => array(),
+									'desc'       => __( 'Set how many hours to increase the lockout time after number of failed total lockouts above.' ),
+								)
+							)
+						),
+						'login_limiter_whitelist' => array(
+							'title'  => __( 'Login Limiter Whitelist' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_login_limiter_whitelist_ips',
+									'label'      => __( 'IP Whitelist' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'desc'       => __( 'Add any IP addresses to the whitelist. This can be a single IP (x.x.x.x) or a range (1.2.3.4-5.6.7.8)' ),
+									'rfields'    => array(
+										'label' => array(
+											'label'       => __( 'IP Address' ),
+											'type'        => 'textbox',
+											'help'        => __( 'Format should be a single IP address (1.2.3.4) or a range separated by hyphen (1.2.3.4-5.6.7.8)' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								),
+								array(
+									'name'       => 'wplf_login_limiter_whitelist_users',
+									'label'      => __( 'User Whitelist' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'desc'       => __( 'Add any specific usernames to omit from login limiter' ),
+									'rfields'    => array(
+										'label' => array(
+											'label'       => __( 'Username/Email' ),
+											'type'        => 'textbox',
+											'help'        => __( 'Enter any username or email address to omit from the login limiter' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								)
+							)
+						),
+						'login_limiter_blacklist' => array(
+							'title'  => __( 'Login Limiter Blacklist' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_login_limiter_blacklist_ips',
+									'label'      => __( 'IP Blacklist' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'desc'       => __( 'Add any IP addresses to the blacklist. This can be a single IP (x.x.x.x) or a range (1.2.3.4-5.6.7.8)' ),
+									'rfields'    => array(
+										'label' => array(
+											'label'       => __( 'IP Address' ),
+											'type'        => 'textbox',
+											'help'        => __( 'Format should be a single IP address (1.2.3.4) or a range separated by hyphen (1.2.3.4-5.6.7.8)' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								),
+								array(
+									'name'       => 'wplf_login_limiter_blacklist_users',
+									'label'      => __( 'User Blacklist' ),
+									'type'       => 'repeatable',
+									'attributes' => array(),
+									'desc'       => __( 'Add any specific usernames to blacklist from logging in' ),
+									'rfields'    => array(
+										'label' => array(
+											'label'       => __( 'Username/Email' ),
+											'type'        => 'textbox',
+											'help'        => __( 'Enter any username or email address to blacklist from logging in' ),
+											'default'     => '',
+											'placeholder' => '',
+											'multiple'    => true,
+											'required'    => true
+										)
+									)
+								)
+							)
+						)
+					)
+				),
 				'settings' => array(
 					'title'    => __( 'Settings' ),
 					'sections' => array(
@@ -527,6 +954,15 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 									'label'      => __( 'Remove on Uninstall' ),
 									'cb_label'   => __( 'Enable' ),
 									'desc'       => __( 'This will remove all configuration and options when you uninstall the plugin (disabled by default)' ),
+									'type'       => 'checkbox',
+									'attributes' => array()
+								),
+								array(
+									'name'       => 'wplf_show_admin_bar_only_admins',
+									'std'        => '0',
+									'label'      => __( 'Admin Bar' ),
+									'cb_label'   => __( 'Only show admin bar for administrators (users with manage_options capability)' ),
+									'desc'       => __( 'By default, WordPress will show the admin bar for any kind of user when browsing the site.  Enable this setting to only show for Administrators.' ),
 									'type'       => 'checkbox',
 									'attributes' => array()
 								),
@@ -548,6 +984,10 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 			)
 		);
 
+		// TODO: add login limiter handling
+		unset( $settings['login_limiter'] );
+
+		self::$settings = $settings;
 	}
 
 	/**
@@ -579,6 +1019,10 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 		foreach ( self::$settings as $key => $tab ) {
 
 			foreach( $tab['sections'] as $skey => $section ) {
+
+				if( array_key_exists( 'hide_if', $section ) && ! empty( $section['hide_if'] ) ){
+					continue;
+				}
 
 				$section_header = "default_header";
 				if ( method_exists( $this, "{$key}_{$skey}_header" ) ) $section_header = "{$key}_{$skey}_header";
@@ -635,9 +1079,8 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 		$class       = ! empty( $option[ 'class' ] ) ? $option[ 'class' ] : '';
 		$field_class = ! empty( $option[ 'field_class' ] ) ? $option[ 'field_class' ] : '';
 
-		$value       = esc_attr( get_option( $option[ 'name' ] ) );
-		$non_escape_fields = array( 'wpeditor' );
-		if( in_array( $option['type'], $non_escape_fields ) ) $value = get_option( $option['name'] );
+		$non_escape_fields = array( 'wpeditor', 'repeatable' );
+		$value       = in_array( $option['type'], $non_escape_fields ) ? get_option( $option['name'] ) : esc_attr( get_option( $option[ 'name' ] ) );
 
 		$attributes  = "";
 

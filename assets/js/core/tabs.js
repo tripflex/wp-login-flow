@@ -1,4 +1,10 @@
 jQuery(function($){
+    var css_editor = false;
+
+    if ( typeof wplf_css_codeeditor !== "undefined" ) {
+        css_editor = wp.codeEditor.initialize( $( '#wplf_custom_css' ), wplf_css_codeeditor );
+    }
+
     $( ".nav-tab-wrapper a" ).click(
         function () {
             $( '.settings_panel' ).hide();
@@ -6,7 +12,10 @@ jQuery(function($){
             $( $( this ).attr( 'href' ) ).show();
             var bg_color = $( '.wp-ui-primary' ).getHexBackgroundColor();
             $( this ).addClass( 'nav-tab-active' ).css( 'background', bg_color );
-            $( '#wplf-all-settings .settings_panel' ).css( 'border', '' )
+            $( '#wplf-all-settings .settings_panel' ).css( 'border', '' );
+            if( $(this).data('tab') === 'custom_page' && css_editor ){
+                css_editor.codemirror.refresh();
+            }
             return false;
         }
     );
@@ -22,6 +31,22 @@ jQuery(function($){
     );
 
     $( '.nav-tab-wrapper a:first' ).click();
+
+    $( '#wplf_register_set_pw' ).click( function(){
+	    if ( $( this ).is( ':checked' ) ) {
+		    $( '#wplf_require_activation' ).prop( 'checked', false );
+	    }
+    });
+
+    $( '#wplf_require_activation' ).click( function(){
+
+    	if( $(this).is(':checked') ){
+		    $( '#wplf_register_set_pw' ).prop( 'checked', false );
+	    }
+
+    });
+
+
 });
 
 jQuery.fn.getHexBackgroundColor = function () {

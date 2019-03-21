@@ -10,10 +10,7 @@ if ( ! function_exists( 'wp_password_change_notification' ) ) :
 	 *
 	 * @param object $user User Object
 	 */
-	/**
-	 * @param object $user
-	 */
-	function wp_password_change_notification( &$user ) {
+	function wp_password_change_notification( $user ) {
 
 		$activation = new WP_Login_Flow_User_Activation();
 

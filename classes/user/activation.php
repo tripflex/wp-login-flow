@@ -28,15 +28,17 @@ class WP_Login_Flow_User_Activation extends WP_Login_Flow_User {
 	 */
 	function check( $user_id, $existing = false ) {
 
+		$user = get_user_by( 'ID', $user_id );
+
+		// Always allow admins to login
+		if( $user && $user->has_cap('create_users') || is_super_admin( $user_id ) ){
+			return true;
+		}
+
 		$status = get_user_meta( $user_id, 'activation_status', false );
 
 		// Meta key does not exist, probably existing user
-		if ( is_array($status) && empty( $status ) ) {
-			if( get_option( 'wplf_require_existing_activation' ) ) {
-				if( $existing ) return 0;
-				return false;
-			}
-
+		if ( is_array( $status ) && empty( $status ) ) {
 			// Existing users don't have to activate ( setting config )
 			return true;
 		}

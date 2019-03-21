@@ -5,12 +5,12 @@
  * Description: Complete wp-login.php customization, including rewrites, require email activation, email templates, custom colors, logo, link, responsiveness, border radius, and more!
  * Author:      Myles McNamara
  * Author URI:  http://smyl.es
- * Version:     2.0.0
+ * Version:     3.0.0
  * Last Updated: @@timestamp
  * Domain Path: /languages
  * Text Domain: wp_login_flow
- * Tested up to: 4.2.2
- * Requires at least: 4.1
+ * Tested up to: 5.2.0
+ * Requires at least: 4.4.0
  */
 
 // Exit if accessed directly
@@ -22,7 +22,7 @@ Class WP_Login_Flow {
 
 	const PLUGIN_SLUG = 'wp-login-flow';
 	const PROD_ID = 'WP Login Flow';
-	const VERSION = '2.0.0';
+	const VERSION = '3.0.0';
 	protected static $instance;
 	public           $wp_login = 'wp-login.php';
 	private          $plugin_slug;
@@ -40,6 +40,7 @@ Class WP_Login_Flow {
 		add_action( 'init', array( $this, 'load_translations' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 4 );
+		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'settings_plugin_link' ) );
 
 		register_activation_hook( __FILE__, array( $this, 'plugin_activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'plugin_deactivate' ) );
@@ -49,9 +50,10 @@ Class WP_Login_Flow {
 		if ( $this->activation_enabled() ) {
 			new WP_Login_Flow_Login();
 			new WP_Login_Flow_User();
-			include( 'pluggables/wp-new-user-notification.php' );
 			include( 'pluggables/wp-password-change-notification.php' );
 		}
+
+		include( 'pluggables/wp-new-user-notification.php' );
 
 		if ( is_admin() ) $this->settings = new WP_Login_Flow_Settings();
 
@@ -66,7 +68,7 @@ Class WP_Login_Flow {
 	 * @return bool
 	 */
 	function activation_enabled(){
-		if( get_option( 'wplf_require_activation' ) ) return true;
+		if( get_option( 'wplf_require_activation', true ) ) return true;
 		return false;
 	}
 
@@ -125,7 +127,7 @@ Class WP_Login_Flow {
 		if ( WP_LOGIN_FLOW_VERSION != get_option( 'WP_LOGIN_FLOW_VERSION' ) ) {
 			update_option( 'WP_LOGIN_FLOW_VERSION', WP_LOGIN_FLOW_VERSION );
 			$html = '<div class="updated"><p>';
-			$html .= __( 'WP Login Flow is now activated, you can find <strong>Login Flow</strong> under the <strong>Users</strong> menu.<br />Dont forget to check/enable <strong>Anyone can register</strong> under <strong>Settings > General</strong>' );
+			$html .= __( 'WP Login Flow is now activated, you can find <strong>Login Flow</strong> under the <strong>Users</strong> menu.' );
 			$html .= '</p></div>';
 
 			echo $html;
@@ -137,7 +139,7 @@ Class WP_Login_Flow {
 		if( is_multisite() && ! get_option( 'WP_LOGIN_MS_NOTICE' ) ){
 			$html = '<div class="error">';
 			$html .= '<p style="float:right;"><a href="'. esc_url( add_query_arg( "dismiss-wplf-ms-notice", "1" ) ) . '">' . __( 'Hide notice' ) . '</a></p>';
-			$html .= '<p>' . __( 'WP Login Flow is not recommended for multisite installations.  Some features may work but other may have issues.  <strong>You have been warned.</strong>' );
+			$html .= '<p>' . __( 'WP Login Flow is recommended for single site installations -- not multisite installations.  All the features "should" work, but PLEASE thoroughly test everything manually, and report any issues you find on GitHub.' );
 			$html .= '</p></div>';
 
 			echo $html;
@@ -156,6 +158,12 @@ Class WP_Login_Flow {
 		load_plugin_textdomain( 'wp-login-flow', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
 
+	public function settings_plugin_link( $links ){
+
+		$links[] = '<a href="' . admin_url( '/users.php?page=wp-login-flow' ) . '">' . __( 'Settings' ) . '</a>';
+		return $links;
+	}
+
 	/**
 	 * Add links on plugin page
 	 *
@@ -169,8 +177,10 @@ Class WP_Login_Flow {
 	public function add_plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
 
 		if ( self::PLUGIN_SLUG . '/' . self::PLUGIN_SLUG . '.php' == $plugin_file ) {
-			$plugin_meta[ ] = '<a target="_blank" href="http://github.com/tripflex/' . self::PLUGIN_SLUG . '">' . __( 'GitHub' ) . '</a>';
-			$plugin_meta[ ] = '<a target="_blank" href="http://wordpress.org/plugins/' . self::PLUGIN_SLUG . '">' . __( 'Wordpress' ) . '</a>';
+			$plugin_meta[] = '<a target="_blank" href="https://www.patreon.com/smyles"><span class="dashicons dashicons-heart" style="color: #ca2424; font-size: 15px; line-height: 1.5;"></span></a>';
+			$plugin_meta[] = '<a href="' . admin_url( '/users.php?page=wp-login-flow' ) . '">' . __( 'Settings' ) . '</a>';
+			$plugin_meta[ ] = '<a target="_blank" href="http://github.com/tripflex/' . self::PLUGIN_SLUG . '">' . __( 'Open Source' ) . '</a>';
+			$plugin_meta[ ] = '<a target="_blank" href="http://wordpress.org/plugins/' . self::PLUGIN_SLUG . '">' . __( 'WordPress' ) . '</a>';
 			$plugin_meta[ ] = '<a target="_blank" href="https://www.transifex.com/projects/p/' . self::PLUGIN_SLUG . '">' . __( 'Translate' ) . '</a>';
 		}
 

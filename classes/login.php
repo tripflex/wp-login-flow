@@ -2,21 +2,76 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class WP_Login_Flow_Login extends WP_Login_Flow {
+/**
+ * Class WP_Login_Flow_Login
+ *
+ * @since @@version
+ *
+ */
+class WP_Login_Flow_Login {
 
+	/**
+	 * @var
+	 */
 	protected $step;
+	/**
+	 * @var
+	 */
 	protected $action;
 
+	/**
+	 * WP_Login_Flow_Login constructor.
+	 */
 	function __construct() {
 
 		add_action( 'login_init', array( $this, 'login_init' ) );
 		add_filter( 'wp_login_errors', array( $this, 'wp_login_errors' ), 10, 2 );
-		add_filter( 'registration_redirect', array( $this, 'register_redirect' ), 9999, 1 );
 //		add_action( 'login_form_rp', array($this, 'activation_redirect'), 9999 );
 		add_filter( 'gettext', array( $this, 'check_for_string_changes' ), 1 );
 //		Action right before output of password being reset ( wp-login.php:603 )
 //		add_filter( 'validate_password_reset', array( $this, 'activation_password_set' ), 9999, 1 );
-//		add_filter( 'login_enqueue_scripts', array( $this, 'login_script' ), 0 );
+		add_filter( 'login_enqueue_scripts', array( $this, 'login_assets' ) );
+		add_action( 'login_header', array( $this, 'login_header' ) );
+	}
+
+	/**
+	 * Output Loader HTML in Login Header (also Register, etc)
+	 *
+	 *
+	 * @since @@version
+	 *
+	 */
+	function login_header(){
+
+		$action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : 'login';
+
+		if ( ( $action === 'register' && get_option( 'wplf_register_loader', false ) ) || ( $action === 'login' && get_option( 'wplf_login_loader', false ) ) ) {
+			?>
+			<div id="wplf-loader">
+				<span id="login-loader-icon" class="dashicons dashicons-image-rotate"></span>
+			</div>
+			<?php
+		}
+	}
+
+	/**
+	 * Enqueue CSS/JS on Frontend if Enabled in Settings
+	 *
+	 *
+	 * @since @@version
+	 *
+	 */
+	function login_assets(){
+
+		WP_Login_Flow_Assets::frontend();
+
+		$action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : 'login';
+
+		if( ( $action === 'register' && get_option( 'wplf_register_loader', false ) ) || ( $action === 'login' && get_option( 'wplf_login_loader', false ) ) ){
+			wp_enqueue_script( 'wplf-frontend' );
+			wp_enqueue_style( 'wplf-frontend' );
+			wp_enqueue_style('dashicons' );
+		}
 
 	}
 
@@ -81,31 +136,7 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 			return __( 'Set Password' );
 		}
 
-		if( $text === 'A password will be e-mailed to you.' && $this->get_action() === 'register' ){
-			if ( ! get_option( 'wplf_require_activation' ) ) return $text;
-			return __( 'You will be emailed a link to set your password.' );
-		}
-
 		return $text;
-
-	}
-
-	/**
-	 * Set registration redirection URL to pending activation
-	 *
-	 * If activation is enabled this method will set the redirect URL to the pending page URL
-	 * or the standard URL if activation is disabled.
-	 *
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param $url
-	 *
-	 * @return string|void
-	 */
-	function register_redirect( $url ){
-
-		return site_url( 'wp-login.php?action=activation&step=pending' );
 
 	}
 
@@ -160,6 +191,8 @@ class WP_Login_Flow_Login extends WP_Login_Flow {
 	 * The core of WordPress wp-login.php uses WP Errors for handling notices, and in order
 	 * to use our own custom templates we need to sometimes unset those errors to prevent them
 	 * from showing.
+	 *
+	 * @since 3.0.0 -- not sure if this is even used anymore?
 	 *
 	 * @since 2.0.0
 	 *
