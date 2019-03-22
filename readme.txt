@@ -109,7 +109,20 @@ Yes!  It works with any version of WordPress 4.4 or newer!
 
 == Screenshots ==
 
-1. Screenshot 1
+1. Custom Permalink Configuration
+2. Permalink Examples
+3. Registration Customization
+4. Registration Form Examples
+5. Activate Account Default vs WP Login Flow Comparison
+6. New Account Set Password Default vs WP Login Flow Comparison
+7. Custom Login/Logout Redirects
+8. Page Customizations (bg, font, link, custom css)
+9. Page Customizations Logo, Title, and URL
+10. Page Login Box Customizations
+11. Customize WordPress Outgoing Email From Name/Email
+12. New User Email Template Customization
+13. Notice Customizations (shown on wp-login page)
+14. Plugin Settings
 
 == Changelog ==
 
