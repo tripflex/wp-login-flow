@@ -247,8 +247,20 @@ module.exports = function ( grunt ) {
 						'!includes/**/assets/**/build/**',
 						'!includes/**/assets/**/core/**',
 						'!includes/**/assets/**/vendor/**',
+						'!screenshot-*',
+						'!icon-*',
+						'!banner-*'
 					],
 					dest: '<%= build.dir %>/',
+					expand: true
+				},
+				wp_assets: {
+					src: [
+						'icon-*',
+						'banner-*',
+						'screenshot-*'
+					],
+					dest: 'dist/<%= pkg.version %>/assets',
 					expand: true
 				},
 				pot: {
@@ -346,7 +358,17 @@ module.exports = function ( grunt ) {
 					},
 					src: '<%= build.css %>/*.css'
 				}
-			}
+			},
+			wp_readme_to_markdown: {
+				deploy: {
+					options: {
+						screenshot_url: 'https://raw.githubusercontent.com/tripflex/wp-login-flow/master/{screenshot}.png',
+					},
+					files: {
+						'readme.md': 'readme.txt'
+					},
+				},
+			},
 
 		}
 	);
@@ -361,12 +383,14 @@ module.exports = function ( grunt ) {
 	grunt.registerTask(
 		'deploy', [
 			'clean:dist',
+			'wp_readme_to_markdown',
 			'less',
 			'concat',
 			'autoprefixer',
 			'cssmin',
 			'uglify',
 			'copy:deploy',
+			'copy:wp_assets',
 			'replace:deploy',
 			'addtextdomain',
 			'checktextdomain',

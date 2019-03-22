@@ -26,5 +26,8 @@
     "grunt-shell": "^3.0.1",
     "grunt-wp-i18n": "^1.0.3",
     "load-grunt-tasks": "^4.0.0"
+  },
+  "dependencies": {
+    "grunt-wp-readme-to-markdown": "^2.0.1"
   }
 }
