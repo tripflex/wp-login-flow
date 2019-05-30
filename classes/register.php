@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Class WP_Login_Flow_Register
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_Register extends WP_Login_Flow_Login {
@@ -35,7 +35,7 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 * @param $redirect_to
 	 *
 	 * @return mixed
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function registration_complete( $errors, $redirect_to ) {
@@ -65,7 +65,7 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 * @param $update_user_id
 	 *
 	 * @return mixed
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function maybe_set_password( $data, $update, $update_user_id ){
@@ -81,7 +81,7 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 * Login Form Register Hook
 	 *
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function login_form_register(){
@@ -125,7 +125,7 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 * Output Password Field (and Strength Indicator)
 	 *
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public function output_pw_fields(){
@@ -172,7 +172,7 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 * Add Password and/or Custom Registration Fields
 	 *
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public function register_fields(){
@@ -218,7 +218,7 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 * @param $user_email
 	 *
 	 * @return mixed
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public function registration_errors( $errors, $sanitized_user_login, $user_email ) {
@@ -269,7 +269,7 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 *
 	 * @param $user_id
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public function register_new_user( $user_id ){
@@ -296,7 +296,7 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 	 *
 	 * @param $user_id
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public function user_registered( $user_id ){

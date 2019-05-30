@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Class WP_Login_Flow_Core
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_Core {
@@ -31,7 +31,7 @@ class WP_Login_Flow_Core {
 	 * @param $show
 	 *
 	 * @return bool
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public function maybe_hide_admin_bar( $show ){

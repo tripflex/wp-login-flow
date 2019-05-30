@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Class WP_Login_Flow_Settings_Handlers
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
@@ -150,7 +150,7 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 	 * @param $input
 	 *
 	 * @return array|bool
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public function repeatable_handler( $input ) {
@@ -191,7 +191,7 @@ class WP_Login_Flow_Settings_Handlers extends WP_Login_Flow_Settings_Fields {
 	 *
 	 *
 	 * @return bool
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	static function registration_enabled(){

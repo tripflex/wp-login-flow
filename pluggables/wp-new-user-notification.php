@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * because of the potential use over another theme/plugin overriding this function, and not including the standard
  * filters.
  *
- * @since @@version
+ * @since 3.0.0
  * @package WP Login Flow
  */
 if ( ! function_exists( 'wp_new_user_notification' ) ) :

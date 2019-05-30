@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Class WP_Login_Flow_Settings_Fields
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_Settings_Fields {
@@ -16,7 +16,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function checkbox_field( $args ) {
@@ -39,7 +39,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function default_header( $args ) {
@@ -52,7 +52,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function button_field( $args ) {
@@ -70,7 +70,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function backup_field( $args ) {
@@ -92,7 +92,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function link_field( $args ) {
@@ -110,7 +110,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function select_field( $args ) {
@@ -138,7 +138,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function userroles_field( $args ) {
@@ -171,7 +171,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function textarea_field( $args ) {
@@ -192,7 +192,7 @@ class WP_Login_Flow_Settings_Fields {
 	 * @param $args
 	 *
 	 * @return mixed
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function parse_args( $args ){
@@ -212,7 +212,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $a
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function textbox_field( $a ) {
@@ -235,7 +235,7 @@ class WP_Login_Flow_Settings_Fields {
 	 * @param $o
 	 *
 	 * @return bool|void
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function check_permalinks( $o ){
@@ -259,7 +259,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function spinner_field( $args ) {
@@ -279,7 +279,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function colorpicker_field( $args ){
@@ -297,7 +297,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function wpeditor_field( $args ){
@@ -330,7 +330,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $args
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function upload_field( $args ){
@@ -368,7 +368,7 @@ class WP_Login_Flow_Settings_Fields {
 	 * @param $o
 	 *
 	 * @return bool
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function description( $o ) {
@@ -394,7 +394,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $a
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function repeatable_field( $a ){
@@ -429,7 +429,7 @@ class WP_Login_Flow_Settings_Fields {
 	 * @param bool $value
 	 * @param bool $index
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function repeatable_field_template( $a, $value = false, $index = false ){
@@ -516,7 +516,7 @@ class WP_Login_Flow_Settings_Fields {
 	 *
 	 * @param $o
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function sub_fields( $o ) {

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class WP_Login_Flow_Assets
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_Assets {
@@ -28,7 +28,7 @@ class WP_Login_Flow_Assets {
 	 * Register Frontend CSS/JS
 	 *
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public static function frontend(){
@@ -99,7 +99,7 @@ class WP_Login_Flow_Assets {
 	 *
 	 * @param $hook
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function enqueue_assets( $hook ) {
@@ -138,7 +138,7 @@ class WP_Login_Flow_Assets {
 	 *
 	 *
 	 * @return bool|void
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function pointer() {

@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Class WP_Login_Flow_User_List_Table
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_User_List_Table extends WP_Login_Flow_User {
@@ -29,7 +29,7 @@ class WP_Login_Flow_User_List_Table extends WP_Login_Flow_User {
 	 * @param \WP_User $user
 	 *
 	 * @return array
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function row_actions( array $actions, WP_User $user ){
@@ -47,7 +47,7 @@ class WP_Login_Flow_User_List_Table extends WP_Login_Flow_User {
 	 * @param $columns
 	 *
 	 * @return mixed
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function add_column( $columns ){
@@ -66,7 +66,7 @@ class WP_Login_Flow_User_List_Table extends WP_Login_Flow_User {
 	 * @param $user_id
 	 *
 	 * @return string
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function column_output( $value, $column_name, $user_id ){

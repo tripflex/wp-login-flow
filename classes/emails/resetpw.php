@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Class WP_Login_Flow_Emails_ResetPW
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_Emails_ResetPW extends WP_Login_Flow_Emails {

@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Class WP_Login_Flow_Rewrite
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_Rewrite {
@@ -173,7 +173,7 @@ class WP_Login_Flow_Rewrite {
 	 * @param $path
 	 * @param $scheme
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function network_site_url( $url, $path, $scheme ){

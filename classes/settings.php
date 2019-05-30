@@ -8,7 +8,7 @@ require_once( WP_LOGIN_FLOW_PLUGIN_DIR . '/classes/settings/handlers.php' );
 /**
  * Class WP_Login_Flow_Settings
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {

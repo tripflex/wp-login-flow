@@ -21,7 +21,7 @@ include_once( 'functions.php' );
 /**
  * Class WP_Login_Flow
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 Class WP_Login_Flow {
@@ -191,7 +191,7 @@ Class WP_Login_Flow {
 	 * @param $links
 	 *
 	 * @return array
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public function settings_plugin_link( $links ){

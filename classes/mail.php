@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Class WP_Login_Flow_Mail
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_Mail extends WP_Login_Flow {

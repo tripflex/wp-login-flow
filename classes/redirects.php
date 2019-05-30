@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class WP_Login_Flow_Redirects
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_Redirects {
@@ -29,7 +29,7 @@ class WP_Login_Flow_Redirects {
 	 * @param $redirect
 	 *
 	 * @return string|void
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public function register_redirect( $redirect ){
@@ -52,7 +52,7 @@ class WP_Login_Flow_Redirects {
 	 * @param bool   $user
 	 *
 	 * @return string|void
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public static function get_user_redirect( $type = 'login', $redirect_to = '', $requested = '', $user = false ){
@@ -97,7 +97,7 @@ class WP_Login_Flow_Redirects {
 	 * @param $user
 	 *
 	 * @return string|void
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public static function get_user_login_redirect( $redirect_to, $requested, $user ){
@@ -113,7 +113,7 @@ class WP_Login_Flow_Redirects {
 	 * @param $user
 	 *
 	 * @return string|void
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	public static function get_user_logout_redirect( $redirect_to, $requested, $user ){

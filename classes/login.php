@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Class WP_Login_Flow_Login
  *
- * @since @@version
+ * @since 3.0.0
  *
  */
 class WP_Login_Flow_Login {
@@ -38,7 +38,7 @@ class WP_Login_Flow_Login {
 	 * Output Loader HTML in Login Header (also Register, etc)
 	 *
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function login_header(){
@@ -58,7 +58,7 @@ class WP_Login_Flow_Login {
 	 * Enqueue CSS/JS on Frontend if Enabled in Settings
 	 *
 	 *
-	 * @since @@version
+	 * @since 3.0.0
 	 *
 	 */
 	function login_assets(){
