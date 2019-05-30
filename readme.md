@@ -154,6 +154,10 @@ Yes!  It works with any version of WordPress 4.4 or newer!
 
 ## Changelog ##
 
+### 3.0.1 - May 30, 2019 ###
+* Use `login_headertext` for 5.2.0+ instead of `login_headertitle`
+* Bump tested up to 5.2.1
+
 ### 3.0.0 - March 21, 2019 ###
 * Added full support for WordPress 4.4+ and 5.0+
 * Updated activation handling to work with latest WP
