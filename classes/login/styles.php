@@ -14,11 +14,16 @@ class WP_Login_Flow_Login_Styles {
 	 * WP_Login_Flow_Login_Styles constructor.
 	 */
 	function __construct() {
+		global $wp_version;
 
 		add_action( 'login_enqueue_scripts', array( $this, 'login_css' ) );
 		add_action( 'login_headerurl', array( $this, 'logo_url' ) );
-		add_action( 'login_headertitle', array( $this, 'logo_title' ) );
 
+		if ( version_compare( $wp_version, '5.2.0', '>=' ) ) {
+			add_filter( 'login_headertext', 'logo_title' );
+		} else {
+			add_filter( 'login_headertitle', 'logo_title' );
+		}
 	}
 
 	/**
