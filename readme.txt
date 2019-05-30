@@ -4,7 +4,7 @@ Donate link: https://www.patreon.com/smyles
 Tags: wp-login, wp-login.php, login flow, wp login flow, activation, activate, email, background, responsive, color, login, customize, custom, permalink, rewrite, url, register, lost, forgot, password, template, reset, register, registration, password, password registration, admin bar, smyles, tripflex
 Requires at least: 4.4
 Tested up to: 5.2.1
-Stable tag: 3.0.1
+Stable tag: 3.0.2
 License: GPLv3
 
 wp-login permalinks, auto login, register w/ pass, login/logout redirects, email as username, bg/logo/color customizations, hide admin bar, and more!
