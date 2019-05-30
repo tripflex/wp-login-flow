@@ -126,7 +126,7 @@ Yes!  It works with any version of WordPress 4.4 or newer!
 
 == Changelog ==
 
-= 3.0.1 - May 30, 2019 =
+= 3.0.2 - May 30, 2019 =
 * Use `login_headertext` for 5.2.0+ instead of `login_headertitle`
 * Bump tested up to 5.2.1
 

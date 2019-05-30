@@ -20,9 +20,9 @@ class WP_Login_Flow_Login_Styles {
 		add_action( 'login_headerurl', array( $this, 'logo_url' ) );
 
 		if ( version_compare( $wp_version, '5.2.0', '>=' ) ) {
-			add_filter( 'login_headertext', 'logo_title' );
+			add_filter( 'login_headertext', array( $this, 'logo_title' ) );
 		} else {
-			add_filter( 'login_headertitle', 'logo_title' );
+			add_filter( 'login_headertitle', array( $this, 'logo_title' ) );
 		}
 	}
 
