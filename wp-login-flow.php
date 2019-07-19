@@ -72,9 +72,9 @@ Class WP_Login_Flow {
 		register_deactivation_hook( __FILE__, array( $this, 'plugin_deactivate' ) );
 
 		new WP_Login_Flow_Core();
+		new WP_Login_Flow_Login( $this->activation_enabled() );
 
 		if ( $this->activation_enabled() ) {
-			new WP_Login_Flow_Login();
 			new WP_Login_Flow_User();
 			include( 'pluggables/wp-password-change-notification.php' );
 		}

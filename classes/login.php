@@ -22,12 +22,15 @@ class WP_Login_Flow_Login {
 	/**
 	 * WP_Login_Flow_Login constructor.
 	 */
-	function __construct() {
+	function __construct( $activation_enabled ) {
 
-		add_action( 'login_init', array( $this, 'login_init' ) );
-		add_filter( 'wp_login_errors', array( $this, 'wp_login_errors' ), 10, 2 );
+		if ( $activation_enabled ) {
+			add_action( 'login_init', array( $this, 'login_init' ) );
+			add_filter( 'wp_login_errors', array( $this, 'wp_login_errors' ), 10, 2 );
+			add_filter( 'gettext', array( $this, 'check_for_string_changes' ), 1 );
+		}
+
 //		add_action( 'login_form_rp', array($this, 'activation_redirect'), 9999 );
-		add_filter( 'gettext', array( $this, 'check_for_string_changes' ), 1 );
 //		Action right before output of password being reset ( wp-login.php:603 )
 //		add_filter( 'validate_password_reset', array( $this, 'activation_password_set' ), 9999, 1 );
 		add_filter( 'login_enqueue_scripts', array( $this, 'login_assets' ) );
