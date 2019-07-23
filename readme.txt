@@ -4,7 +4,7 @@ Donate link: https://www.patreon.com/smyles
 Tags: wp-login, wp-login.php, login flow, wp login flow, activation, activate, email, background, responsive, color, login, customize, custom, permalink, rewrite, url, register, lost, forgot, password, template, reset, register, registration, password, password registration, admin bar, smyles, tripflex
 Requires at least: 4.4
 Tested up to: 5.2.2
-Stable tag: 3.0.3
+Stable tag: 3.0.4
 License: GPLv3
 
 wp-login permalinks, auto login, register w/ pass, login/logout redirects, email as username, bg/logo/color customizations, hide admin bar, and more!
@@ -125,6 +125,9 @@ Yes!  It works with any version of WordPress 4.4 or newer!
 14. Plugin Settings
 
 == Changelog ==
+
+= 3.0.4 - TBD =
+* Fix CodeMirror enqueued on all admin pages
 
 = 3.0.3 - July 19, 2019 =
 * Fix login/register loader not being added when activation is not enabled
