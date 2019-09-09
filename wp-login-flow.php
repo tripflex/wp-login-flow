@@ -5,7 +5,7 @@
  * Description: Complete wp-login.php customization, including rewrites, require email activation, email templates, custom colors, logo, link, responsiveness, border radius, and more!
  * Author:      Myles McNamara
  * Author URI:  http://smyl.es
- * Version:     3.0.3
+ * Version:     3.1.0
  * Last Updated: @@timestamp
  * Domain Path: /languages
  * Text Domain: wp_login_flow
@@ -28,7 +28,7 @@ Class WP_Login_Flow {
 
 	const PLUGIN_SLUG = 'wp-login-flow';
 	const PROD_ID = 'WP Login Flow';
-	const VERSION = '3.0.3';
+	const VERSION = '3.1.0';
 	/**
 	 * @var Singleton Instance
 	 */
