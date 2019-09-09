@@ -148,6 +148,7 @@ Class WP_Login_Flow {
 	 *
 	 */
 	public static function admin_notices() {
+		global $is_nginx;
 
 		// Check if first activation
 		if ( WP_LOGIN_FLOW_VERSION != get_option( 'WP_LOGIN_FLOW_VERSION' ) ) {
@@ -171,6 +172,19 @@ Class WP_Login_Flow {
 			echo $html;
 		}
 
+		if ( isset( $_GET['dismiss-wplf-nginx-notice'] ) && ! empty( $_GET['dismiss-wplf-nginx-notice'] ) ) {
+			update_option( 'WP_LOGIN_NGINX_NOTICE', 1 );
+		}
+
+		// Check if Nginx
+		if ( $is_nginx && ! get_option( 'WP_LOGIN_NGINX_NOTICE' ) ) {
+			$html = '<div class="error">';
+			$html .= '<p style="float:right;"><a href="' . esc_url( add_query_arg( "dismiss-wplf-nginx-notice", "1" ) ) . '">' . __( 'Hide notice' ) . '</a></p>';
+			$html .= '<p>' . __( 'WP Login Flow detected you are using Nginx for your web server.  Because of this we can NOT automatically set the rewrites in your config, you MUST manually configure them! YOU MUST ALSO ENABLE REWRITES UNDER THE PERMALINKS TAB ON WP LOGIN FLOW CONFIG PAGE IF YOU HAVE AUTO DISABLE ENABLED!' );
+			$html .= '</p></div>';
+
+			echo $html;
+		}
 	}
 
 	/**

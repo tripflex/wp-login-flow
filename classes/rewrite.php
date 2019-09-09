@@ -47,6 +47,71 @@ class WP_Login_Flow_Rewrite {
 	}
 
 	/**
+	 * Make sure rewrite file exists
+	 *
+	 *
+	 * @return bool
+	 * @since @@version
+	 *
+	 */
+	static function rewrite_file_exists(){
+		global $is_apache, $is_nginx;
+
+		if( ! get_option( 'wplf_auto_disable_rewrites', false ) ){
+			return true;
+		}
+
+		// Nginx must be manually configured to be enabled
+		if( $is_nginx && get_option( 'wplf_nginx_enable', false ) ){
+			return true;
+		}
+
+		return $is_apache ? self::htaccess_exists() : self::iis_web_config_exists();
+	}
+
+	/**
+	 * Verify that Apache/Litespeed htaccess file exists
+	 *
+	 *
+	 * @return bool
+	 * @since @@version
+	 *
+	 */
+	static function htaccess_exists(){
+		if ( is_multisite() ) {
+			return true;
+		}
+
+		// Ensure get_home_path() is declared.
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+
+		$home_path     = get_home_path();
+		$htaccess_file = $home_path . '.htaccess';
+		return file_exists( $htaccess_file );
+	}
+
+	/**
+	 * Verify that IIS web.config file exists
+	 *
+	 *
+	 * @return bool
+	 * @since @@version
+	 *
+	 */
+	static function iis_web_config_exists() {
+		if ( is_multisite() ) {
+			return true;
+		}
+
+		// Ensure get_home_path() is declared.
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		$home_path       = get_home_path();
+		$web_config_file = $home_path . 'web.config';
+		// iis7_supports_permalinks() also checks to make sure IIS7 or above (required for permalinks)
+		return iis7_supports_permalinks() && file_exists( $web_config_file );
+	}
+
+	/**
 	 * Check redirect for lost pw
 	 *
 	 * Check if the redirect is for the set password page for lost password.
@@ -173,6 +238,7 @@ class WP_Login_Flow_Rewrite {
 	 * @param $path
 	 * @param $scheme
 	 *
+	 * @return string
 	 * @since 3.0.0
 	 *
 	 */
@@ -329,7 +395,7 @@ class WP_Login_Flow_Rewrite {
 		}
 
 		// If rewrite not enabled or no slug value return original URL or FALSE
-		if ( ! $enabled || ! $slug ) {
+		if ( ! $enabled || ! $slug || ! self::rewrite_file_exists() ) {
 			if( $validate && ! filter_var( $original_url, FILTER_VALIDATE_URL ) ) {
 				// Remove any slashes at start of string
 				$original_url = ltrim( $original_url, '/\\' );

@@ -139,6 +139,7 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 	 *
 	 */
 	public static function init_settings() {
+		global $is_nginx;
 
 		$settings = apply_filters(
 			'wp_login_flow_settings',
@@ -146,6 +147,34 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 				'rewrites' => array(
 					'title'  => __( 'Permalinks' ),
 					'sections' => array(
+						'enable_auto_disable' => array(
+							'title'  => __( 'Auto Disable Rewrites' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_auto_disable_rewrites',
+									'std'        => '0',
+									'label'      => __( 'Auto Disable' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Automatically disable rewrites/redirects to custom URLs if htaccess or web.config file is not detected.' ),
+								),
+							)
+						),
+						'enable_nginx' => array(
+							'title'  => __( 'Nginx Settings' ),
+							'fields' => array(
+								array(
+									'name'       => 'wplf_nginx_enable',
+									'std'        => '0',
+									'label'      => __( 'Enable Rewrites' ),
+									'cb_label'   => __( 'Enable' ),
+									'type'       => 'checkbox',
+									'attributes' => array(),
+									'desc'       => __( 'Enable rewrite handling for Nginx servers (YOU MUST MANUALLY CONFIGURE THE REWRITES!)' ),
+								),
+							)
+						),
 						'enable_rewrites' => array(
 							'title'  => __( 'Permalinks/Rewrites' ),
 							'fields' => array(
@@ -1007,6 +1036,10 @@ class WP_Login_Flow_Settings extends WP_Login_Flow_Settings_Handlers {
 				)
 			)
 		);
+
+		if( ! $is_nginx ){
+			unset( $settings['rewrites']['sections']['enable_nginx'] );
+		}
 
 		// TODO: add login limiter handling
 		unset( $settings['login_limiter'] );
