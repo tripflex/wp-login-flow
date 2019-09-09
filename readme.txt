@@ -4,7 +4,7 @@ Donate link: https://www.patreon.com/smyles
 Tags: wp-login, wp-login.php, login flow, wp login flow, activation, activate, email, background, responsive, color, login, customize, custom, permalink, rewrite, url, register, lost, forgot, password, template, reset, register, registration, password, password registration, admin bar, smyles, tripflex
 Requires at least: 4.4
 Tested up to: 5.2.2
-Stable tag: 3.0.4
+Stable tag: 3.1.0
 License: GPLv3
 
 wp-login permalinks, auto login, register w/ pass, login/logout redirects, email as username, bg/logo/color customizations, hide admin bar, and more!
@@ -26,6 +26,7 @@ WP Login Flow is a complete solution to make `wp-login.php` not suck!  Below are
 = Permalinks/URLs =
 * Customize Login, Register, Activation, Lost Password, Reset Password, and Logged Out URLs
 * Custom "Activation" URL permalink for Registration (instead of default Reset Password)
+* Setting to auto disable using custom URLs if `.htaccess` or `web.config` does not exist
 
 = Redirects =
 * Custom Login/Logout default login redirect URL
@@ -126,7 +127,9 @@ Yes!  It works with any version of WordPress 4.4 or newer!
 
 == Changelog ==
 
-= 3.0.4 - TBD =
+= 3.1.0 - September 9, 2019 =
+* NEW setting to auto disable custom redirects/rewrites if htaccess or web.config do not exist
+* Added Nginx notice that rewrites must be manually set
 * Fix CodeMirror enqueued on all admin pages
 
 = 3.0.3 - July 19, 2019 =
