@@ -1,14 +1,14 @@
-# Copyright (C) 2019 Myles McNamara
+# Copyright (C) 2020 Myles McNamara
 # This file is distributed under the same license as the WP Login Flow package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Login Flow 3.1.0\n"
+"Project-Id-Version: WP Login Flow 3.1.1\n"
 "Report-Msgid-Bugs-To: http://plugins.smyl.es\n"
-"POT-Creation-Date: 2019-09-09 20:32:08+00:00\n"
+"POT-Creation-Date: 2020-10-07 16:57:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Myles McNamara\n"
 "Language-Team: sMyles <get@smyl.es>\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"

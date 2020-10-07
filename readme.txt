@@ -3,8 +3,8 @@ Contributors: tripflex
 Donate link: https://www.patreon.com/smyles
 Tags: wp-login, wp-login.php, login flow, wp login flow, activation, activate, email, background, responsive, color, login, customize, custom, permalink, rewrite, url, register, lost, forgot, password, template, reset, register, registration, password, password registration, admin bar, smyles, tripflex
 Requires at least: 4.4
-Tested up to: 5.2.2
-Stable tag: 3.1.0
+Tested up to: 5.5.1
+Stable tag: 3.1.1
 License: GPLv3
 
 wp-login permalinks, auto login, register w/ pass, login/logout redirects, email as username, bg/logo/color customizations, hide admin bar, and more!
@@ -126,6 +126,11 @@ Yes!  It works with any version of WordPress 4.4 or newer!
 14. Plugin Settings
 
 == Changelog ==
+
+= 3.1.1 - September 7, 2020 =
+* NEW setting to auto disable custom redirects/rewrites if htaccess or web.config do not exist
+* Added Nginx notice that rewrites must be manually set
+* Fix CodeMirror enqueued on all admin pages
 
 = 3.1.0 - September 9, 2019 =
 * NEW setting to auto disable custom redirects/rewrites if htaccess or web.config do not exist
