@@ -2,7 +2,7 @@
 var file_frame;
 
 jQuery(function ( $ ) {
-	$( '.wplf-upload-show' ).live( 'click', function ( event ) {
+	$( '.wplf-upload-show' ).on( 'click', function ( event ) {
 
 			event.preventDefault();
 			var fileInput = $( this ).data( 'name' );
