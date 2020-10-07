@@ -2,7 +2,7 @@
   "name": "wp-login-flow",
   "title": "WP Login Flow",
   "acronym": "wplf",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "homepage": "http://plugins.smyl.es",
   "author_homepage": "http://smyl.es",
   "class": "WP_Login_Flow",
