@@ -330,7 +330,7 @@ class WP_Login_Flow_Register extends WP_Login_Flow_Login {
 			wp_set_current_user( $user_id );
 			wp_set_auth_cookie( $user_id );
 			$user = get_user_by( 'id', $user_id );
-			$requested_redirect = isset( $_POST['redirect_to'] ) ? esc_url( $_POST['redirect_to'] ) : '';
+			$requested_redirect = isset( $_POST['redirect_to'] ) ? esc_url_raw( $_POST['redirect_to'] ) : '';
 			$login_redirect = WP_Login_Flow_Redirects::get_user_login_redirect( site_url(), $requested_redirect, $user );
 
 			wp_new_user_notification( $user_id, null, 'both' );
